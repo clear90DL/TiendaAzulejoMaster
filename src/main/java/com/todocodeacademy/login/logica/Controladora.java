@@ -133,13 +133,13 @@ public class Controladora {
     }
 
     /////////////////////////////////////////////////Crear Cliente///////////////////////////////////////////////////
-    public void crearClientes(String nombre, String Direccion, String numero, String pedido) {
+    public void crearClientes(String nombre, String Direccion, String numero) {
         Clientes clie = new Clientes();
 
         clie.setNombre(nombre);
         clie.setDireccion(Direccion);
         clie.setNumero(numero);
-        clie.setPedido(pedido);
+       
 
         controlPersis.CrearClientes(clie);
     }
@@ -148,11 +148,11 @@ public class Controladora {
         return controlPersis.traerClientes(id_Cliente);
     }
 
-    public void editarCliente(Clientes cli, String nombre, String direccion, String numero, String pedido) {
+    public void editarCliente(Clientes cli, String nombre, String direccion, String numero) {
         cli.setNombre(nombre);
         cli.setDireccion(direccion);
         cli.setNumero(numero);
-        cli.setPedido(pedido);
+     
 
         controlPersis.editarCliente(cli);
 
@@ -218,12 +218,19 @@ public class Controladora {
         return controlPersis.traerCategoria(id_Categoria);
     }
 
-    private int buscarUltimaIdCategoria() {
-        List<Categorias> listaCategoria = this.TraerCategoria();
 
-        Categorias cat = listaCategoria.get(listaCategoria.size() - 1);
-        return cat.getId();
+    public int buscarUltimaIdCategoria() {
+    List<Categorias> listaCategorias = TraerCategoria();
+
+    if (listaCategorias == null || listaCategorias.isEmpty()) {
+        // No hay categorías aún → devuelve 0 o maneja como caso nuevo
+        return 0;
     }
+
+    Categorias ultima = listaCategorias.get(listaCategorias.size() - 1);
+    return ultima.getId();
+}
+
 
     public void borrarCategoria(int id_categoria) {
         try {

@@ -18,14 +18,14 @@ public class Clientes implements Serializable {
     private String nombre;
     private String Direccion;
     private String numero;
-    private String pedido;
+  
 
-    public Clientes(int id, String nombre, String Direccion, String numero, String pedido) {
+    public Clientes(int id, String nombre, String Direccion, String numero) {
         this.id = id;
         this.nombre = nombre;
         this.Direccion = Direccion;
         this.numero = numero;
-        this.pedido = pedido;
+        
     }
 
     Clientes() {
@@ -62,17 +62,5 @@ public class Clientes implements Serializable {
     public void setNumero(String numero) {
         this.numero = numero;
     }
-
-   
-
-    public String getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(String pedido) {
-        this.pedido = pedido;
-    }
-    
-    
-    
+  
 }

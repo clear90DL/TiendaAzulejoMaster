@@ -1,7 +1,14 @@
 package com.todocodeacademy.login.igu;
 
+import ConexionBD.ConexionBD;
 import com.todocodeacademy.login.logica.Controladora;
 import com.todocodeacademy.login.logica.Usuario;
+import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,10 +21,12 @@ public class Logininicial extends javax.swing.JFrame {
 
     
             Controladora control;
-            
+            InformacionEmpresa info_empre;
     public Logininicial() {
         initComponents();
         control=new Controladora();
+        info_empre=new InformacionEmpresa();
+        cargarDatosEmpresaLogin(); 
     }
 
     /**
@@ -29,9 +38,6 @@ public class Logininicial extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -39,40 +45,15 @@ public class Logininicial extends javax.swing.JFrame {
         txtContrasenia = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
         imagen = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        txtNombre = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JLabel();
+        lblLogo = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JLabel();
+        txtCorreo = new javax.swing.JLabel();
+        txtWeb = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
-        jLabel1.setFont(new java.awt.Font("DialogInput", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Pisos y azulejos SantaFe");
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/tipos-materiales-azulejos2-1024x493.jpg"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(141, 141, 141)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel6)
-                .addContainerGap(55, Short.MAX_VALUE))
-        );
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 
@@ -128,18 +109,18 @@ public class Logininicial extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(96, 96, 96)
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(51, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(imagen, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
                 .addComponent(imagen)
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -149,8 +130,38 @@ public class Logininicial extends javax.swing.JFrame {
                 .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
+
+        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtNombre.setBackground(new java.awt.Color(0, 0, 204));
+        txtNombre.setFont(new java.awt.Font("Chiller", 1, 48)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(51, 51, 255));
+        txtNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 9, 750, 60));
+
+        txtDireccion.setFont(new java.awt.Font("Candara Light", 1, 18)); // NOI18N
+        txtDireccion.setForeground(new java.awt.Color(51, 51, 255));
+        txtDireccion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, 760, 35));
+        jPanel2.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 740, 410));
+
+        txtTelefono.setFont(new java.awt.Font("Candara Light", 1, 18)); // NOI18N
+        txtTelefono.setForeground(new java.awt.Color(51, 51, 255));
+        txtTelefono.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 760, 34));
+
+        txtCorreo.setFont(new java.awt.Font("Candara Light", 1, 18)); // NOI18N
+        txtCorreo.setForeground(new java.awt.Color(51, 51, 255));
+        txtCorreo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtCorreo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 760, 35));
+
+        txtWeb.setFont(new java.awt.Font("Candara Light", 1, 18)); // NOI18N
+        txtWeb.setForeground(new java.awt.Color(51, 51, 255));
+        txtWeb.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(txtWeb, new org.netbeans.lib.awtextra.AbsoluteConstraints(21, 582, 760, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -163,8 +174,10 @@ public class Logininicial extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -175,40 +188,20 @@ public class Logininicial extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUsuarioActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-        
-        String usuario=txtUsuario.getText();
-        String contrasenia=txtContrasenia.getText();
-       //String mensaje = control.validarUsuario(usuario,contrasenia);
-       Usuario usr=control.validarUsuario(usuario,contrasenia);
-       
-       
-       if(usr!=null){
-        String rol =usr.getUnRol().getNombreRol();
-        
-        if(rol.equals(("admin"))){
-//            PrincipalAdmin princ=new PrincipalAdmin(control,usr);
-//            princ.setVisible(true);
-//            princ.setLocationRelativeTo(null);
-MenuPrincipalAdministrador e=new MenuPrincipalAdministrador(control,usr);
-e.setVisible(true);
-e.setLocationRelativeTo(null);
-//e.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            this.dispose();
-        }
-        if(rol.equals(("user"))){
-//            PrincipalUser us=new PrincipalUser(control,usr);
-//            us.setVisible(true);
-//            us.setLocationRelativeTo(null);
-            MenuPrincipalVendedor te=new MenuPrincipalVendedor(control,usr);
-te.setVisible(true);
-te.setLocationRelativeTo(null);
-            this.dispose();
-        }
-       }else{
-//txtMensaje.setText("Usuario incorrecto");
-mostrarMensaje("Usuario incorrecto","Error","usuarioIncorrecto");
-       }
+         String usuario = txtUsuario.getText().trim();
+    String contrasenia = new String(txtContrasenia.getPassword()); // por seguridad mejor así
+
+    Usuario usr = control.validarUsuario(usuario, contrasenia);
+
+    if (usr != null) {
+        // Abre directamente el menú principal administrador (o vendedor si lo decides después)
+        MenuPrincipalAdministrador menu = new MenuPrincipalAdministrador(control, usr);
+        menu.setVisible(true);
+        menu.setLocationRelativeTo(null);
+        this.dispose(); // cerrar la ventana de login
+    } else {
+        mostrarMensaje("Usuario o contraseña incorrectos", "Error", "Login fallido");
+    }
     }//GEN-LAST:event_btnLoginActionPerformed
  public void mostrarMensaje(String mensaje, String tipo, String titulo){
     JOptionPane optionPane =new JOptionPane(mensaje);
@@ -222,17 +215,60 @@ mostrarMensaje("Usuario incorrecto","Error","usuarioIncorrecto");
         dialog.setVisible(true);
     
     }
+ private void cargarDatosEmpresaLogin() {
+    String sql = "SELECT nombre_empresa, direccion, email, telefono, web_site, logo_imagen FROM informacion_empresa WHERE id_empresa = 1";
+
+    try (Connection con = ConexionBD.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        if (rs.next()) {
+            txtNombre.setText(rs.getString("nombre_empresa"));
+            txtDireccion.setText(rs.getString("direccion"));
+            txtCorreo.setText(rs.getString("email"));
+            txtTelefono.setText(rs.getString("telefono"));
+            txtWeb.setText(rs.getString("web_site"));
+            lblLogo.setText(rs.getString("logo_imagen"));
+
+            // 🔸 Mostrar imagen en JLabel
+            String rutaLogo = rs.getString("logo_imagen");
+            if (rutaLogo != null && !rutaLogo.isEmpty()) {
+                ImageIcon icon = new ImageIcon(rutaLogo);
+                Image img = icon.getImage().getScaledInstance(
+                        lblLogo.getWidth(),
+                        lblLogo.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+                lblLogo.setIcon(new ImageIcon(img));
+            } else {
+                lblLogo.setIcon(null); // Si no hay imagen
+            }
+
+        } else {
+            System.out.println("No se encontró información de la empresa con id = 1");
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "❌ Error al cargar la información de la empresa:\n" + e.getMessage());
+    }
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel imagen;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lblLogo;
     private javax.swing.JPasswordField txtContrasenia;
+    private javax.swing.JLabel txtCorreo;
+    private javax.swing.JLabel txtDireccion;
+    private javax.swing.JLabel txtNombre;
+    private javax.swing.JLabel txtTelefono;
     private javax.swing.JTextField txtUsuario;
+    private javax.swing.JLabel txtWeb;
     // End of variables declaration//GEN-END:variables
 }
