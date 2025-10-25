@@ -285,7 +285,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         tblReporte = new javax.swing.JTable();
         lblTotalVentas = new javax.swing.JLabel();
-        jLabel56 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         jLabel57 = new javax.swing.JLabel();
         txtFechaInicioVenta = new com.toedter.calendar.JDateChooser();
@@ -524,7 +523,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addComponent(btnBuscarProveedor)
                 .addGap(18, 18, 18)
                 .addComponent(btnEliminarProveedor)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelProveedorLayout = new javax.swing.GroupLayout(jPanelProveedor);
@@ -532,7 +531,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelProveedorLayout.setHorizontalGroup(
             jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelProveedorLayout.createSequentialGroup()
-                .addContainerGap(175, Short.MAX_VALUE)
+                .addContainerGap(294, Short.MAX_VALUE)
                 .addGroup(jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 987, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelProveedorLayout.createSequentialGroup()
@@ -797,7 +796,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelProductosLayout.setHorizontalGroup(
             jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelProductosLayout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+                .addContainerGap(203, Short.MAX_VALUE)
                 .addGroup(jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelProductosLayout.createSequentialGroup()
@@ -982,7 +981,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelClientesLayout.setHorizontalGroup(
             jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelClientesLayout.createSequentialGroup()
-                .addContainerGap(182, Short.MAX_VALUE)
+                .addContainerGap(346, Short.MAX_VALUE)
                 .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 872, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelClientesLayout.createSequentialGroup()
@@ -1697,6 +1696,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte de pedidos"));
 
+        btnGenerarReporte.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnGenerarReporte.setText("Generar Reporte");
         btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1704,6 +1704,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnExportarPdf.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnExportarPdf.setText("Exportar pdf");
         btnExportarPdf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1711,14 +1712,19 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        jLabel52.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel52.setText("Seleccionar fecha:");
 
+        jLabel53.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel53.setText("Inicio:");
 
+        jLabel54.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel54.setText("Final:");
 
+        jLabel55.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel55.setText("Tipos:");
 
+        cmbEstadoReporte.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cmbEstadoReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Pendientes", "Entregados", "Cancelados" }));
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
@@ -1733,24 +1739,24 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(jLabel55)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbEstadoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel53)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(jLabel55)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbEstadoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(btnGenerarReporte)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel54)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(btnGenerarReporte)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnExportarPdf)
-                        .addGap(60, 60, 60))))
+                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExportarPdf))
+                .addGap(23, 23, 23))
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1767,11 +1773,11 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel55)
                     .addComponent(cmbEstadoReporte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerarReporte)
                     .addComponent(btnExportarPdf))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(43, 43, 43))
         );
 
         tblReporte.setModel(new javax.swing.table.DefaultTableModel(
@@ -1787,20 +1793,26 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         ));
         jScrollPane7.setViewportView(tblReporte);
 
-        jLabel56.setText("Total:");
+        lblTotalVentas.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
 
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder("Reporte de ventas"));
 
+        jLabel57.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel57.setText("Inicio:");
 
+        jLabel58.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel58.setText("Final:");
 
+        jLabel59.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel59.setText("Seleccionar fecha:");
 
+        jLabel60.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         jLabel60.setText("Tipos:");
 
+        cmbEstadoReporte1.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cmbEstadoReporte1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Exitoso", "Cancelados" }));
 
+        btnGenerarReporteVentas.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnGenerarReporteVentas.setText("Generar Reporte");
         btnGenerarReporteVentas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1808,6 +1820,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnGenerarpdfVenta.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnGenerarpdfVenta.setText("Exportar pdf");
         btnGenerarpdfVenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1827,24 +1840,26 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(jLabel60)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbEstadoReporte1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel19Layout.createSequentialGroup()
                         .addComponent(jLabel57)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtFechaInicioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel58)
                         .addGap(18, 18, 18)
                         .addComponent(txtFechaFinalVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23))
                     .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addComponent(btnGenerarReporteVentas)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnGenerarpdfVenta)
-                        .addGap(60, 60, 60))))
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel19Layout.createSequentialGroup()
+                                .addComponent(jLabel60)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbEstadoReporte1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel19Layout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(btnGenerarReporteVentas)
+                                .addGap(35, 35, 35)
+                                .addComponent(btnGenerarpdfVenta)))
+                        .addContainerGap(61, Short.MAX_VALUE))))
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1861,11 +1876,11 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel60)
                     .addComponent(cmbEstadoReporte1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGenerarReporteVentas)
                     .addComponent(btnGenerarpdfVenta))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(38, 38, 38))
         );
 
         javax.swing.GroupLayout jPanelReportesLayout = new javax.swing.GroupLayout(jPanelReportes);
@@ -1873,36 +1888,35 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelReportesLayout.setHorizontalGroup(
             jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelReportesLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
                 .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelReportesLayout.createSequentialGroup()
-                                .addGap(355, 355, 355)
-                                .addComponent(jLabel56)))
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(92, 92, 92)
+                        .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69)
+                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelReportesLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanelReportesLayout.setVerticalGroup(
             jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelReportesLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelReportesLayout.createSequentialGroup()
-                            .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(4, 4, 4)
-                            .addComponent(jLabel56))
-                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanelReportesLayout.createSequentialGroup()
+                        .addGap(231, 231, 231)
+                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelReportesLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelReportesLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(49, 49, 49)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(130, Short.MAX_VALUE))
         );
 
         jPanelPedido.setBackground(new java.awt.Color(255, 255, 255));
@@ -1917,22 +1931,33 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Datos del cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
+        jLabel11.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel11.setText("Nombre del cliente:");
 
+        jLabel25.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel25.setText("Dirección:");
 
+        jLabel26.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel26.setText("Telefono:");
 
+        jLabel29.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel29.setText("Fecha de pedido:");
 
+        jLabel43.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel43.setText("Estado de pedido:");
 
         txtClientePedido.setEditable(false);
+        txtClientePedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+
+        txtTelefonoPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtDireccionPedido.setEditable(false);
+        txtDireccionPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtFechaPedido.setEditable(false);
+        txtFechaPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
+        BuscarClientePedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         BuscarClientePedido.setText("Buscar");
         BuscarClientePedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1940,6 +1965,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        cmbPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         cmbPedido.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En proceso", "Entregado" }));
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
@@ -2001,20 +2027,28 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle de pedido", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
+        jLabel44.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel44.setText("Producto:");
 
+        jLabel45.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel45.setText("Color:");
 
+        jLabel46.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel46.setText("Cantidad:");
 
+        jLabel47.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel47.setText("Dimensión:");
 
+        jLabel48.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel48.setText("Material:");
 
+        jLabel49.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel49.setText("Precio Unitario:");
 
+        jLabel50.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel50.setText("Subtotal:");
 
+        btnAgregarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnAgregarPedido.setText("Agregar al pedido");
         btnAgregarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2023,7 +2057,9 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         });
 
         txtProductoPedido.setEditable(false);
+        txtProductoPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
+        BuscarProductoPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         BuscarProductoPedido.setText("Buscar");
         BuscarProductoPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2032,17 +2068,28 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         });
 
         txtColorPedido.setEditable(false);
+        txtColorPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtDimensionPedido.setEditable(false);
+        txtDimensionPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtMaterialPedido.setEditable(false);
+        txtMaterialPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+
+        txtCantidadPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtPrecioUnitarioPedido.setEditable(false);
+        txtPrecioUnitarioPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
         txtSubtotalPedido.setEditable(false);
+        txtSubtotalPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
 
+        jLabel51.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel51.setText("codigo:");
 
+        txtCodigoProductoPedido.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+
+        btnEliminarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnEliminarPedido.setText("Eliminar pedido");
         btnEliminarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2050,6 +2097,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnLimpiarPedido.setText("Limpiar pedido");
         btnLimpiarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2057,6 +2105,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnEditarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnEditarPedido.setText("Editar pedido");
         btnEditarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2093,7 +2142,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                                 .addComponent(txtMaterialPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addComponent(txtCodigoProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel44)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2152,7 +2201,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addComponent(btnEliminarPedido)
                     .addComponent(btnLimpiarPedido)
                     .addComponent(btnEditarPedido))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         tblPedido.setModel(new javax.swing.table.DefaultTableModel(
@@ -2165,6 +2214,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         ));
         jScrollPane6.setViewportView(tblPedido);
 
+        btnGuardarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnGuardarPedido.setText("Guardar pedido");
         btnGuardarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2172,6 +2222,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnMostrarPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnMostrarPedido.setText("Mostrar pedidos");
         btnMostrarPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2179,6 +2230,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
+        btnGenerarpdfDelPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         btnGenerarpdfDelPedido.setText("Generar pdf de pedido");
         btnGenerarpdfDelPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2191,22 +2243,28 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelPedidoLayout.setHorizontalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane6)
+                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                                .addGap(238, 238, 238)
-                                .addComponent(btnGuardarPedido)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnMostrarPedido)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGenerarpdfDelPedido))))
-                .addGap(77, 77, 77))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardarPedido)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnMostrarPedido))
+                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnGenerarpdfDelPedido)
+                        .addGap(473, 473, 473))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                        .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanelPedidoLayout.setVerticalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2218,8 +2276,8 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarPedido)
-                    .addComponent(btnMostrarPedido)
-                    .addComponent(btnGenerarpdfDelPedido))
+                    .addComponent(btnGenerarpdfDelPedido)
+                    .addComponent(btnMostrarPedido))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
@@ -2229,27 +2287,27 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelPrincipal.setLayout(jPanelPrincipalLayout);
         jPanelPrincipalLayout.setHorizontalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE)
+            .addComponent(jPanelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE)
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelProductos, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanelUsuarios, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelClientes, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1Inicio, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanelVentas, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelConfiguracion, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE))
+                .addComponent(jPanelConfiguracion, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 1315, Short.MAX_VALUE))
+                .addComponent(jPanelPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 1434, Short.MAX_VALUE))
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+            .addComponent(jPanelReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelPrincipalLayout.createSequentialGroup()
                     .addComponent(jPanelProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2277,7 +2335,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanelConfiguracion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
             .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanelPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
+                .addComponent(jPanelPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
         );
 
         mbMenu.setBackground(new java.awt.Color(204, 204, 255));
@@ -4850,7 +4908,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel55;
-    private javax.swing.JLabel jLabel56;
     private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel59;
