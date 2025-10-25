@@ -11,6 +11,7 @@ import com.todocodeacademy.login.logica.Usuario;
 import com.todocodeacademy.login.logica.Venta_exitosa;
 import com.todocodeacademy.login.persistencia.ControladoraPersistencia;
 import java.awt.Color;
+import java.awt.Component;
 import static java.awt.SystemColor.control;
 import static java.awt.SystemColor.text;
 import java.awt.event.ActionEvent;
@@ -42,14 +43,18 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.Timer;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -335,6 +340,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         btnGuardarPedido = new javax.swing.JButton();
         btnMostrarPedido = new javax.swing.JToggleButton();
         btnGenerarpdfDelPedido = new javax.swing.JToggleButton();
+        txtTotalPedido = new javax.swing.JTextField();
         mbMenu = new javax.swing.JMenuBar();
         jMenu1Principal = new javax.swing.JMenu();
         jMenuItemIrAlLogin = new javax.swing.JMenuItem();
@@ -623,17 +629,17 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCodigoABuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnBuscarProudcto)
-                .addGap(32, 32, 32)
-                .addComponent(btnActualizarProducto)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1098, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCodigoABuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 668, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnBuscarProudcto)
+                        .addGap(32, 32, 32)
+                        .addComponent(btnActualizarProducto)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -644,9 +650,9 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(btnBuscarProudcto)
                     .addComponent(btnActualizarProducto))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos producto"));
@@ -770,7 +776,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnEditarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnAgregarProducto))
-                        .addContainerGap(39, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(brnBorrarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -795,26 +801,26 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelProductos.setLayout(jPanelProductosLayout);
         jPanelProductosLayout.setHorizontalGroup(
             jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelProductosLayout.createSequentialGroup()
-                .addContainerGap(203, Short.MAX_VALUE)
+            .addGroup(jPanelProductosLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelProductosLayout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 989, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(52, 52, 52))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
         jPanelProductosLayout.setVerticalGroup(
             jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelProductosLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelProductosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         jPanelClientes.setBackground(new java.awt.Color(255, 255, 255));
@@ -1741,7 +1747,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel53)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel55)
                         .addGap(18, 18, 18)
@@ -1749,14 +1755,16 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(btnGenerarReporte)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(btnExportarPdf)
+                        .addGap(43, 43, 43))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel54)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnExportarPdf))
-                .addGap(23, 23, 23))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1842,12 +1850,11 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel19Layout.createSequentialGroup()
                         .addComponent(jLabel57)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFechaInicioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtFechaInicioVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel58)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtFechaFinalVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFechaFinalVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel19Layout.createSequentialGroup()
                         .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel19Layout.createSequentialGroup()
@@ -1859,7 +1866,8 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                                 .addComponent(btnGenerarReporteVentas)
                                 .addGap(35, 35, 35)
                                 .addComponent(btnGenerarpdfVenta)))
-                        .addContainerGap(61, Short.MAX_VALUE))))
+                        .addGap(0, 55, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1888,35 +1896,35 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelReportesLayout.setHorizontalGroup(
             jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelReportesLayout.createSequentialGroup()
-                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(92, 92, 92)
+                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGap(92, 92, 92)
                         .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanelReportesLayout.setVerticalGroup(
             jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelReportesLayout.createSequentialGroup()
-                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGap(231, 231, 231)
-                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelReportesLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(49, 49, 49)
+                        .addGroup(jPanelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelReportesLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanelReportesLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(68, 68, 68))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelReportesLayout.createSequentialGroup()
+                        .addComponent(lblTotalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)))
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         jPanelPedido.setBackground(new java.awt.Color(255, 255, 255));
@@ -2163,7 +2171,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                         .addComponent(btnEliminarPedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLimpiarPedido)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(9, Short.MAX_VALUE))))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2243,28 +2251,26 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanelPedidoLayout.setHorizontalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnGuardarPedido)
                         .addGap(18, 18, 18)
-                        .addComponent(btnMostrarPedido))
-                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addComponent(btnMostrarPedido)
                         .addGap(22, 22, 22)
                         .addComponent(btnGenerarpdfDelPedido)
-                        .addGap(473, 473, 473))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                        .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGap(62, 62, 62)
+                        .addComponent(txtTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(125, 125, 125))
+                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(31, Short.MAX_VALUE))))
         );
         jPanelPedidoLayout.setVerticalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2273,12 +2279,18 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardarPedido)
-                    .addComponent(btnGenerarpdfDelPedido)
-                    .addComponent(btnMostrarPedido))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardarPedido)
+                            .addComponent(btnGenerarpdfDelPedido)
+                            .addComponent(btnMostrarPedido))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
         );
@@ -3082,7 +3094,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             // Calcular el total
             int total = precio * cantidad;
             txtTotalVenta.setText(String.valueOf(total));
-
+txtTotalAPagarVenta.setText(String.valueOf(total));
             // Agregar los datos a la tabla si no hay duplicados
             modelo.addRow(new Object[]{codigo, nombre, precio, cantidad, descuento, stock, total});
 
@@ -3177,143 +3189,126 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarVentaActionPerformed
 
     private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
-        DefaultTableModel modelo = (DefaultTableModel) tblVenta.getModel();
+          DefaultTableModel modelo = (DefaultTableModel) tblVenta.getModel();
 
-        if (modelo.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No hay productos en la venta.");
-            return;
+    if (modelo.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "No hay productos en la venta.");
+        return;
+    }
+
+    String nombreCliente = txtClienteVenta.getText().trim();
+    if (nombreCliente.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un cliente para la venta.");
+        return;
+    }
+
+    int idCliente = obtenerIdCliente(nombreCliente);
+    if (idCliente == 0) {
+        JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
+        return;
+    }
+
+    // 🔹 VERIFICAR STOCK ANTES DE PROCESAR LA VENTA
+    if (!verificarStockDisponible(modelo)) {
+        return; // Si no hay stock suficiente, salir del método
+    }
+
+    Connection conn = null;
+    PreparedStatement psVenta = null;
+    PreparedStatement psDetalle = null;
+
+    try {
+        conn = ConexionBD.getConnection();
+        conn.setAutoCommit(false); // 🔹 Iniciar transacción
+
+        // 1️⃣ Insertar venta
+        String sqlVenta = "INSERT INTO venta (id_cliente, fecha_venta, total) VALUES (?, ?, ?)";
+        psVenta = conn.prepareStatement(sqlVenta, Statement.RETURN_GENERATED_KEYS);
+
+        // Calcular total
+        double totalGeneral = 0;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            double subtotal = Double.parseDouble(modelo.getValueAt(i, 6).toString());
+            totalGeneral += subtotal;
         }
 
-        String nombreCliente = txtClienteVenta.getText().trim();
-        if (nombreCliente.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Debe ingresar un cliente para la venta.");
-            return;
+        psVenta.setInt(1, idCliente);
+        psVenta.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis()));
+        psVenta.setDouble(3, totalGeneral);
+        psVenta.executeUpdate();
+
+        ResultSet rs = psVenta.getGeneratedKeys();
+        int idVenta = 0;
+        if (rs.next()) {
+            idVenta = rs.getInt(1);
         }
 
-        int idCliente = obtenerIdCliente(nombreCliente); // 🔹 Método que busca el cliente en BD
-        if (idCliente == 0) {
-            JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
-            return;
+        // 2️⃣ Insertar detalle de la venta y actualizar stock
+        String sqlDetalle = "INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
+        psDetalle = conn.prepareStatement(sqlDetalle);
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String codigo = modelo.getValueAt(i, 0).toString();
+            int idProducto = obtenerIdProducto(codigo);
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 3).toString());
+            double precioUnitario = Double.parseDouble(modelo.getValueAt(i, 4).toString());
+            double subtotal = Double.parseDouble(modelo.getValueAt(i, 6).toString());
+
+            // 🔹 Guardar detalle
+            psDetalle.setInt(1, idVenta);
+            psDetalle.setInt(2, idProducto);
+            psDetalle.setInt(3, cantidad);
+            psDetalle.setDouble(4, precioUnitario);
+            psDetalle.setDouble(5, subtotal);
+            psDetalle.executeUpdate();
+
+            // 🔹 Descontar stock del producto - VERSIÓN MEJORADA
+            try (PreparedStatement psStock = conn.prepareStatement(
+                    "UPDATE productos SET STOCKDISPONIBLE = STOCKDISPONIBLE - ? WHERE IDPRODUCTO = ?"
+            )) {
+                psStock.setInt(1, cantidad);
+                psStock.setInt(2, idProducto);
+                int filasActualizadas = psStock.executeUpdate();
+                
+                if (filasActualizadas == 0) {
+                    throw new SQLException("No se pudo actualizar el stock del producto ID: " + idProducto);
+                }
+                
+                System.out.println("Stock actualizado - Producto ID: " + idProducto + " - Cantidad descontada: " + cantidad);
+            }
         }
 
-        Connection conn = null;
-        PreparedStatement psVenta = null;
-        PreparedStatement psDetalle = null;
+        conn.commit(); // 🔹 Confirmar transacción
 
+        // Mostrar resumen de la venta
+        mostrarResumenVenta(totalGeneral, modelo);
+        
+        // 🔹 LIMPIAR LA TABLA DESPUÉS DE LA VENTA EXITOSA
+        modelo.setRowCount(0);
+        txtTotalAPagarVenta.setText("0.00");
+        txtClienteVenta.setText("");
+
+    } catch (SQLException e) {
         try {
-            conn = ConexionBD.getConnection();
-            conn.setAutoCommit(false); // 🔹 Iniciar transacción
-
-            // 1️⃣ Insertar venta
-            String sqlVenta = "INSERT INTO venta (id_cliente, fecha_venta, total) VALUES (?, ?, ?)";
-            psVenta = conn.prepareStatement(sqlVenta, Statement.RETURN_GENERATED_KEYS);
-
-            // Calcular total
-            double totalGeneral = 0;
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                double subtotal = Double.parseDouble(modelo.getValueAt(i, 6).toString());
-                totalGeneral += subtotal;
+            if (conn != null) {
+                conn.rollback();
+                JOptionPane.showMessageDialog(this, "❌ Transacción cancelada. No se realizó la venta.");
             }
-
-            psVenta.setInt(1, idCliente);
-            psVenta.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis()));
-            psVenta.setDouble(3, totalGeneral);
-            psVenta.executeUpdate();
-
-            ResultSet rs = psVenta.getGeneratedKeys();
-            int idVenta = 0;
-            if (rs.next()) {
-                idVenta = rs.getInt(1);
-            }
-
-// 2️⃣ Insertar detalle de la venta y actualizar stock
-            String sqlDetalle = "INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
-            psDetalle = conn.prepareStatement(sqlDetalle);
-
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                String codigo = modelo.getValueAt(i, 0).toString();
-                int idProducto = obtenerIdProducto(codigo);
-                int cantidad = Integer.parseInt(modelo.getValueAt(i, 3).toString());
-                double precioUnitario = Double.parseDouble(modelo.getValueAt(i, 4).toString());
-                double subtotal = Double.parseDouble(modelo.getValueAt(i, 6).toString());
-
-                // 🔹 Guardar detalle
-                psDetalle.setInt(1, idVenta);
-                psDetalle.setInt(2, idProducto);
-                psDetalle.setInt(3, cantidad);
-                psDetalle.setDouble(4, precioUnitario);
-                psDetalle.setDouble(5, subtotal);
-                psDetalle.executeUpdate();
-
-                // 🔹 Descontar stock del producto
-                try (PreparedStatement psStock = conn.prepareStatement(
-                        "UPDATE productos SET stockdisponible = stockdisponible - ? WHERE idproducto = ?"
-                )) {
-                    psStock.setInt(1, cantidad);
-                    psStock.setInt(2, idProducto);
-                    psStock.executeUpdate();
-                }
-            }
-
-            conn.commit(); // 🔹 Confirmar transacción
-
-            txtTotalAPagarVenta.setText(String.valueOf(totalGeneral));
-
-// 🔹 Convertimos a double (más preciso)
-            double total = totalGeneral;
-
-// 🔹 Pedir efectivo al usuario
-            double efectivo = 0;
-
-            do {
-                try {
-                    String entrada = JOptionPane.showInputDialog(this,
-                            "Total a pagar: $" + total + "\nIngresa el efectivo recibido:");
-                    if (entrada == null) {
-                        JOptionPane.showMessageDialog(this, "Operación cancelada.");
-                        return;
-                    }
-                    efectivo = Double.parseDouble(entrada);
-                    if (efectivo < total) {
-                        JOptionPane.showMessageDialog(this, "El efectivo no es suficiente, intenta de nuevo.");
-                    }
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(this, "Por favor ingresa un valor numérico válido.");
-                }
-            } while (efectivo < total);
-
-// 🔹 Calcular el cambio
-            double cambio = efectivo - total;
-
-// 🔹 Mostrar resultado final
-            JOptionPane.showMessageDialog(this,
-                    "✅ Venta registrada correctamente.\n"
-                    + "Total: $" + total
-                    + "\nEfectivo recibido: $" + efectivo
-                    + "\nCambio: $" + String.format("%.2f", cambio));
-
-        } catch (SQLException e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException ex) {
-            }
-            JOptionPane.showMessageDialog(this, "❌ Error al registrar venta: " + e.getMessage());
-        } finally {
-            try {
-                if (psVenta != null) {
-                    psVenta.close();
-                }
-                if (psDetalle != null) {
-                    psDetalle.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
+        JOptionPane.showMessageDialog(this, "❌ Error al registrar venta: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        // Cerrar recursos
+        try {
+            if (psVenta != null) psVenta.close();
+            if (psDetalle != null) psDetalle.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     }//GEN-LAST:event_btnGenerarVentaActionPerformed
 
     private void btnNuevaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaVentaActionPerformed
@@ -3958,112 +3953,146 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
     private void btnGuardarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarPedidoActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
+       DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
 
-        if (modelo.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No hay productos en el pedido.");
-            return;
+    if (modelo.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "No hay productos en el pedido.");
+        return;
+    }
+
+    String nombreCliente = txtClientePedido.getText().trim();
+    String estado = cmbPedido.getSelectedItem().toString();
+    int idCliente = obtenerIdCliente(nombreCliente);
+
+    if (idCliente == 0) {
+        JOptionPane.showMessageDialog(this, "Debe buscar o seleccionar un cliente válido.");
+        return;
+    }
+
+    // 🔹 VERIFICAR STOCK SOLO SI EL ESTADO ES "ENTREGADO" o "EN PROCESO"
+    if ((estado.equals("Entregado") || estado.equals("En proceso")) && !verificarStockDisponiblePedido(modelo)) {
+        return; // Si no hay stock suficiente, salir del método
+    }
+
+    Connection conn = null;
+    PreparedStatement psPedido = null;
+    PreparedStatement psDetalle = null;
+
+    try {
+        conn = ConexionBD.getConnection();
+        conn.setAutoCommit(false); // ✅ abre transacción
+
+        // 1️⃣ Insertar pedido
+        String sqlPedido = "INSERT INTO pedido (id_cliente, fecha_pedido, estado) VALUES (?, ?, ?)";
+        psPedido = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS);
+        psPedido.setInt(1, idCliente);
+        psPedido.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis()));
+        psPedido.setString(3, estado);
+        psPedido.executeUpdate();
+
+        ResultSet rs = psPedido.getGeneratedKeys();
+        int idPedido = 0;
+        if (rs.next()) {
+            idPedido = rs.getInt(1);
         }
 
-        String nombreCliente = txtClientePedido.getText().trim();
-        String estado = cmbPedido.getSelectedItem().toString();
-        int idCliente = obtenerIdCliente(nombreCliente);
+        // 2️⃣ Insertar detalle del pedido
+        String sqlDetalle = "INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+        psDetalle = conn.prepareStatement(sqlDetalle);
 
-        if (idCliente == 0) {
-            JOptionPane.showMessageDialog(this, "Debe buscar o seleccionar un cliente válido.");
-            return;
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String codigo = modelo.getValueAt(i, 0).toString();
+            int idProducto = obtenerIdProducto(codigo);
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 2).toString());
+            double precio = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+
+            psDetalle.setInt(1, idPedido);
+            psDetalle.setInt(2, idProducto);
+            psDetalle.setInt(3, cantidad);
+            psDetalle.setDouble(4, precio);
+            psDetalle.executeUpdate();
+
+            // 🔹 RESTAR STOCK SOLO SI EL ESTADO ES "ENTREGADO" o "EN PROCESO"
+            if (estado.equals("Entregado") || estado.equals("En proceso")) {
+                actualizarStock(conn, idProducto, -cantidad); // Restar stock
+            }
         }
 
-        Connection conn = null;
-        PreparedStatement psPedido = null;
-        PreparedStatement psDetalle = null;
+        conn.commit(); // ✅ guarda todo junto
+        
+        // 🔹 LIMPIAR INTERFAZ DESPUÉS DE GUARDAR
+        modelo.setRowCount(0);
+        txtClientePedido.setText("");
+        txtTotalPedido.setText("0.00");
+        
+        JOptionPane.showMessageDialog(this, 
+            "✅ Pedido guardado correctamente.\n" +
+            "ID Pedido: " + idPedido + "\n" +
+            "Estado: " + estado + "\n" +
+            (estado.equals("Entregado") || estado.equals("En proceso") ? 
+             "Stock actualizado correctamente." : "Stock pendiente por actualizar."));
 
+    } catch (Exception e) {
         try {
-            conn = ConexionBD.getConnection();
-            conn.setAutoCommit(false); // ✅ abre transacción
-
-            // 1️⃣ Insertar pedido
-            String sqlPedido = "INSERT INTO pedido (id_cliente, fecha_pedido, estado) VALUES (?, ?, ?)";
-            psPedido = conn.prepareStatement(sqlPedido, Statement.RETURN_GENERATED_KEYS);
-            psPedido.setInt(1, idCliente);
-            psPedido.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
-            psPedido.setString(3, estado);
-            psPedido.executeUpdate();
-
-            ResultSet rs = psPedido.getGeneratedKeys();
-            int idPedido = 0;
-            if (rs.next()) {
-                idPedido = rs.getInt(1);
+            if (conn != null) {
+                conn.rollback();
             }
-
-            // 2️⃣ Insertar detalle del pedido
-            for (int i = 0; i < modelo.getRowCount(); i++) {
-                String codigo = modelo.getValueAt(i, 0).toString();
-                int idProducto = obtenerIdProducto(codigo);
-                int cantidad = Integer.parseInt(modelo.getValueAt(i, 2).toString());
-                double precio = Double.parseDouble(modelo.getValueAt(i, 3).toString());
-
-                String sqlDetalle = "INSERT INTO detalle_pedido (id_pedido, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
-                psDetalle = conn.prepareStatement(sqlDetalle);
-                psDetalle.setInt(1, idPedido);
-                psDetalle.setInt(2, idProducto);
-                psDetalle.setInt(3, cantidad);
-                psDetalle.setDouble(4, precio);
-                psDetalle.executeUpdate();
-            }
-
-            conn.commit(); // ✅ guarda todo junto
-            JOptionPane.showMessageDialog(this, "Pedido guardado correctamente.");
-
-        } catch (Exception e) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException ex) {
-            }
-            JOptionPane.showMessageDialog(this, "Error al guardar pedido: " + e.getMessage());
-        } finally {
-            try {
-                if (psPedido != null) {
-                    psPedido.close();
-                }
-                if (psDetalle != null) {
-                    psDetalle.close();
-                }
-                if (conn != null) {
-                    conn.close(); // ✅ cerrar solo al final
-                }
-            } catch (SQLException e) {
-            }
+        } catch (SQLException ex) {
         }
+        JOptionPane.showMessageDialog(this, "❌ Error al guardar pedido: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (psPedido != null) psPedido.close();
+            if (psDetalle != null) psDetalle.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+        }
+    }
     }//GEN-LAST:event_btnGuardarPedidoActionPerformed
 
     private void btnEditarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPedidoActionPerformed
         // TODO add your handling code here:
-        int filaSeleccionada = tblPedido.getSelectedRow();
-        if (filaSeleccionada == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona un pedido para editar.");
-            return;
-        }
+       int filaSeleccionada = tblPedido.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Selecciona un pedido para editar.");
+        return;
+    }
 
-        int idPedido = Integer.parseInt(tblPedido.getValueAt(filaSeleccionada, 0).toString());
-        String estadoActual = tblPedido.getValueAt(filaSeleccionada, 3).toString();
+    int idPedido = Integer.parseInt(tblPedido.getValueAt(filaSeleccionada, 0).toString());
+    String estadoActual = tblPedido.getValueAt(filaSeleccionada, 3).toString();
+    String cliente = tblPedido.getValueAt(filaSeleccionada, 1).toString();
+    double total = Double.parseDouble(tblPedido.getValueAt(filaSeleccionada, 4).toString().replace("$", ""));
 
-        // 🔹 Opciones de nuevo estado
-        String[] opciones = {"Pendiente", "En proceso", "Entregado", "Cancelado"};
-        String nuevoEstado = (String) JOptionPane.showInputDialog(
-                this,
-                "Selecciona el nuevo estado del pedido:",
-                "Editar estado del pedido",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                opciones,
-                estadoActual
-        );
+    // 🔹 Opciones de nuevo estado
+    String[] opciones = {"Pendiente", "En proceso", "Entregado", "Cancelado"};
+    String nuevoEstado = (String) JOptionPane.showInputDialog(
+            this,
+            "Pedido #" + idPedido + " - " + cliente + 
+            "\nTotal: $" + String.format("%.2f", total) +
+            "\nEstado actual: " + estadoActual +
+            "\n\nSelecciona el nuevo estado:",
+            "Editar estado del pedido",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            opciones,
+            estadoActual
+    );
 
-        if (nuevoEstado != null && !nuevoEstado.equals(estadoActual)) {
-            try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(
+    if (nuevoEstado != null && !nuevoEstado.equals(estadoActual)) {
+        Connection conn = null;
+        try {
+            conn = ConexionBD.getConnection();
+            conn.setAutoCommit(false);
+
+            // 🔹 OBTENER DETALLES DEL PEDIDO PARA MANEJAR STOCK
+            java.util.List<ProductoPedido> detalles = obtenerDetallesPedido(conn, idPedido);
+
+            // 🔹 MANEJAR CAMBIOS DE STOCK SEGÚN EL ESTADO
+            manejarCambioStock(conn, estadoActual, nuevoEstado, detalles);
+
+            // 🔹 ACTUALIZAR ESTADO DEL PEDIDO
+            try (PreparedStatement ps = conn.prepareStatement(
                     "UPDATE pedido SET estado = ? WHERE id_pedido = ?")) {
 
                 ps.setString(1, nuevoEstado);
@@ -4071,16 +4100,32 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 int filas = ps.executeUpdate();
 
                 if (filas > 0) {
-                    JOptionPane.showMessageDialog(this, "✅ Estado del pedido actualizado.");
+                    conn.commit();
+                    JOptionPane.showMessageDialog(this, 
+                        "✅ Estado del pedido actualizado de '" + estadoActual + 
+                        "' a '" + nuevoEstado + "'.\n" +
+                        obtenerMensajeStock(estadoActual, nuevoEstado));
                     btnMostrarPedidoActionPerformed(null); // refrescar tabla
                 } else {
+                    conn.rollback();
                     JOptionPane.showMessageDialog(this, "No se encontró el pedido.");
                 }
+            }
 
+        } catch (SQLException e) {
+            try {
+                if (conn != null) conn.rollback();
+            } catch (SQLException ex) {
+            }
+            JOptionPane.showMessageDialog(this, "❌ Error al actualizar pedido: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) conn.close();
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "❌ Error al actualizar pedido: " + e.getMessage());
             }
         }
+    }
     }//GEN-LAST:event_btnEditarPedidoActionPerformed
 
     private void btnEliminarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarPedidoActionPerformed
@@ -5021,6 +5066,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefonoPedido;
     private javax.swing.JTextField txtTelefonoProveedor;
     private javax.swing.JTextField txtTotalAPagarVenta;
+    private javax.swing.JTextField txtTotalPedido;
     private javax.swing.JTextField txtTotalVenta;
     // End of variables declaration//GEN-END:variables
 
@@ -5114,25 +5160,21 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
     //CARGAR TABLA PRODUCTOS
     private void cargarTablaProductos() {
-        // Crear el modelo de la tabla
+       try {
         DefaultTableModel modeloTabla = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hacer las celdas no editables
+                return false;
             }
         };
 
-        // Definir los nombres de las columnas
         String[] titulos = {"Id", "Código", "Nombre", "Color", "Dimensión", "Precio Venta", "Stock", "Precio Compra", "Material", "Categoría"};
         modeloTabla.setColumnIdentifiers(titulos);
 
-        // Obtener la lista de productos desde el controlador
         List<Productos> listaProductos = control.TraerProducto();
 
-        // Verificar que la lista no sea nula ni vacía
         if (listaProductos != null && !listaProductos.isEmpty()) {
             for (Productos prod : listaProductos) {
-                // Agregar cada producto como una fila
                 Object[] fila = {
                     prod.getIdProducto(),
                     prod.getCodigo(),
@@ -5147,22 +5189,19 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 };
                 modeloTabla.addRow(fila);
             }
-        } else {
-            // Mensaje opcional: No hay productos
-            mostrarMensaje("No hay productos para mostrar", "Info", "Sin datos");
         }
 
-        // Asignar el modelo a la tabla
         tblProducto.setModel(modeloTabla);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar productos: " + e.getMessage());
+    }
     }
 
     private void cargarTablaProductosPrincipal(Productos productoBuscado) {
         // Crear el modelo de la tabla
         DefaultTableModel modeloTabla = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hacer las celdas no editables
-            }
+                   
         };
 
         // Definir los nombres de las columnas
@@ -5485,5 +5524,374 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         }
 
         tblPedido.setModel(modelo);
+    }
+
+    private boolean verificarStockDisponible(DefaultTableModel modelo) {
+        StringBuilder mensajeError = new StringBuilder();
+    
+    try (Connection conn = ConexionBD.getConnection()) {
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String codigo = modelo.getValueAt(i, 0).toString();
+            int cantidadVenta = Integer.parseInt(modelo.getValueAt(i, 3).toString());
+            String nombreProducto = modelo.getValueAt(i, 1).toString();
+            
+            int idProducto = obtenerIdProducto(codigo);
+            
+            // Consultar stock actual
+            String sqlStock = "SELECT STOCKDISPONIBLE, NOMBRE FROM productos WHERE IDPRODUCTO = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlStock)) {
+                ps.setInt(1, idProducto);
+                ResultSet rs = ps.executeQuery();
+                
+                if (rs.next()) {
+                    int stockActual = rs.getInt("STOCKDISPONIBLE");
+                    String nombre = rs.getString("NOMBRE");
+                    
+                    if (stockActual < cantidadVenta) {
+                        mensajeError.append("• ").append(nombre)
+                                  .append(" - Stock disponible: ").append(stockActual)
+                                  .append(", Cantidad solicitada: ").append(cantidadVenta)
+                                  .append("\n");
+                    }
+                }
+            }
+        }
+        
+        if (mensajeError.length() > 0) {
+            JOptionPane.showMessageDialog(this, 
+                "❌ Stock insuficiente para los siguientes productos:\n\n" + 
+                mensajeError.toString() + 
+                "\nPor favor ajusta las cantidades.", 
+                "Stock Insuficiente", 
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al verificar stock: " + e.getMessage());
+        return false;
+    }
+    
+    return true; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    // 🔹 MÉTODO MEJORADO PARA MOSTRAR RESUMEN DE VENTA
+private void mostrarResumenVenta(double totalGeneral, DefaultTableModel modelo) {
+    // Crear resumen de productos
+    StringBuilder resumenProductos = new StringBuilder("Productos vendidos:\n");
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        String nombre = modelo.getValueAt(i, 1).toString();
+        int cantidad = Integer.parseInt(modelo.getValueAt(i, 3).toString());
+        double precio = Double.parseDouble(modelo.getValueAt(i, 4).toString());
+        
+        resumenProductos.append("• ").append(nombre)
+                       .append(" - ").append(cantidad).append(" uds x $").append(precio)
+                       .append("\n");
+    }
+    
+    // Pedir efectivo y calcular cambio
+    double efectivo = 0;
+    boolean entradaValida = false;
+    
+    while (!entradaValida) {
+        try {
+            String mensaje = resumenProductos.toString() + 
+                           "\n───────────────────────\n" +
+                           "TOTAL A PAGAR: $" + String.format("%.2f", totalGeneral) + 
+                           "\n\nIngresa el efectivo recibido:";
+            
+            String entrada = JOptionPane.showInputDialog(this, mensaje);
+            
+            if (entrada == null) {
+                JOptionPane.showMessageDialog(this, "Operación cancelada.");
+                return;
+            }
+            
+            efectivo = Double.parseDouble(entrada);
+            
+            if (efectivo < totalGeneral) {
+                JOptionPane.showMessageDialog(this, 
+                    "❌ El efectivo recibido ($" + String.format("%.2f", efectivo) + 
+                    ") es menor al total a pagar ($" + String.format("%.2f", totalGeneral) + 
+                    ").\nFaltan: $" + String.format("%.2f", (totalGeneral - efectivo)));
+            } else {
+                entradaValida = true;
+            }
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "❌ Por favor ingresa un valor numérico válido.");
+        }
+    }
+    
+    // Calcular cambio
+    double cambio = efectivo - totalGeneral;
+    
+    // Mostrar ticket de venta
+    String ticket = "✅ VENTA REGISTRADA EXITOSAMENTE\n" +
+                   "══════════════════════════════\n" +
+                   resumenProductos.toString() +
+                   "───────────────────────\n" +
+                   "TOTAL: $" + String.format("%.2f", totalGeneral) + "\n" +
+                   "EFECTIVO: $" + String.format("%.2f", efectivo) + "\n" +
+                   "CAMBIO: $" + String.format("%.2f", cambio) + "\n" +
+                   "───────────────────────\n" +
+                   "¡Gracias por su compra!";
+    
+    JOptionPane.showMessageDialog(this, ticket, "Venta Exitosa", JOptionPane.INFORMATION_MESSAGE);
+}
+// 🔹 MÉTODO PARA OBTENER DETALLES DEL PEDIDO
+private java.util.List<ProductoPedido> obtenerDetallesPedido(Connection conn, int idPedido) throws SQLException {
+    java.util.List<ProductoPedido> detalles = new java.util.ArrayList<>();
+    
+    String sql = """
+        SELECT dp.id_producto, dp.cantidad, p.nombre 
+        FROM detalle_pedido dp 
+        JOIN productos p ON dp.id_producto = p.IDPRODUCTO 
+        WHERE dp.id_pedido = ?
+        """;
+    
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, idPedido);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            detalles.add(new ProductoPedido(
+                rs.getInt("id_producto"),
+                rs.getInt("cantidad"),
+                rs.getString("nombre")
+            ));
+        }
+    }
+    
+    return detalles;
+}
+
+// 🔹 MÉTODO PARA MANEJAR CAMBIOS DE STOCK
+private void manejarCambioStock(Connection conn, String estadoAnterior, String estadoNuevo, 
+                               java.util.List<ProductoPedido> detalles) throws SQLException {
+    
+    // CASO 1: Si cambia a "Cancelado" desde cualquier estado (excepto si ya estaba cancelado)
+    if (estadoNuevo.equals("Cancelado") && !estadoAnterior.equals("Cancelado")) {
+        // 🔹 REGRESAR STOCK SI EL PEDIDO ESTABA "En proceso" o "Entregado"
+        if (estadoAnterior.equals("En proceso") || estadoAnterior.equals("Entregado")) {
+            for (ProductoPedido detalle : detalles) {
+                actualizarStock(conn, detalle.idProducto, detalle.cantidad); // Sumar stock
+            }
+        }
+    }
+    
+    // CASO 2: Si cambia a "Entregado" o "En proceso" desde "Pendiente" o "Cancelado"
+    else if ((estadoNuevo.equals("Entregado") || estadoNuevo.equals("En proceso")) && 
+             (estadoAnterior.equals("Pendiente") || estadoAnterior.equals("Cancelado"))) {
+        
+        // Verificar stock disponible primero
+        if (!verificarStockDisponiblePedido(detalles)) {
+            throw new SQLException("Stock insuficiente para cambiar a estado: " + estadoNuevo);
+        }
+        
+        // Restar stock
+        for (ProductoPedido detalle : detalles) {
+            actualizarStock(conn, detalle.idProducto, -detalle.cantidad); // Restar stock
+        }
+    }
+    
+    // CASO 3: Si cambia de "Entregado" a "En proceso" (no hay cambio de stock)
+    // CASO 4: Si cambia de "En proceso" a "Entregado" (no hay cambio de stock)
+    // CASO 5: Si cambia a "Pendiente" desde cualquier estado (no hay cambio de stock)
+}
+
+// 🔹 MÉTODO PARA ACTUALIZAR STOCK
+private void actualizarStock(Connection conn, int idProducto, int cantidad) throws SQLException {
+    String sql = "UPDATE productos SET STOCKDISPONIBLE = STOCKDISPONIBLE + ? WHERE IDPRODUCTO = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, cantidad);
+        ps.setInt(2, idProducto);
+        int filas = ps.executeUpdate();
+        
+        if (filas == 0) {
+            throw new SQLException("No se pudo actualizar stock del producto ID: " + idProducto);
+        }
+    }
+}
+
+// 🔹 MÉTODO PARA VERIFICAR STOCK (PARA DETALLES)
+private boolean verificarStockDisponiblePedido(java.util.List<ProductoPedido> detalles) {
+    StringBuilder mensajeError = new StringBuilder();
+    
+    try (Connection conn = ConexionBD.getConnection()) {
+        for (ProductoPedido detalle : detalles) {
+            String sql = "SELECT STOCKDISPONIBLE, NOMBRE FROM productos WHERE IDPRODUCTO = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, detalle.idProducto);
+                ResultSet rs = ps.executeQuery();
+                
+                if (rs.next()) {
+                    int stockActual = rs.getInt("STOCKDISPONIBLE");
+                    String nombre = rs.getString("NOMBRE");
+                    
+                    if (stockActual < detalle.cantidad) {
+                        mensajeError.append("• ").append(nombre)
+                                  .append(" - Stock disponible: ").append(stockActual)
+                                  .append(", Cantidad requerida: ").append(detalle.cantidad)
+                                  .append("\n");
+                    }
+                }
+            }
+        }
+        
+        if (mensajeError.length() > 0) {
+            JOptionPane.showMessageDialog(this, 
+                "❌ Stock insuficiente:\n\n" + mensajeError.toString(), 
+                "Stock Insuficiente", 
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al verificar stock: " + e.getMessage());
+        return false;
+    }
+    
+    return true;
+}
+
+// 🔹 MÉTODO PARA VERIFICAR STOCK (PARA TABLA)
+private boolean verificarStockDisponiblePedido(DefaultTableModel modelo) {
+    StringBuilder mensajeError = new StringBuilder();
+    
+    try (Connection conn = ConexionBD.getConnection()) {
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String codigo = modelo.getValueAt(i, 0).toString();
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 2).toString());
+            String nombre = modelo.getValueAt(i, 1).toString();
+            
+            int idProducto = obtenerIdProducto(codigo);
+            
+            String sql = "SELECT STOCKDISPONIBLE FROM productos WHERE IDPRODUCTO = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, idProducto);
+                ResultSet rs = ps.executeQuery();
+                
+                if (rs.next()) {
+                    int stockActual = rs.getInt("STOCKDISPONIBLE");
+                    if (stockActual < cantidad) {
+                        mensajeError.append("• ").append(nombre)
+                                  .append(" - Stock disponible: ").append(stockActual)
+                                  .append(", Cantidad requerida: ").append(cantidad)
+                                  .append("\n");
+                    }
+                }
+            }
+        }
+        
+        if (mensajeError.length() > 0) {
+            JOptionPane.showMessageDialog(this, 
+                "❌ Stock insuficiente:\n\n" + mensajeError.toString(), 
+                "Stock Insuficiente", 
+                JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Error al verificar stock: " + e.getMessage());
+        return false;
+    }
+    
+    return true;
+}
+
+// 🔹 MÉTODO PARA OBTENER MENSAJE DE STOCK
+private String obtenerMensajeStock(String estadoAnterior, String estadoNuevo) {
+    if (estadoNuevo.equals("Cancelado") && (estadoAnterior.equals("En proceso") || estadoAnterior.equals("Entregado"))) {
+        return "Stock regresado al inventario.";
+    } else if ((estadoNuevo.equals("Entregado") || estadoNuevo.equals("En proceso")) && 
+               (estadoAnterior.equals("Pendiente") || estadoAnterior.equals("Cancelado"))) {
+        return "Stock descontado del inventario.";
+    } else {
+        return "Sin cambios en el stock.";
+    }
+}
+
+// 🔹 MÉTODO PARA MOSTRAR ESTADÍSTICAS DE PRODUCTOS --------METODO PARA SABER DE STOCK BAJO
+/*private void mostrarEstadisticasProductos(List<Productos> productos) {
+    int totalProductos = productos.size();
+    int stockBajo = 0;
+    int sinStock = 0;
+    double valorTotalInventario = 0;
+    
+    for (Productos prod : productos) {
+        if (prod.getStockDisponible() < 10) {
+            stockBajo++;
+        }
+        if (prod.getStockDisponible() == 0) {
+            sinStock++;
+        }
+        valorTotalInventario += prod.getPrecioCompra() * prod.getStockDisponible();
+    }
+    
+    // Actualizar labels si los tienes en tu interfaz
+    if (lblTotalProductos != null) {
+        lblTotalProductos.setText("Total: " + totalProductos);
+    }
+    if (lblValorInventario != null) {
+        lblValorInventario.setText("Stock Bajo: " + stockBajo);
+    }
+    if (lblValorInventario != null) {
+        lblValorInventario.setText("Valor Inventario: $" + String.format("%,.2f", valorTotalInventario));
+    }
+    
+    System.out.println("📊 Estadísticas productos:");
+    System.out.println("   - Total: " + totalProductos);
+    System.out.println("   - Stock bajo: " + stockBajo);
+    System.out.println("   - Sin stock: " + sinStock);
+    System.out.println("   - Valor inventario: $" + String.format("%,.2f", valorTotalInventario));
+}
+*/
+// 🔹 MÉTODO PARA MOSTRAR MENSAJES (si no lo tienes)
+
+// 🔹 MÉTODO PARA FILTRAR PRODUCTOS (BÚSQUEDA)
+private void filtrarProductos(String filtro) {
+    DefaultTableModel modelo = (DefaultTableModel) tblProducto.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+    tblProducto.setRowSorter(sorter);
+    
+    if (filtro != null && filtro.length() > 0) {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro));
+    } else {
+        sorter.setRowFilter(null);
+    }
+}
+
+// 🔹 MÉTODO PARA OBTENER PRODUCTO SELECCIONADO
+private Productos obtenerProductoSeleccionado() {
+    int filaSeleccionada = tblProducto.getSelectedRow();
+    if (filaSeleccionada == -1) {
+        mostrarMensaje("Selecciona un producto de la tabla.", "Advertencia", "advertencia");
+        return null;
+    }
+    
+    // Convertir índice de vista a índice de modelo si hay filtro
+    int modeloFila = tblProducto.convertRowIndexToModel(filaSeleccionada);
+    
+    DefaultTableModel modelo = (DefaultTableModel) tblProducto.getModel();
+    int idProducto = (Integer) modelo.getValueAt(modeloFila, 0);
+    
+    // Buscar el producto en la lista (necesitas mantener una referencia a la lista)
+    List<Productos> listaProductos = control.TraerProducto();
+    for (Productos prod : listaProductos) {
+        if (prod.getIdProducto() == idProducto) {
+            return prod;
+        }
+    }
+    
+    return null;
+}
+}
+class ProductoPedido {
+    int idProducto;
+    int cantidad;
+    String nombre;
+    
+    public ProductoPedido(int idProducto, int cantidad, String nombre) {
+        this.idProducto = idProducto;
+        this.cantidad = cantidad;
+        this.nombre = nombre;
     }
 }
