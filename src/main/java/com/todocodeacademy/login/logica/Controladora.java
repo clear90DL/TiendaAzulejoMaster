@@ -1,7 +1,13 @@
 package com.todocodeacademy.login.logica;
 
+import ConexionBD.ConexionBD;
 import com.todocodeacademy.login.persistencia.ControladoraPersistencia;
+import com.todocodeacademy.login.persistencia.ProveedorJpaController;
 import com.todocodeacademy.login.persistencia.exceptions.NonexistentEntityException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,9 +21,9 @@ public class Controladora {
     ControladoraPersistencia controlPersis;
 
     public Controladora() {
-        controlPersis = new ControladoraPersistencia();
-    }
-///////////////////////////////////////////VALIDAR USUARIO EN EL LOGIN/////////////////////////////////
+            controlPersis = new ControladoraPersistencia();
+        }
+    ///////////////////////////////////////////VALIDAR USUARIO EN EL LOGIN/////////////////////////////////
 
     public Usuario validarUsuario(String usuario, String contrasenia) {
 
@@ -133,73 +139,141 @@ public class Controladora {
     }
 
     /////////////////////////////////////////////////Crear Cliente///////////////////////////////////////////////////
-    public void crearClientes(String nombre, String Direccion, String numero) {
-        Clientes clie = new Clientes();
+ 
 
-        clie.setNombre(nombre);
-        clie.setDireccion(Direccion);
-        clie.setNumero(numero);
-       
+public Clientes traerCliente(int idCliente) {
+    return controlPersis.traerClientes(idCliente);
+}
 
-        controlPersis.CrearClientes(clie);
+public void editarCliente(
+        Clientes cli,
+        String primerNombre,
+        String segundoNombre,
+        String apellidoPaterno,
+        String apellidoMaterno,
+        String tipoDeCliente,
+        String telefono,
+        String correoElectronico,
+        String rfc,
+        String calle,
+        String numeroExterior,
+        String numeroInterior,
+        String colonia,
+        String codigoPostal,
+        String municipio,
+        String ciudad,
+        String referencia
+) {
+
+    // Nombres
+    cli.setPrimerNombre(primerNombre);
+    cli.setSegundoNombre(segundoNombre);
+    cli.setApellidoPaterno(apellidoPaterno);
+    cli.setApellidoMaterno(apellidoMaterno);
+
+    // Datos cliente
+    cli.setTipoDeCliente(tipoDeCliente);
+    cli.setTelefono(telefono);
+    cli.setCorreoElectronico(correoElectronico);
+    cli.setRfc(rfc);
+
+    // Dirección
+    cli.setCalle(calle);
+    cli.setNumeroExterior(numeroExterior);
+    cli.setNumeroInterior(numeroInterior);
+    cli.setColonia(colonia);
+    cli.setCodigoPostal(codigoPostal);
+    cli.setMunicipio(municipio);
+    cli.setCiudad(ciudad);
+    cli.setReferencia(referencia);
+
+    controlPersis.editarCliente(cli);
+}
+
+public void borrarCliente(int idCliente) {
+    try {
+        controlPersis.borrarCliente(idCliente);
+    } catch (NonexistentEntityException ex) {
+        Logger.getLogger(Controladora.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
 
-    public Clientes traerCliente(int id_Cliente) {
-        return controlPersis.traerClientes(id_Cliente);
-    }
-
-    public void editarCliente(Clientes cli, String nombre, String direccion, String numero) {
-        cli.setNombre(nombre);
-        cli.setDireccion(direccion);
-        cli.setNumero(numero);
-     
-
-        controlPersis.editarCliente(cli);
-
-    }
-
-    public void borrarCliente(int id_Cliente) {
-        try {
-            controlPersis.borrarCliente(id_Cliente);
-        } catch (NonexistentEntityException ex) {
-            Logger.getLogger(Controladora.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
 ///////////////////////////////////////////////Crear Proveedor///////////////////////////////////////////////
-
-    public void crearProveedor(String nombre, String direccion, String correo, String telefono) {
-        Proveedor prov = new Proveedor();
-
-        prov.setNombre(nombre);
-        prov.setDireccion(direccion);
-        prov.setCorreo(correo);
-        prov.setCorreo(correo);
-        prov.setTelefono(telefono);
-
-        controlPersis.CrearProveedor(prov);
+// DEJAR SOLO ESTE MÉTODO (con 1 parámetro)
+public void crearProveedor(Proveedor proveedor) {
+    // Asignar valores por defecto si es necesario
+    if (proveedor.getEstado() == null || proveedor.getEstado().isEmpty()) {
+        proveedor.setEstado("ACTIVO");
     }
-
-    public void editarProveedor(Proveedor prov, String nombre, String direccion, String correo, String telefono) {
-        prov.setNombre(nombre);
-        prov.setDireccion(direccion);
-        prov.setCorreo(correo);
-        prov.setTelefono(telefono);
-
-        controlPersis.editarProveedor(prov);
+    if (proveedor.getFechaRegistro() == null || proveedor.getFechaRegistro().isEmpty()) {
+        proveedor.setFechaRegistro(obtenerFechaActual());
     }
+    
+    // IMPORTANTE: Cambia "crearProveedor" por "CrearProveedor" para coincidir con ControladoraPersistencia
+    controlPersis.CrearProveedor(proveedor);
+}
 
-    public Proveedor traerProveedor(int id_Proveedor) {
-        return controlPersis.traerProveedor(id_Proveedor);
-    }
+ public void crearProveedor(String nombreProveedor, String nombreContacto, String tipoProveedor,
+                          String telefono1, String telefono2, String correo, String rfc,
+                          String calle, String numeroInterior, String numeroExterior, 
+                          String colonia, String municipio, String ciudad, String codigoPostal, 
+                          String referencia, String estado, String fechaRegistro) {
+    
+    Proveedor prov = new Proveedor();
+    
+    // Datos generales
+    prov.setNombreProveedor(nombreProveedor);
+    prov.setNombreContacto(nombreContacto);
+    prov.setTipoProveedor(tipoProveedor);
+    
+    // Contacto
+    prov.setTelefono1(telefono1);
+    prov.setTelefono2(telefono2);
+    prov.setCorreo(correo);
+    
+    // Datos fiscales
+    prov.setRfc(rfc);
+    
+    // Dirección
+    prov.setCalle(calle);
+    prov.setNumeroInterior(numeroInterior);
+    prov.setNumeroExterior(numeroExterior);
+    prov.setColonia(colonia);
+    prov.setMunicipio(municipio);
+    prov.setCiudad(ciudad);
+    prov.setCodigoPostal(codigoPostal);
+    prov.setReferencia(referencia);
+    
+    // Administración
+    prov.setEstado(estado);
+    prov.setFechaRegistro(fechaRegistro);
+    
+    controlPersis.CrearProveedor(prov);
+}
 
-    public void borrarProveedor(int id_proveedor) {
-        try {
-            controlPersis.borrarProveedor(id_proveedor);
-        } catch (NonexistentEntityException ex) {
-            Logger.getLogger(Controladora.class.getName()).log(Level.SEVERE, null, ex);
-        }
+public void editarProveedor(Proveedor proveedor) {
+    try {
+        controlPersis.editarProveedor(proveedor);
+        System.out.println("Proveedor editado exitosamente. ID: " + proveedor.getId());
+    } catch (Exception ex) {
+        Logger.getLogger(Controladora.class.getName()).log(Level.SEVERE, null, ex);
+        throw new RuntimeException("Error al editar proveedor: " + ex.getMessage());
     }
+}
+public void borrarProveedor(int idProveedor) {
+    try {
+        controlPersis.borrarProveedor(idProveedor);
+        System.out.println("Proveedor eliminado exitosamente. ID: " + idProveedor);
+    } catch (NonexistentEntityException ex) {
+        Logger.getLogger(Controladora.class.getName()).log(Level.SEVERE, null, ex);
+        throw new RuntimeException("No se pudo eliminar el proveedor. ID no encontrado: " + idProveedor);
+    }
+}
+
+// También agrega este método para traer un proveedor específico por ID
+public Proveedor traerProveedor(int idProveedor) {
+    return controlPersis.traerProveedor(idProveedor);
+}
 /////////////////////////////////////////Crear Categoria///////////////////////////////7
 
     public void crearCategoria(String nombre, String descripcion) {
@@ -372,8 +446,9 @@ public void editarProducto(Productos prod, String codigo, String nombre, String 
 }
 
 public Productos buscarProductoPorCodigo(String codigo) {
-    return controlPersis.traerProductoPorCodigoONombre(codigo); // Implementa una consulta SQL SELECT * WHERE codigo = ?
+    return controlPersis.buscarProductoPorCodigoventa(codigo); // Implementa una consulta SQL SELECT * WHERE codigo = ?
 }
+
     public void actualizarProducto(Productos producto) {
   controlPersis.editarProducto(producto);
     }
@@ -390,5 +465,64 @@ public Productos buscarProductoPorCodigo(String codigo) {
     public Productos buscarProductoPorCodigoVenta(String codigo) {
     return controlPersis.traerProductoPorCodigo(codigo); // Implementa una consulta SQL SELECT * WHERE codigo = ?
 }
+
+public void crearClienteCompleto(String primerNombre, String segundoNombre, 
+                                 String apellidoPaterno, String apellidoMaterno, 
+                                 String tipoCliente, String telefono, String correo, 
+                                 String rfc, String calle, String numeroExterior, 
+                                 String numeroInterior, String colonia, 
+                                 String codigoPostal, String municipio, 
+                                 String ciudad, String referencia) {
+    
+    try {
+        System.out.println("DEBUG: Entrando a crearClienteCompleto"); // Agrega esto
+        
+        // Crear nuevo cliente (sin ID, se genera automáticamente)
+        Clientes cliente = new Clientes();
+        cliente.setPrimerNombre(primerNombre);
+        cliente.setSegundoNombre(segundoNombre);
+        cliente.setApellidoPaterno(apellidoPaterno);
+        cliente.setApellidoMaterno(apellidoMaterno);
+        cliente.setTipoDeCliente(tipoCliente);
+        cliente.setTelefono(telefono);
+        cliente.setCorreoElectronico(correo);
+        cliente.setRfc(rfc);
+        cliente.setCalle(calle);
+        cliente.setNumeroExterior(numeroExterior);
+        cliente.setNumeroInterior(numeroInterior);
+        cliente.setColonia(colonia);
+        cliente.setCodigoPostal(codigoPostal);
+        cliente.setMunicipio(municipio);
+        cliente.setCiudad(ciudad);
+        cliente.setReferencia(referencia);
+        
+        System.out.println("DEBUG: Cliente creado en memoria: " + cliente.getPrimerNombre());
+        
+        // IMPORTANTE: Verifica que esta línea se ejecute
+        controlPersis.crearCliente(cliente);
+        
+        System.out.println("DEBUG: Cliente guardado con ID: " + cliente.getId());
+        
+    } catch (Exception e) {
+        System.err.println("ERROR en crearClienteCompleto:");
+        e.printStackTrace();
+    }
+}
+
+    public void editarCliente(Clientes cli) {
+         controlPersis.editarCliente(cli);
+    }
+
+  // En ControladoraPersistencia, agrega esto temporalmente:
+// En Controladora.java 
+
+    private String obtenerFechaActual() {
+  try {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return sdf.format(new java.util.Date());
+    } catch (Exception e) {
+        return java.time.LocalDateTime.now().toString();
+    }
+    }
     
 }

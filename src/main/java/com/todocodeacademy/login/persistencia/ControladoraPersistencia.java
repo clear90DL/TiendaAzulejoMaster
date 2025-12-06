@@ -1,5 +1,6 @@
 package com.todocodeacademy.login.persistencia;
 
+import ConexionBD.ConexionBD;
 import com.todocodeacademy.login.igu.Categoria;
 import com.todocodeacademy.login.logica.Categorias;
 import com.todocodeacademy.login.logica.Clientes;
@@ -9,12 +10,24 @@ import com.todocodeacademy.login.logica.Rol;
 import com.todocodeacademy.login.logica.Usuario;
 import com.todocodeacademy.login.logica.Venta_exitosa;
 import com.todocodeacademy.login.persistencia.exceptions.NonexistentEntityException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import com.todocodeacademy.login.logica.Clientes;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 /**
  *
  * @author Claudio De Jesus
@@ -29,6 +42,9 @@ public class ControladoraPersistencia {
     CategoriasJpaController categJpa = new CategoriasJpaController();
     ProductosJpaController productJpa = new ProductosJpaController();
 
+      
+    // DECLARA el EntityManagerFactory como variable de clase
+    private EntityManagerFactory emf;
     //Traer datos
     public List<Usuario> traerUsuarios() {
         List<Usuario> listaUsuario = usuJpa.findUsuarioEntities();
@@ -88,6 +104,10 @@ public class ControladoraPersistencia {
     }
 
     ///////////////////////////////////////////METODO PARA CLIENTES///////////////////////////
+      public ControladoraPersistencia() {
+        // Asegúrate de que "TiendaAzulejoPU" coincida con tu persistence.xml
+        emf = Persistence.createEntityManagerFactory("loginPU");
+    }
     public void CrearClientes(Clientes clie) {
         ClienJpa.create(clie);
     }
@@ -220,6 +240,92 @@ public class ControladoraPersistencia {
        return productJpa.traerProductoPorCodigo(codigo);
     }
 
+public Productos buscarProductoPorCodigoventa(String codigo) {
+    Productos producto = null;
 
+    String sql = "SELECT * FROM productos WHERE codigo = ?";
+    try (Connection conn = ConexionBD.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, codigo);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            producto = new Productos();
+            producto.setIdProducto(rs.getInt("idproducto"));
+            producto.setCodigo(rs.getString("codigo"));
+            producto.setNombre(rs.getString("nombre"));
+            producto.setPrecioVenta(rs.getInt("precioventa"));
+            producto.setStockDisponible(rs.getInt("stockdisponible"));
+        }
+
+    } catch (SQLException e) {
+        System.err.println("❌ Error al buscar producto: " + e.getMessage());
+    }
+
+    return producto;
+}
+
+    public void crearCliente(Clientes cliente) {
+          EntityManager em = emf.createEntityManager();
+    EntityTransaction tx = null;
+    
+    try {
+        System.out.println("DEBUG: Iniciando transacción para cliente: " + cliente.getPrimerNombre());
+        
+        tx = em.getTransaction();
+        tx.begin();
+        
+        em.persist(cliente);
+        
+        tx.commit();
+        
+        System.out.println("DEBUG: Cliente persistido exitosamente. ID: " + cliente.getId());
+        
+    } catch (Exception e) {
+        System.err.println("ERROR al persistir cliente:");
+        e.printStackTrace();
+        
+        if (tx != null && tx.isActive()) {
+            tx.rollback();
+            System.err.println("DEBUG: Transacción revertida");
+        }
+        
+        // Propagar la excepción para verla en la interfaz
+        throw new RuntimeException("Error al guardar cliente: " + e.getMessage(), e);
+        
+    } finally {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
+    }
+    }
+    public void testConexionYTabla() {
+    try {
+        EntityManager em = emf.createEntityManager();
+        
+        // Verificar si la tabla existe
+        List<Clientes> clientes = em.createQuery("SELECT c FROM Clientes c", Clientes.class)
+                                   .getResultList();
+        
+        System.out.println("Conexión OK. Clientes en BD: " + clientes.size());
+        
+        // Intentar insertar un registro de prueba
+        em.getTransaction().begin();
+        Clientes test = new Clientes();
+        test.setPrimerNombre("TEST");
+        test.setApellidoPaterno("TEST");
+        test.setTelefono("123");
+        em.persist(test);
+        em.getTransaction().commit();
+        
+        System.out.println("Registro de prueba insertado");
+        
+        em.close();
+    } catch (Exception e) {
+        System.err.println("Error en conexión/inserción:");
+        e.printStackTrace();
+    }
+}
 
 }

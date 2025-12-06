@@ -9,6 +9,7 @@
     <class>com.todocodeacademy.login.logica.Productos</class>
     <class>com.todocodeacademy.login.logica.Categorias</class>
     <class>com.todocodeacademy.login.logica.Venta_exitosa</class>
+    <class>com.todocodeacademy.login.persistencia.NewEntity</class>
     <shared-cache-mode>ALL</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/login?serverTimezone=UTC"/>

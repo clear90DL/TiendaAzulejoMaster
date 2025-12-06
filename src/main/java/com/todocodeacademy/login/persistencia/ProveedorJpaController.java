@@ -6,29 +6,36 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Claudio De Jesus
+ * @author Usuario
  */
 public class ProveedorJpaController implements Serializable {
-
+    
+    private EntityManagerFactory emf = null;
+    
+    // Constructor con EntityManagerFactory (para inyección)
     public ProveedorJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private EntityManagerFactory emf = null;
+    
+    // Constructor sin parámetros (crea su propio EMF)
+    public ProveedorJpaController() {
+        // ¡IMPORTANTE! Usa el mismo nombre que en persistence.xml
+        // "TiendaAzulejoPU" o "loginPU" - verifica cuál tienes
+        emf = Persistence.createEntityManagerFactory("loginPU");
+    }
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
- public ProveedorJpaController(){
-    emf=Persistence.createEntityManagerFactory("loginPU");
-    }
+
     public void create(Proveedor proveedor) {
         EntityManager em = null;
         try {
@@ -53,9 +60,9 @@ public class ProveedorJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = proveedor.getId_proveedor();
+                int id = proveedor.getId();  // ← CAMBIADO: getId() en lugar de getId_proveedor()
                 if (findProveedor(id) == null) {
-                    throw new NonexistentEntityException("The proveedor with id " + id + " no longer exists.");
+                    throw new NonexistentEntityException("El proveedor con id " + id + " ya no existe.");
                 }
             }
             throw ex;
@@ -74,9 +81,9 @@ public class ProveedorJpaController implements Serializable {
             Proveedor proveedor;
             try {
                 proveedor = em.getReference(Proveedor.class, id);
-                proveedor.getId_proveedor();
+                proveedor.getId();  // ← CAMBIADO: Solo llamar getId() para verificar existencia
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The proveedor with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("El proveedor con id " + id + " ya no existe.", enfe);
             }
             em.remove(proveedor);
             em.getTransaction().commit();
@@ -133,4 +140,22 @@ public class ProveedorJpaController implements Serializable {
         }
     }
     
+    // Método adicional para buscar por nombre (útil)
+    public List<Proveedor> findProveedorByNombre(String nombre) {
+        EntityManager em = getEntityManager();
+        try {
+            Query q = em.createQuery("SELECT p FROM Proveedor p WHERE p.nombreProveedor LIKE :nombre");
+            q.setParameter("nombre", "%" + nombre + "%");
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    // Cerrar el EntityManagerFactory cuando ya no se necesite
+    public void close() {
+        if (emf != null && emf.isOpen()) {
+            emf.close();
+        }
+    }
 }
