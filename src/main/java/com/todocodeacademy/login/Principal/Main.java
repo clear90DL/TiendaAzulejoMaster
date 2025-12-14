@@ -12,6 +12,6 @@ public class Main {
         Logininicial login = new Logininicial();
         login.setVisible(true);
         login.setLocationRelativeTo(null);
-        //ACTUALIZADO 05/12/2025
+        //ACTUALIZADO 14/12/2025
     }
 }
