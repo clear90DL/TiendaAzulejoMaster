@@ -104,7 +104,7 @@ private void configurarListeners() {
         jLabel3.setText("Nombre:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        txtNombreCategoria.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        txtNombreCategoria.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jPanel1.add(txtNombreCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 180, 30));
 
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -112,11 +112,11 @@ private void configurarListeners() {
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, -1, -1));
 
         txtDescripcionCategoria.setColumns(20);
-        txtDescripcionCategoria.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        txtDescripcionCategoria.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         txtDescripcionCategoria.setRows(5);
         jScrollPane1.setViewportView(txtDescripcionCategoria);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, -1, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 310, -1));
 
         tblCategoria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
