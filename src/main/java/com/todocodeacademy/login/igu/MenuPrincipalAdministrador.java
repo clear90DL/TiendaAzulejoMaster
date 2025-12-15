@@ -58,6 +58,8 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     Productos prod;
     Clientes cli;
     private int ultimaVentaId = 0;
+    private PagoVenta ultimoPago = null;
+
     // Faltan estas declaraciones:
     private List<String> nombresClientes = new ArrayList<>();
 // Lista temporal de productos en el pedido actual
@@ -312,7 +314,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         btnCopiaDeSeguridad = new javax.swing.JButton();
         btnRestaurarBD = new javax.swing.JButton();
         btnMiEmpresa = new javax.swing.JButton();
-        btnEliminarBD = new javax.swing.JButton();
         jPanelReportes = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
         btnGenerarReporte = new javax.swing.JToggleButton();
@@ -376,8 +377,12 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         tblPedido = new javax.swing.JTable();
         btnGuardarPedido = new javax.swing.JButton();
         btnMostrarPedido = new javax.swing.JToggleButton();
-        btnGenerarpdfDelPedido = new javax.swing.JToggleButton();
-        txtTotalPedido = new javax.swing.JTextField();
+        btnGenerarpdfDelUltimoPedido = new javax.swing.JToggleButton();
+        btnGenerarPdfDelPedido = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        BuscarPedido = new javax.swing.JButton();
+        txtIdPedido = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
         mbMenu = new javax.swing.JMenuBar();
         jMenu1Principal = new javax.swing.JMenu();
         jMenuItemIrAlLogin = new javax.swing.JMenuItem();
@@ -599,13 +604,13 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelProveedorLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3)
                     .addGroup(jPanelProveedorLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1043, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanelProveedorLayout.setVerticalGroup(
             jPanelProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1798,7 +1803,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 btnCategoriaActionPerformed(evt);
             }
         });
-        jPanelConfiguracion.add(btnCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 210, 70));
+        jPanelConfiguracion.add(btnCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 160, 210, 70));
 
         btnCopiaDeSeguridad.setBackground(new java.awt.Color(0, 0, 255));
         btnCopiaDeSeguridad.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -1810,7 +1815,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 btnCopiaDeSeguridadActionPerformed(evt);
             }
         });
-        jPanelConfiguracion.add(btnCopiaDeSeguridad, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 150, 230, 70));
+        jPanelConfiguracion.add(btnCopiaDeSeguridad, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 160, 230, 70));
 
         btnRestaurarBD.setBackground(new java.awt.Color(0, 0, 255));
         btnRestaurarBD.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -1822,7 +1827,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 btnRestaurarBDActionPerformed(evt);
             }
         });
-        jPanelConfiguracion.add(btnRestaurarBD, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 150, 220, 70));
+        jPanelConfiguracion.add(btnRestaurarBD, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 160, 220, 70));
 
         btnMiEmpresa.setBackground(new java.awt.Color(0, 0, 255));
         btnMiEmpresa.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -1834,19 +1839,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 btnMiEmpresaActionPerformed(evt);
             }
         });
-        jPanelConfiguracion.add(btnMiEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 210, 70));
-
-        btnEliminarBD.setBackground(new java.awt.Color(0, 0, 255));
-        btnEliminarBD.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
-        btnEliminarBD.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminarBD.setText("Eliminar BD");
-        btnEliminarBD.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        btnEliminarBD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarBDActionPerformed(evt);
-            }
-        });
-        jPanelConfiguracion.add(btnEliminarBD, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 150, 220, 70));
+        jPanelConfiguracion.add(btnMiEmpresa, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 210, 70));
 
         jPanelReportes.setBackground(new java.awt.Color(255, 255, 255));
         jPanelReportes.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
@@ -2190,7 +2183,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     .addComponent(cmbPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(BuscarClientePedido)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Detalle de pedido", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
@@ -2305,25 +2298,26 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                                 .addComponent(jLabel47)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtDimensionPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel48)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtMaterialPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(BuscarProductoPedido)
+                                .addGap(102, 102, 102))
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addComponent(txtCodigoProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel44)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BuscarProductoPedido))
+                                .addGap(141, 141, 141))
                             .addGroup(jPanel16Layout.createSequentialGroup()
                                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtSubtotalPedido, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                                     .addComponent(txtCantidadPedido)
                                     .addComponent(txtPrecioUnitarioPedido))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addGap(16, 16, 16))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel48)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtMaterialPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addComponent(btnAgregarPedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -2331,31 +2325,32 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnEliminarPedido)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLimpiarPedido)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnLimpiarPedido))))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel44)
                     .addComponent(txtProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BuscarProductoPedido)
                     .addComponent(jLabel51)
                     .addComponent(txtCodigoProductoPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel45)
                     .addComponent(jLabel47)
-                    .addComponent(jLabel48)
                     .addComponent(txtColorPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDimensionPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtMaterialPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(BuscarProductoPedido))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel46)
-                    .addComponent(txtCantidadPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel48)
+                        .addComponent(txtMaterialPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel46)
+                        .addComponent(txtCantidadPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel49)
@@ -2399,61 +2394,106 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             }
         });
 
-        btnGenerarpdfDelPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
-        btnGenerarpdfDelPedido.setText("Generar pdf de pedido");
-        btnGenerarpdfDelPedido.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerarpdfDelUltimoPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnGenerarpdfDelUltimoPedido.setText("Generar pdf del ultimo pedido");
+        btnGenerarpdfDelUltimoPedido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarpdfDelPedidoActionPerformed(evt);
+                btnGenerarpdfDelUltimoPedidoActionPerformed(evt);
             }
         });
+
+        btnGenerarPdfDelPedido.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
+        btnGenerarPdfDelPedido.setText("Generar pdf del pedido");
+        btnGenerarPdfDelPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarPdfDelPedidoActionPerformed(evt);
+            }
+        });
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar pedido"));
+
+        BuscarPedido.setText("Buscar");
+        BuscarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BuscarPedidoActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setText("ID:");
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap(39, Short.MAX_VALUE)
+                .addComponent(jLabel27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BuscarPedido)
+                .addGap(15, 15, 15))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel27))
+                    .addComponent(BuscarPedido))
+                .addGap(0, 9, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanelPedidoLayout = new javax.swing.GroupLayout(jPanelPedido);
         jPanelPedido.setLayout(jPanelPedidoLayout);
         jPanelPedidoLayout.setHorizontalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGuardarPedido)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnMostrarPedido)
-                        .addGap(22, 22, 22)
-                        .addComponent(btnGenerarpdfDelPedido)
-                        .addGap(62, 62, 62)
-                        .addComponent(txtTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(125, 125, 125))
+            .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 1239, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)
-                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(12, Short.MAX_VALUE))))
+                                .addGap(22, 22, 22)
+                                .addComponent(btnGuardarPedido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnMostrarPedido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnGenerarPdfDelPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                                .addComponent(btnGenerarpdfDelUltimoPedido)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
         jPanelPedidoLayout.setVerticalGroup(
             jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelPedidoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnGuardarPedido)
-                            .addComponent(btnGenerarpdfDelPedido)
-                            .addComponent(btnMostrarPedido))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelPedidoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtTotalPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70))
+                            .addComponent(btnMostrarPedido)
+                            .addComponent(btnGenerarPdfDelPedido)
+                            .addComponent(btnGenerarpdfDelUltimoPedido))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
@@ -3697,25 +3737,15 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         String nombreCliente = txtClienteVenta.getText().trim();
         int idCliente;
 
-        // 🔹 MODIFICACIÓN: Manejo del cliente (eliminar la búsqueda duplicada)
+        // 🔹 Manejo del cliente
         if (nombreCliente.isEmpty() || nombreCliente.equalsIgnoreCase("PUBLICO GENERAL")) {
             idCliente = obtenerIdClienteGeneral();
-            nombreCliente = "PUBLICO GENERAL"; // Establecer nombre consistente
+            nombreCliente = "PUBLICO GENERAL";
         } else {
-            // Buscar cliente por nombre
             idCliente = obtenerIdCliente(nombreCliente);
             if (idCliente == 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Cliente no encontrado.\n\n"
-                        + "Opciones:\n"
-                        + "1. Cancelar y corregir el nombre\n"
-                        + "2. Usar 'PUBLICO GENERAL' como cliente",
-                        "Cliente no encontrado",
-                        JOptionPane.WARNING_MESSAGE
-                );
-
                 int opcion = JOptionPane.showConfirmDialog(this,
-                        "¿Desea usar 'PUBLICO GENERAL' como cliente?",
+                        "Cliente no encontrado.\n¿Desea usar 'PUBLICO GENERAL' como cliente?",
                         "Cliente no encontrado",
                         JOptionPane.YES_NO_OPTION
                 );
@@ -3723,16 +3753,16 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 if (opcion == JOptionPane.YES_OPTION) {
                     idCliente = obtenerIdClienteGeneral();
                     nombreCliente = "PUBLICO GENERAL";
-                    txtClienteVenta.setText("PUBLICO GENERAL"); // Actualizar campo
+                    txtClienteVenta.setText("PUBLICO GENERAL");
                 } else {
-                    return; // Cancelar la venta
+                    return;
                 }
             }
         }
 
-        // 🔹 VERIFICAR STOCK ANTES DE PROCESAR LA VENTA
+        // 🔹 Verificar stock
         if (!verificarStockDisponible(modelo)) {
-            return; // Si no hay stock suficiente, salir del método
+            return;
         }
 
         Connection conn = null;
@@ -3741,19 +3771,22 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
         try {
             conn = ConexionBD.getConnection();
-            conn.setAutoCommit(false); // 🔹 Iniciar transacción
+            conn.setAutoCommit(false);
 
-            // 1️⃣ Insertar venta
-            String sqlVenta = "INSERT INTO venta (id_cliente, fecha_venta, total) VALUES (?, ?, ?)";
-            psVenta = conn.prepareStatement(sqlVenta, Statement.RETURN_GENERATED_KEYS);
-
-            // Calcular total
+            // 🔹 Calcular total de la venta
             double totalGeneral = 0;
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 double subtotal = Double.parseDouble(modelo.getValueAt(i, 6).toString());
                 totalGeneral += subtotal;
             }
 
+            // 🔴 MODIFICACIÓN: Insertar venta con campos de pago vacíos inicialmente
+            String sqlVenta = """
+            INSERT INTO venta (id_cliente, fecha_venta, total, monto_recibido, cambio, estado_pago) 
+            VALUES (?, ?, ?, 0.00, 0.00, 'PENDIENTE')
+            """;
+
+            psVenta = conn.prepareStatement(sqlVenta, Statement.RETURN_GENERATED_KEYS);
             psVenta.setInt(1, idCliente);
             psVenta.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis()));
             psVenta.setDouble(3, totalGeneral);
@@ -3763,10 +3796,10 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             int idVenta = 0;
             if (rs.next()) {
                 idVenta = rs.getInt(1);
-                ultimaVentaId = idVenta; // ✅ Se guarda para el PDF
+                ultimaVentaId = idVenta; // Guardar para el PDF
             }
 
-            // 🔹 INSERTAR DETALLES CON VALIDACIÓN
+            // 🔹 Insertar detalles
             String sqlDetalle = "INSERT INTO detalle_venta (id_venta, id_producto, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
             psDetalle = conn.prepareStatement(sqlDetalle);
 
@@ -3775,28 +3808,18 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 int idProducto = obtenerIdProducto(codigo);
                 int cantidad = Integer.parseInt(modelo.getValueAt(i, 3).toString());
 
-                // 🔹 OBTENER PRECIO CORRECTO
                 double precioUnitario = 0;
                 try {
                     precioUnitario = Double.parseDouble(modelo.getValueAt(i, 4).toString());
                     if (precioUnitario <= 0) {
-                        // Obtener de la BD si es 0
                         precioUnitario = obtenerPrecioVentaProducto(codigo);
                     }
                 } catch (Exception e) {
                     precioUnitario = obtenerPrecioVentaProducto(codigo);
                 }
 
-                // 🔹 CALCULAR SUBTOTAL CORRECTO
                 double subtotal = cantidad * precioUnitario;
 
-                System.out.println("=== GUARDANDO DETALLE ===");
-                System.out.println("Producto ID: " + idProducto);
-                System.out.println("Cantidad: " + cantidad);
-                System.out.println("Precio: " + precioUnitario);
-                System.out.println("Subtotal: " + subtotal);
-
-                // Guardar en detalle_venta
                 psDetalle.setInt(1, idVenta);
                 psDetalle.setInt(2, idProducto);
                 psDetalle.setInt(3, cantidad);
@@ -3804,50 +3827,68 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 psDetalle.setDouble(5, subtotal);
                 psDetalle.executeUpdate();
 
-                // 🔹 Descontar stock del producto
+                // 🔹 Descontar stock
                 try (PreparedStatement psStock = conn.prepareStatement(
                         "UPDATE productos SET STOCKDISPONIBLE = STOCKDISPONIBLE - ? WHERE IDPRODUCTO = ?"
                 )) {
                     psStock.setInt(1, cantidad);
                     psStock.setInt(2, idProducto);
-                    int filasActualizadas = psStock.executeUpdate();
-
-                    if (filasActualizadas == 0) {
-                        throw new SQLException("No se pudo actualizar el stock del producto ID: " + idProducto);
-                    }
-
-                    System.out.println("Stock actualizado - Producto ID: " + idProducto + " - Cantidad descontada: " + cantidad);
+                    psStock.executeUpdate();
                 }
             }
 
-            // 🔹 CONFIRMAR TRANSACCIÓN
+            // 🔹 Confirmar transacción
             conn.commit();
 
-            // 🔹 MOSTRAR MENSAJE DE ÉXITO
-            JOptionPane.showMessageDialog(this,
-                    "✅ Venta registrada exitosamente!\n"
-                    + "ID Venta: " + idVenta + "\n"
-                    + "Cliente: " + nombreCliente + "\n"
-                    + "Total: $" + String.format("%.2f", totalGeneral) + "\n"
-                    + "Productos: " + modelo.getRowCount()
-            );
+            // 🔴 MODIFICACIÓN: Procesar pago y mostrar información completa
+            Object[] resultadoPago = procesarPagoVenta(idVenta, totalGeneral);
+            double montoRecibido = (double) resultadoPago[0];
+            double cambio = (double) resultadoPago[1];
+            boolean pagoProcesado = (boolean) resultadoPago[2];
 
-            // 🔹 LIMPIAR INTERFAZ
-            limpiarInterfazVenta();
+            // 🔹 Construir mensaje de éxito
+            StringBuilder mensaje = new StringBuilder();
+            mensaje.append("✅ VENTA REGISTRADA EXITOSAMENTE!\n\n");
+            mensaje.append("ID Venta: ").append(idVenta).append("\n");
+            mensaje.append("Cliente: ").append(nombreCliente).append("\n");
+            mensaje.append("Total: $").append(String.format("%.2f", totalGeneral)).append("\n");
+            mensaje.append("Productos: ").append(modelo.getRowCount()).append("\n\n");
 
-            // 🔹 PREGUNTAR SI DESEA PROCESAR PAGO
-            int respuesta = JOptionPane.showConfirmDialog(this,
-                    "¿Desea procesar el pago de esta venta ahora?",
-                    "Procesar Pago",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (respuesta == JOptionPane.YES_OPTION) {
-                procesarPagoVenta(idVenta, totalGeneral);
+            if (pagoProcesado) {
+                mensaje.append("💰 PAGO PROCESADO\n");
+                mensaje.append("Monto recibido: $").append(String.format("%.2f", montoRecibido)).append("\n");
+                mensaje.append("Cambio: $").append(String.format("%.2f", cambio)).append("\n");
+                mensaje.append("Estado: PAGADO\n");
+            } else {
+                mensaje.append("⚠️ PAGO PENDIENTE\n");
+                mensaje.append("Estado: PENDIENTE DE PAGO\n");
             }
 
+            // 🔹 Mostrar diálogo con información completa
+            String[] opciones = {"Generar Ticket", "Generar Ticket y Enviar", "Solo Guardar"};
+            int eleccion = JOptionPane.showOptionDialog(this,
+                    mensaje.toString(),
+                    "Venta Completada",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    opciones,
+                    opciones[0]
+            );
+
+            // 🔹 Limpiar interfaz
+            limpiarInterfazVenta();
+
+            // 🔹 Manejar opciones del usuario
+            if (eleccion == 0) { // Generar Ticket
+                btnImporteActionPerformed(null); // Llamar al método del botón "Importe"
+            } else if (eleccion == 1) { // Generar Ticket y Enviar
+                btnImporteActionPerformed(null);
+                // Aquí puedes agregar lógica para enviar por email si lo necesitas
+            }
+            // Si eleccion == 2 (Solo Guardar), no hacer nada más
+
         } catch (SQLException e) {
-            // 🔹 REVERTIR TRANSACCIÓN EN CASO DE ERROR
             try {
                 if (conn != null) {
                     conn.rollback();
@@ -3862,7 +3903,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             );
             e.printStackTrace();
         } finally {
-            // 🔹 CERRAR RECURSOS
             try {
                 if (psDetalle != null) {
                     psDetalle.close();
@@ -3877,7 +3917,130 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 System.err.println("Error al cerrar recursos: " + e.getMessage());
             }
         }
+    }
+
+// 🔴 MODIFICACIÓN: Método procesarPagoVenta actualizado para retornar información completa
+    private Object[] procesarPagoVenta(int idVenta, double totalVenta) {
+        Object[] resultado = new Object[3];
+        resultado[0] = 0.0; // montoRecibido
+        resultado[1] = 0.0; // cambio
+        resultado[2] = false; // pagoProcesado
+
+        try {
+            // 🔹 Preguntar si desea procesar pago
+            int respuesta = JOptionPane.showConfirmDialog(this,
+                    "💰 PROCESAR PAGO\n\n"
+                    + "Venta #" + idVenta + "\n"
+                    + "Total: $" + String.format("%.2f", totalVenta) + "\n\n"
+                    + "¿Desea procesar el pago ahora?",
+                    "Procesar Pago",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (respuesta != JOptionPane.YES_OPTION) {
+                resultado[2] = false;
+                return resultado;
+            }
+
+            // 🔹 Solicitar monto recibido
+            double montoRecibido = 0;
+            boolean montoValido = false;
+
+            while (!montoValido) {
+                String input = JOptionPane.showInputDialog(this,
+                        "💵 INGRESAR MONTO\n\n"
+                        + "Total a pagar: $" + String.format("%.2f", totalVenta) + "\n"
+                        + "Ingrese el monto recibido del cliente:",
+                        "Monto Recibido",
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (input == null) { // Usuario canceló
+                    resultado[2] = false;
+                    return resultado;
+                }
+
+                if (input.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "❌ Debe ingresar un monto.");
+                    continue;
+                }
+
+                try {
+                    montoRecibido = Double.parseDouble(input.trim());
+
+                    if (montoRecibido <= 0) {
+                        JOptionPane.showMessageDialog(this, "❌ El monto debe ser mayor a cero.");
+                        continue;
+                    }
+
+                    if (montoRecibido < totalVenta) {
+                        double faltante = totalVenta - montoRecibido;
+                        JOptionPane.showMessageDialog(this,
+                                "❌ Monto insuficiente.\n\n"
+                                + "Faltan: $" + String.format("%.2f", faltante) + "\n"
+                                + "Por favor ingrese un monto mayor o igual.");
+                        continue;
+                    }
+
+                    montoValido = true;
+
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "❌ Ingrese un monto válido (ej: 150.50).");
+                }
+            }
+
+            // 🔹 Calcular cambio
+            double cambio = montoRecibido - totalVenta;
+            if (cambio < 0) {
+                cambio = 0;
+            }
+
+            // 🔹 Actualizar la venta en la base de datos
+            try (Connection conn = ConexionBD.getConnection(); PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE venta SET monto_recibido = ?, cambio = ?, estado_pago = 'PAGADO' WHERE id_venta = ?"
+            )) {
+
+                ps.setDouble(1, montoRecibido);
+                ps.setDouble(2, cambio);
+                ps.setInt(3, idVenta);
+                ps.executeUpdate();
+            }
+
+            // 🔹 Mostrar resumen del pago
+            StringBuilder mensajePago = new StringBuilder();
+            mensajePago.append("✅ PAGO PROCESADO\n\n");
+            mensajePago.append("Venta #").append(idVenta).append("\n");
+            mensajePago.append("Total: $").append(String.format("%.2f", totalVenta)).append("\n");
+            mensajePago.append("Recibido: $").append(String.format("%.2f", montoRecibido)).append("\n");
+            mensajePago.append("Cambio: $").append(String.format("%.2f", cambio)).append("\n");
+
+            if (cambio > 0) {
+                mensajePago.append("\n⚠️ No olvide dar el cambio al cliente!");
+            }
+
+            JOptionPane.showMessageDialog(this,
+                    mensajePago.toString(),
+                    "Pago Completado",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            // 🔹 Guardar resultados
+            resultado[0] = montoRecibido;
+            resultado[1] = cambio;
+            resultado[2] = true;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error al actualizar el pago: " + e.getMessage(),
+                    "Error de Base de Datos",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            resultado[2] = false;
+        }
+
+        return resultado;
     }//GEN-LAST:event_btnGenerarVentaActionPerformed
+
     private double obtenerPrecioVentaProducto(String codigo) {
         double precio = 0;
         try (Connection conn = ConexionBD.getConnection()) {
@@ -3895,309 +4058,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         return precio;
     }
 // 🔹 MÉTODO MEJORADO PARA PROCESAR PAGO CON BUCLE
-
-    private void procesarPagoVenta(int idVenta, double totalVenta) {
-        try {
-            double montoRecibido = 0;
-            boolean montoValido = false;
-
-            // 🔄 BUCLE HASTA QUE EL MONTO SEA SUFICIENTE O EL USUARIO CANCELE
-            while (!montoValido) {
-                // Pedir el monto con el que paga el cliente
-                String input = JOptionPane.showInputDialog(this,
-                        "💰 PROCESAR PAGO - Venta #" + idVenta + "\n\n"
-                        + "Total de la venta: $" + String.format("%.2f", totalVenta) + "\n"
-                        + "Ingrese el monto recibido:\n"
-                        + "(Presione Cancelar para salir sin procesar pago)",
-                        "Pago del Cliente",
-                        JOptionPane.QUESTION_MESSAGE
-                );
-
-                // 🔹 SI EL USUARIO CANCELA, SALIR DEL MÉTODO
-                if (input == null) {
-                    JOptionPane.showMessageDialog(this,
-                            "ℹ️ Pago no procesado.\n"
-                            + "La venta #" + idVenta + " se guardó pero el pago está pendiente.",
-                            "Pago Cancelado",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    return;
-                }
-
-                // 🔹 VALIDAR QUE NO ESTÉ VACÍO
-                if (input.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(this,
-                            "❌ Debe ingresar un monto.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                    continue;
-                }
-
-                // 🔹 VALIDAR QUE SEA UN NÚMERO
-                try {
-                    montoRecibido = Double.parseDouble(input.trim());
-                } catch (NumberFormatException e) {
-                    JOptionPane.showMessageDialog(this,
-                            "❌ Monto inválido. Ingrese solo números.\n"
-                            + "Ejemplo: 150.50",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                    continue;
-                }
-
-                // 🔹 VALIDAR QUE SEA POSITIVO
-                if (montoRecibido <= 0) {
-                    JOptionPane.showMessageDialog(this,
-                            "❌ El monto debe ser mayor a cero.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                    continue;
-                }
-
-                // 🔹 VALIDAR QUE SEA SUFICIENTE
-                if (montoRecibido < totalVenta) {
-                    double faltante = totalVenta - montoRecibido;
-                    JOptionPane.showMessageDialog(this,
-                            "❌ Monto insuficiente.\n\n"
-                            + "Total: $" + String.format("%.2f", totalVenta) + "\n"
-                            + "Monto ingresado: $" + String.format("%.2f", montoRecibido) + "\n"
-                            + "Faltan: $" + String.format("%.2f", faltante) + "\n\n"
-                            + "Por favor ingrese un monto mayor o igual al total.",
-                            "Monto Insuficiente",
-                            JOptionPane.WARNING_MESSAGE
-                    );
-                    continue;
-                }
-
-                // 🔹 SI LLEGAMOS AQUÍ, EL MONTO ES VÁLIDO
-                montoValido = true;
-            }
-
-            // 🔹 CALCULAR CAMBIO
-            double cambio = montoRecibido - totalVenta;
-
-            // 🔹 MOSTRAR RESUMEN DEL PAGO
-            JOptionPane.showMessageDialog(this,
-                    "✅ PAGO PROCESADO EXITOSAMENTE\n\n"
-                    + "Venta #: " + idVenta + "\n"
-                    + "Total: $" + String.format("%.2f", totalVenta) + "\n"
-                    + "Monto recibido: $" + String.format("%.2f", montoRecibido) + "\n"
-                    + "Cambio: $" + String.format("%.2f", cambio),
-                    "Pago Completado",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-
-            // 🔹 PREGUNTAR SI DESEA GENERAR TICKET
-            int generarTicket = JOptionPane.showConfirmDialog(this,
-                    "¿Desea generar el ticket de la venta ahora?",
-                    "Generar Ticket",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
-            );
-
-            if (generarTicket == JOptionPane.YES_OPTION) {
-                // 🔹 Pasar el montoRecibido y cambio al método generarTicketVenta
-                generarTicketVenta(idVenta, montoRecibido, cambio);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "❌ Error inesperado: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            e.printStackTrace();
-        }
-    }
-
-    private void generarTicketVenta(int idVenta, double montoRecibido, double cambio) {
-        try (Connection conn = ConexionBD.getConnection()) {
-            // 1️⃣ Obtener información general de la venta
-            String sqlVenta = """
-                SELECT v.id_venta, v.fecha_venta, 
-                       CONCAT(c.primer_nombre, ' ', c.apellido_paterno) AS cliente, 
-                       v.total
-                FROM venta v
-                JOIN clientes c ON v.id_cliente = c.id
-                WHERE v.id_venta = ?
-                """;
-
-            PreparedStatement psVenta = conn.prepareStatement(sqlVenta);
-            psVenta.setInt(1, idVenta);
-            ResultSet rsVenta = psVenta.executeQuery();
-
-            if (!rsVenta.next()) {
-                JOptionPane.showMessageDialog(this, "❌ No se encontró la venta en la base de datos.");
-                return;
-            }
-
-            String cliente = rsVenta.getString("cliente");
-            String fecha = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(rsVenta.getTimestamp("fecha_venta"));
-            double total = rsVenta.getDouble("total");
-
-            // 2️⃣ Obtener detalles de la venta - CORREGIDO
-            String sqlDetalle = """
-                SELECT p.nombre, p.codigo, dv.cantidad, dv.precio_unitario, 
-                       (dv.cantidad * dv.precio_unitario) AS subtotal
-                FROM detalle_venta dv
-                JOIN productos p ON dv.id_producto = p.idproducto
-                WHERE dv.id_venta = ?
-                """;
-
-            PreparedStatement psDetalle = conn.prepareStatement(sqlDetalle);
-            psDetalle.setInt(1, idVenta);
-            ResultSet rsDetalle = psDetalle.executeQuery();
-
-            // 3️⃣ Diálogo para guardar PDF
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Guardar ticket de venta como PDF");
-            fileChooser.setSelectedFile(new java.io.File("Ticket_Venta_" + idVenta + ".pdf"));
-
-            int userSelection = fileChooser.showSaveDialog(this);
-            if (userSelection != JFileChooser.APPROVE_OPTION) {
-                return;
-            }
-
-            java.io.File file = fileChooser.getSelectedFile();
-            String filePath = file.getAbsolutePath();
-            if (!filePath.toLowerCase().endsWith(".pdf")) {
-                filePath += ".pdf";
-            }
-
-            // 4️⃣ Generar PDF con iText
-            com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
-            com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(filePath));
-            doc.open();
-
-            // 🔹 Configurar fuentes
-            com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 16, com.itextpdf.text.Font.BOLD
-            );
-            com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
-            );
-            com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10
-            );
-            com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
-            );
-
-            // 🔹 Título
-            com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
-                    "🧾 TICKET DE VENTA - TIENDA AZULEJO", titleFont
-            );
-            title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            title.setSpacingAfter(15);
-            doc.add(title);
-
-            // 🔹 Información de la venta
-            doc.add(new com.itextpdf.text.Paragraph("Venta #: " + idVenta, normalFont));
-            doc.add(new com.itextpdf.text.Paragraph("Fecha: " + fecha, normalFont));
-            doc.add(new com.itextpdf.text.Paragraph("Cliente: " + cliente, normalFont));
-            doc.add(new com.itextpdf.text.Paragraph(" "));
-
-            // 🔹 Tabla de productos
-            com.itextpdf.text.Paragraph productosTitle = new com.itextpdf.text.Paragraph(
-                    "PRODUCTOS:", headerFont
-            );
-            productosTitle.setSpacingAfter(10);
-            doc.add(productosTitle);
-
-            com.itextpdf.text.pdf.PdfPTable tabla = new com.itextpdf.text.pdf.PdfPTable(4);
-            tabla.setWidths(new float[]{3, 1, 2, 2});
-
-            // Encabezados de tabla
-            tabla.addCell(new com.itextpdf.text.Phrase("Producto", headerFont));
-            tabla.addCell(new com.itextpdf.text.Phrase("Cant.", headerFont));
-            tabla.addCell(new com.itextpdf.text.Phrase("Precio", headerFont));
-            tabla.addCell(new com.itextpdf.text.Phrase("Subtotal", headerFont));
-
-            // Agregar productos y calcular total manualmente para verificar
-            double totalVerificado = 0;
-            while (rsDetalle.next()) {
-                String nombre = rsDetalle.getString("nombre");
-                int cantidad = rsDetalle.getInt("cantidad");
-                double precioUnitario = rsDetalle.getDouble("precio_unitario");
-                double subtotal = rsDetalle.getDouble("subtotal");
-
-                // Verificar que el cálculo sea correcto
-                double subtotalCalculado = cantidad * precioUnitario;
-                if (Math.abs(subtotal - subtotalCalculado) > 0.01) {
-                    System.out.println("⚠️ Advertencia: Subtotal no coincide para " + nombre);
-                    subtotal = subtotalCalculado;
-                }
-
-                totalVerificado += subtotal;
-
-                tabla.addCell(new com.itextpdf.text.Phrase(nombre, normalFont));
-                tabla.addCell(new com.itextpdf.text.Phrase(String.valueOf(cantidad), normalFont));
-                tabla.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", precioUnitario), normalFont));
-                tabla.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", subtotal), normalFont));
-            }
-
-            doc.add(tabla);
-            doc.add(new com.itextpdf.text.Paragraph(" "));
-
-            // 🔹 Totales y pago
-            doc.add(new com.itextpdf.text.Paragraph("---------------------------------------------"));
-            doc.add(new com.itextpdf.text.Paragraph("TOTAL: $" + String.format("%.2f", total), boldFont));
-
-            // 🔹 Verificar que el total coincida
-            if (Math.abs(total - totalVerificado) > 0.01) {
-                doc.add(new com.itextpdf.text.Paragraph(
-                        "⚠️ Nota: Total verificado: $" + String.format("%.2f", totalVerificado),
-                        new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 8)
-                ));
-            }
-
-            // 🔹 Solo mostrar monto recibido y cambio si se procesó el pago (montoRecibido > 0)
-            if (montoRecibido > 0) {
-                doc.add(new com.itextpdf.text.Paragraph("MONTO RECIBIDO: $" + String.format("%.2f", montoRecibido), normalFont));
-                doc.add(new com.itextpdf.text.Paragraph("CAMBIO: $" + String.format("%.2f", cambio), normalFont));
-            }
-
-            doc.add(new com.itextpdf.text.Paragraph(" "));
-            doc.add(new com.itextpdf.text.Paragraph("¡Gracias por su compra!", headerFont));
-            doc.add(new com.itextpdf.text.Paragraph(" "));
-
-            // 🔹 Pie de página
-            com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
-                    "Sistema de Ventas - Tienda Azulejo\n"
-                    + "Ticket generado: " + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()),
-                    normalFont
-            );
-            footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            doc.add(footer);
-
-            doc.close();
-
-            // 🔹 Mensaje de éxito
-            JOptionPane.showMessageDialog(this,
-                    "✅ Ticket generado correctamente:\n" + filePath
-                    + "\n\nVenta #" + idVenta
-                    + "\nCliente: " + cliente
-                    + "\nTotal: $" + String.format("%.2f", total)
-                    + "\nProductos: " + tabla.getRows().size() + " items"
-            );
-
-            // 🔹 Abrir PDF automáticamente
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "❌ Error al generar el ticket: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            e.printStackTrace();
-        }
-    }
 
     private int obtenerIdClienteGeneral() {
         // Buscar el cliente "PUBLICO GENERAL" en la base de datos
@@ -5162,7 +5022,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             // 🔹 LIMPIAR INTERFAZ DESPUÉS DE GUARDAR
             modelo.setRowCount(0);
             txtClientePedido.setText("");
-            txtTotalPedido.setText("0.00");
+           
 
             JOptionPane.showMessageDialog(this,
                     "✅ Pedido guardado correctamente.\n"
@@ -5355,12 +5215,12 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         tblPedido.setModel(modelo);
 
         String sql = """
-        SELECT p.id_pedido, c.nombre AS cliente, p.fecha_pedido, p.estado,
+        SELECT p.id_pedido, c.primer_nombre AS cliente, p.fecha_pedido, p.estado,
                SUM(d.cantidad * d.precio_unitario) AS total
         FROM pedido p
         JOIN clientes c ON p.id_cliente = c.id
         JOIN detalle_pedido d ON p.id_pedido = d.id_pedido
-        GROUP BY p.id_pedido, c.nombre, p.fecha_pedido, p.estado
+        GROUP BY p.id_pedido, c.primer_nombre, p.fecha_pedido, p.estado
         ORDER BY p.id_pedido DESC
     """;
 
@@ -5382,216 +5242,334 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnMostrarPedidoActionPerformed
 
-    private void btnGenerarpdfDelPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarpdfDelPedidoActionPerformed
+    private void btnGenerarpdfDelUltimoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarpdfDelUltimoPedidoActionPerformed
+       try {
+        Connection conn = ConexionBD.getConnection();
+
+        // ✅ Obtener el último pedido guardado (CONSULTA CORREGIDA)
+        String sqlUltimoPedido = """
+        SELECT p.id_pedido, c.primer_nombre AS cliente, c.telefono AS telefono, 
+               c.colonia, c.calle, c.municipio, c.referencia,
+               p.fecha_pedido, p.estado
+        FROM pedido p 
+        JOIN clientes c ON p.id_cliente = c.id 
+        ORDER BY p.id_pedido DESC 
+        LIMIT 1
+        """;
+
+        PreparedStatement psPedido = conn.prepareStatement(sqlUltimoPedido);
+        ResultSet rsPedido = psPedido.executeQuery();
+
+        if (!rsPedido.next()) {
+            JOptionPane.showMessageDialog(this, "No hay pedidos guardados en la base de datos.");
+            return;
+        }
+
+        // ✅ Obtener datos del pedido
+        int idPedido = rsPedido.getInt("id_pedido");
+        String nombreCliente = rsPedido.getString("cliente");
+        String telefonoCliente = rsPedido.getString("telefono");
+        String coloniaCliente = rsPedido.getString("colonia");
+        String calleCliente = rsPedido.getString("calle");
+        String municipioCliente = rsPedido.getString("municipio");
+        String referenciaCliente = rsPedido.getString("referencia");
+        java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
+        String estadoPedido = rsPedido.getString("estado");
+
+        // ✅ Obtener detalles del pedido
+        String sqlDetalles = """
+        SELECT dp.cantidad, dp.precio_unitario, 
+               pr.codigo, pr.nombre AS producto, pr.color, pr.dimension, pr.material
+        FROM detalle_pedido dp
+        JOIN productos pr ON dp.id_producto = pr.idproducto
+        WHERE dp.id_pedido = ?
+        """;
+
+        PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
+        psDetalles.setInt(1, idPedido);
+        ResultSet rsDetalles = psDetalles.executeQuery();
+
+        // ✅ Verificar si hay detalles
+        if (!rsDetalles.isBeforeFirst()) {
+            JOptionPane.showMessageDialog(this, 
+                "⚠️ El pedido #" + idPedido + " no tiene productos.\n" +
+                "No se puede generar un PDF sin productos.",
+                "Pedido Vacío",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // ✅ Crear diálogo para guardar PDF
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar último pedido como PDF");
+        fileChooser.setSelectedFile(new java.io.File("pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        java.io.File file = fileChooser.getSelectedFile();
+        String filePath = file.getAbsolutePath();
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+
+        // ✅ Crear el documento PDF
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
+        document.open();
+
+        // ✅ Configurar fuentes
+        com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 16, com.itextpdf.text.Font.BOLD
+        );
+
+        com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
+        );
+
+        com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10
+        );
+
+        com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
+        );
+
+        // ✅ Logo de la empresa (opcional)
         try {
-            Connection conn = ConexionBD.getConnection();
-
-            // ✅ Obtener el último pedido guardado
-            String sqlUltimoPedido = """
-            SELECT p.id_pedido, c.nombre AS cliente, c.numero AS telefono, c.direccion, 
-                   p.fecha_pedido, p.estado
-            FROM pedido p 
-            JOIN clientes c ON p.id_cliente = c.id 
-            ORDER BY p.id_pedido DESC 
-            LIMIT 1
-        """;
-
-            PreparedStatement psPedido = conn.prepareStatement(sqlUltimoPedido);
-            ResultSet rsPedido = psPedido.executeQuery();
-
-            if (!rsPedido.next()) {
-                JOptionPane.showMessageDialog(this, "No hay pedidos guardados en la base de datos.");
-                return;
-            }
-
-            // ✅ Obtener datos del pedido
-            int idPedido = rsPedido.getInt("id_pedido");
-            String nombreCliente = rsPedido.getString("cliente");
-            String telefonoCliente = rsPedido.getString("telefono");
-            String direccionCliente = rsPedido.getString("direccion");
-            java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
-            String estadoPedido = rsPedido.getString("estado");
-
-            // ✅ Obtener detalles del pedido
-            String sqlDetalles = """
-            SELECT dp.cantidad, dp.precio_unitario, 
-                   pr.codigo, pr.nombre AS producto, pr.color, pr.dimension, pr.material
-            FROM detalle_pedido dp
-            JOIN productos pr ON dp.id_producto = pr.idproducto
-            WHERE dp.id_pedido = ?
-        """;
-
-            PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
-            psDetalles.setInt(1, idPedido);
-            ResultSet rsDetalles = psDetalles.executeQuery();
-
-            // ✅ Crear diálogo para guardar PDF
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Guardar último pedido como PDF");
-            fileChooser.setSelectedFile(new java.io.File("pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
-
-            int userSelection = fileChooser.showSaveDialog(this);
-            if (userSelection != JFileChooser.APPROVE_OPTION) {
-                return;
-            }
-
-            java.io.File file = fileChooser.getSelectedFile();
-            String filePath = file.getAbsolutePath();
-            if (!filePath.toLowerCase().endsWith(".pdf")) {
-                filePath += ".pdf";
-            }
-
-            // ✅ Crear el documento PDF
-            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-            com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
-            document.open();
-
-            // ✅ Configurar fuentes
-            com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 16, com.itextpdf.text.Font.BOLD
-            );
-
-            com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
-            );
-
-            com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10
-            );
-
-            com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
-                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
-            );
-
-            // ✅ Título del pedido
-            com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
-                    "PEDIDO #" + idPedido + " - TIENDA AZULEJO", titleFont
-            );
-            title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            title.setSpacingAfter(20);
-            document.add(title);
-
-            // ✅ Información del pedido
-            com.itextpdf.text.Paragraph infoHeader = new com.itextpdf.text.Paragraph(
-                    "INFORMACIÓN DEL PEDIDO:", headerFont
-            );
-            infoHeader.setSpacingAfter(5);
-            document.add(infoHeader);
-
-            document.add(new com.itextpdf.text.Paragraph("ID Pedido: " + idPedido, normalFont));
-            document.add(new com.itextpdf.text.Paragraph("Fecha: "
-                    + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), normalFont));
-            document.add(new com.itextpdf.text.Paragraph("Estado: " + estadoPedido, normalFont));
-
-            document.add(new com.itextpdf.text.Paragraph(" ")); // Espacio
-
-            // ✅ Información del cliente
-            com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
-                    "DATOS DEL CLIENTE:", headerFont
-            );
-            clienteHeader.setSpacingAfter(5);
-            document.add(clienteHeader);
-
-            document.add(new com.itextpdf.text.Paragraph("Nombre: " + nombreCliente, normalFont));
-            document.add(new com.itextpdf.text.Paragraph("Teléfono: " + telefonoCliente, normalFont));
-            document.add(new com.itextpdf.text.Paragraph("Dirección: " + direccionCliente, normalFont));
-
-            document.add(new com.itextpdf.text.Paragraph(" ")); // Espacio
-
-            // ✅ Tabla de productos
-            com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
-                    "PRODUCTOS DEL PEDIDO:", headerFont
-            );
-            productosHeader.setSpacingAfter(10);
-            document.add(productosHeader);
-
-            String[] columnas = {"Código", "Producto", "Cantidad", "Precio Unit.", "Subtotal"};
-            com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
-            table.setWidthPercentage(100);
-
-            // ✅ Encabezados de la tabla
-            for (String columna : columnas) {
-                com.itextpdf.text.Phrase header = new com.itextpdf.text.Phrase(columna, headerFont);
-                table.addCell(header);
-            }
-
-            // ✅ Agregar productos al PDF
-            double totalPedido = 0;
-            int totalProductos = 0;
-
-            while (rsDetalles.next()) {
-                String codigo = rsDetalles.getString("codigo");
-                String producto = rsDetalles.getString("producto");
-                int cantidad = rsDetalles.getInt("cantidad");
-                double precio = rsDetalles.getDouble("precio_unitario");
-                double subtotal = cantidad * precio;
-
-                table.addCell(new com.itextpdf.text.Phrase(codigo, normalFont));
-                table.addCell(new com.itextpdf.text.Phrase(producto, normalFont));
-                table.addCell(new com.itextpdf.text.Phrase(String.valueOf(cantidad), normalFont));
-                table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", precio), normalFont));
-                table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", subtotal), normalFont));
-
-                totalPedido += subtotal;
-                totalProductos++;
-            }
-
-            document.add(table);
-
-            // ✅ Totales
-            document.add(new com.itextpdf.text.Paragraph(" ")); // Espacio
-
-            com.itextpdf.text.Paragraph totalProductosParagraph = new com.itextpdf.text.Paragraph(
-                    "Total de productos: " + totalProductos, normalFont
-            );
-            document.add(totalProductosParagraph);
-
-            com.itextpdf.text.Paragraph totalPedidoParagraph = new com.itextpdf.text.Paragraph(
-                    "TOTAL DEL PEDIDO: $" + String.format("%.2f", totalPedido), boldFont
-            );
-            totalPedidoParagraph.setSpacingBefore(5);
-            document.add(totalPedidoParagraph);
-
-            // ✅ Pie de página
-            document.add(new com.itextpdf.text.Paragraph(" ")); // Espacio
-            com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
-                    "Documento generado el: "
-                    + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()),
+            String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
+            PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
+            ResultSet rsEmpresa = psEmpresa.executeQuery();
+            
+            if (rsEmpresa.next()) {
+                String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
+                String direccionEmpresa = rsEmpresa.getString("direccion");
+                String telefonoEmpresa = rsEmpresa.getString("telefono");
+                
+                // Encabezado con información de la empresa
+                com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
+                    nombreEmpresa + "\n" +
+                    "Dirección: " + direccionEmpresa + "\n" +
+                    "Teléfono: " + telefonoEmpresa,
                     normalFont
-            );
-            footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            document.add(footer);
+                );
+                empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                empresa.setSpacingAfter(10);
+                document.add(empresa);
+            }
+            rsEmpresa.close();
+            psEmpresa.close();
+        } catch (Exception e) {
+            // Si falla, continuar sin logo
+            System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+        }
 
-            document.close();
+        // ✅ Título del pedido
+        com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
+                "PEDIDO #" + idPedido, titleFont
+        );
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        title.setSpacingAfter(15);
+        document.add(title);
 
-            // ✅ Cerrar conexiones
-            rsDetalles.close();
-            psDetalles.close();
-            rsPedido.close();
-            psPedido.close();
-            conn.close();
+        // ✅ Información del pedido
+        com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        infoTable.setWidthPercentage(100);
+        infoTable.setSpacingBefore(10);
+        infoTable.setSpacingAfter(10);
+        
+        // Configurar ancho de columnas
+        infoTable.setWidths(new float[]{30, 70});
+        
+        infoTable.addCell(new com.itextpdf.text.Phrase("Fecha:", boldFont));
+        infoTable.addCell(new com.itextpdf.text.Phrase(
+            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), normalFont));
+        
+        infoTable.addCell(new com.itextpdf.text.Phrase("Estado:", boldFont));
+        infoTable.addCell(new com.itextpdf.text.Phrase(estadoPedido, normalFont));
+        
+        document.add(infoTable);
 
-            // ✅ Mensaje de éxito
-            JOptionPane.showMessageDialog(this,
-                    "✅ PDF del último pedido generado exitosamente!\n"
-                    + "Archivo: " + filePath + "\n"
-                    + "Pedido #: " + idPedido + "\n"
-                    + "Cliente: " + nombreCliente + "\n"
-                    + "Total: $" + String.format("%.2f", totalPedido) + "\n"
-                    + "Productos: " + totalProductos);
+        // ✅ Información del cliente
+        com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
+                "INFORMACIÓN DEL CLIENTE:", headerFont
+        );
+        clienteHeader.setSpacingAfter(5);
+        document.add(clienteHeader);
+        
+        com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        clienteTable.setWidthPercentage(100);
+        clienteTable.setSpacingBefore(5);
+        clienteTable.setSpacingAfter(15);
+        clienteTable.setWidths(new float[]{30, 70});
+        
+        clienteTable.addCell(new com.itextpdf.text.Phrase("Nombre:", boldFont));
+        clienteTable.addCell(new com.itextpdf.text.Phrase(nombreCliente, normalFont));
+        
+        clienteTable.addCell(new com.itextpdf.text.Phrase("Teléfono:", boldFont));
+        clienteTable.addCell(new com.itextpdf.text.Phrase(telefonoCliente, normalFont));
+        
+        clienteTable.addCell(new com.itextpdf.text.Phrase("Dirección:", boldFont));
+        clienteTable.addCell(new com.itextpdf.text.Phrase(
+            calleCliente + ", " + coloniaCliente + ", " + municipioCliente, normalFont));
+        
+        if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
+            clienteTable.addCell(new com.itextpdf.text.Phrase("Referencia:", boldFont));
+            clienteTable.addCell(new com.itextpdf.text.Phrase(referenciaCliente, normalFont));
+        }
+        
+        document.add(clienteTable);
 
-            // ✅ Opcional: Abrir el PDF automáticamente
+        // ✅ Tabla de productos
+        com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
+                "DETALLE DE PRODUCTOS:", headerFont
+        );
+        productosHeader.setSpacingAfter(10);
+        document.add(productosHeader);
+
+        String[] columnas = {"Código", "Producto", "Cantidad", "Precio Unit.", "Subtotal"};
+        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
+        table.setWidthPercentage(100);
+        table.setSpacingBefore(5);
+        table.setSpacingAfter(15);
+        
+        // Configurar anchos de columnas
+        table.setWidths(new float[]{15, 40, 10, 15, 20});
+
+        // ✅ Encabezados de la tabla
+        for (String columna : columnas) {
+            com.itextpdf.text.Phrase header = new com.itextpdf.text.Phrase(columna, headerFont);
+            com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(header);
+            cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
+            cell.setPadding(5);
+            table.addCell(cell);
+        }
+
+        // ✅ Agregar productos al PDF
+        double totalPedido = 0;
+        int totalProductos = 0;
+
+        while (rsDetalles.next()) {
+            String codigo = rsDetalles.getString("codigo");
+            String producto = rsDetalles.getString("producto");
+            String color = rsDetalles.getString("color");
+            String dimension = rsDetalles.getString("dimension");
+            
+            // Formato del producto con detalles
+            String productoDetalle = producto;
+            if (color != null && !color.trim().isEmpty()) {
+                productoDetalle += "\nColor: " + color;
+            }
+            if (dimension != null && !dimension.trim().isEmpty()) {
+                productoDetalle += "\nDimensión: " + dimension;
+            }
+            
+            int cantidad = rsDetalles.getInt("cantidad");
+            double precio = rsDetalles.getDouble("precio_unitario");
+            double subtotal = cantidad * precio;
+
+            // Celdas con formato
+            table.addCell(new com.itextpdf.text.Phrase(codigo, normalFont));
+            
+            com.itextpdf.text.pdf.PdfPCell productoCell = new com.itextpdf.text.pdf.PdfPCell(
+                new com.itextpdf.text.Phrase(productoDetalle, normalFont));
+            productoCell.setPadding(5);
+            table.addCell(productoCell);
+            
+            table.addCell(new com.itextpdf.text.Phrase(String.valueOf(cantidad), normalFont));
+            table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", precio), normalFont));
+            table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", subtotal), normalFont));
+
+            totalPedido += subtotal;
+            totalProductos++;
+        }
+
+        document.add(table);
+
+        // ✅ Totales
+        com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        totalesTable.setWidthPercentage(100);
+        totalesTable.setSpacingBefore(10);
+        totalesTable.setSpacingAfter(20);
+        totalesTable.setWidths(new float[]{70, 30});
+        
+        totalesTable.addCell(new com.itextpdf.text.Phrase("Total de productos:", normalFont));
+        totalesTable.addCell(new com.itextpdf.text.Phrase(String.valueOf(totalProductos), normalFont));
+        
+        totalesTable.addCell(new com.itextpdf.text.Phrase("TOTAL DEL PEDIDO:", boldFont));
+        totalesTable.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", totalPedido), boldFont));
+        
+        document.add(totalesTable);
+
+        // ✅ Notas o instrucciones (opcional)
+        com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
+            "Notas:\n" +
+            "• Este pedido será procesado en un plazo de 24 a 48 horas.\n" +
+            "• Para cualquier modificación, contacte al teléfono de la empresa.\n" +
+            "• El pedido puede ser cancelado antes de su envío.",
+            normalFont
+        );
+        notas.setSpacingBefore(10);
+        document.add(notas);
+
+        // ✅ Pie de página
+        document.newPage(); // Nueva página para el pie
+        com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
+                "Documento generado el: " + 
+                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + 
+                 normalFont
+        );
+        footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        footer.setSpacingBefore(50);
+        document.add(footer);
+
+        document.close();
+
+        // ✅ Cerrar conexiones
+        rsDetalles.close();
+        psDetalles.close();
+        rsPedido.close();
+        psPedido.close();
+        conn.close();
+
+        // ✅ Mensaje de éxito con opciones
+        Object[] options = {"Abrir PDF", "Abrir carpeta", "OK"};
+        int n = JOptionPane.showOptionDialog(this,
+                "✅ PDF del pedido generado exitosamente!\n\n" +
+                "Pedido #: " + idPedido + "\n" +
+                "Cliente: " + nombreCliente + "\n" +
+                "Total: $" + String.format("%.2f", totalPedido) + "\n" +
+                "Productos: " + totalProductos + "\n" +
+                "Ubicación: " + filePath,
+                "PDF Generado",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (n == 0) { // Abrir PDF
             if (java.awt.Desktop.isDesktopSupported()) {
                 java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
             }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "❌ Error al generar PDF del último pedido: " + e.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        } else if (n == 1) { // Abrir carpeta
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
+            }
         }
-    }//GEN-LAST:event_btnGenerarpdfDelPedidoActionPerformed
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnGenerarpdfDelUltimoPedidoActionPerformed
 
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
         // TODO add your handling code here:
@@ -6154,14 +6132,14 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         }
 
         try (Connection conn = ConexionBD.getConnection()) {
-            // 1️⃣ Obtener información general de la venta CON PAGO
+            // 1️⃣ Obtener información general de la venta
             String sqlVenta = """
-        SELECT v.id_venta, v.fecha_venta, c.primer_nombre AS cliente, 
-               v.total, v.monto_recibido, v.cambio
-        FROM venta v
-        JOIN clientes c ON v.id_cliente = c.id
-        WHERE v.id_venta = ?
-        """;
+            SELECT v.id_venta, v.fecha_venta, c.primer_nombre AS cliente, 
+                   v.total, v.monto_recibido, v.cambio, v.estado_pago
+            FROM venta v
+            JOIN clientes c ON v.id_cliente = c.id
+            WHERE v.id_venta = ?
+            """;
 
             PreparedStatement psVenta = conn.prepareStatement(sqlVenta);
             psVenta.setInt(1, ultimaVentaId);
@@ -6177,21 +6155,39 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             double total = rsVenta.getDouble("total");
             double montoRecibido = rsVenta.getDouble("monto_recibido");
             double cambio = rsVenta.getDouble("cambio");
+            String estadoPago = rsVenta.getString("estado_pago");
 
             // 2️⃣ Obtener detalles de la venta
             String sqlDetalle = """
-        SELECT p.nombre, p.codigo, dv.cantidad, dv.precio_unitario, 
-               (dv.cantidad * dv.precio_unitario) AS subtotal
-        FROM detalle_venta dv
-        JOIN productos p ON dv.id_producto = p.idproducto
-        WHERE dv.id_venta = ?
-        """;
+            SELECT p.nombre, p.codigo, dv.cantidad, dv.precio_unitario, 
+                   (dv.cantidad * dv.precio_unitario) AS subtotal
+            FROM detalle_venta dv
+            JOIN productos p ON dv.id_producto = p.idproducto
+            WHERE dv.id_venta = ?
+            """;
 
             PreparedStatement psDetalle = conn.prepareStatement(sqlDetalle);
             psDetalle.setInt(1, ultimaVentaId);
             ResultSet rsDetalle = psDetalle.executeQuery();
 
-            // 3️⃣ Diálogo para guardar PDF
+            // 3️⃣ Verificar si la venta tiene pago
+            if ("PENDIENTE".equals(estadoPago)) {
+                int respuesta = JOptionPane.showConfirmDialog(this,
+                        "⚠️ Esta venta está marcada como PENDIENTE.\n\n"
+                        + "¿Desea procesar el pago ahora?",
+                        "Pago Pendiente",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    // Llamar al método para procesar el pago
+                    procesarPagoVenta(ultimaVentaId, total);
+                    return; // Salir para que el usuario vuelva a generar el ticket
+                }
+            }
+
+            // 4️⃣ Diálogo para guardar PDF
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDialogTitle("Guardar ticket de venta como PDF");
             fileChooser.setSelectedFile(new java.io.File("Ticket_Venta_" + ultimaVentaId + ".pdf"));
@@ -6207,7 +6203,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 filePath += ".pdf";
             }
 
-            // 4️⃣ Generar PDF con iText
+            // 5️⃣ Generar PDF con iText
             com.itextpdf.text.Document doc = new com.itextpdf.text.Document();
             com.itextpdf.text.pdf.PdfWriter.getInstance(doc, new java.io.FileOutputStream(filePath));
             doc.open();
@@ -6238,6 +6234,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             doc.add(new com.itextpdf.text.Paragraph("Venta #: " + ultimaVentaId, normalFont));
             doc.add(new com.itextpdf.text.Paragraph("Fecha: " + fecha, normalFont));
             doc.add(new com.itextpdf.text.Paragraph("Cliente: " + cliente, normalFont));
+            doc.add(new com.itextpdf.text.Paragraph("Estado: " + estadoPago, normalFont));
             doc.add(new com.itextpdf.text.Paragraph(" "));
 
             // 🔹 Tabla de productos
@@ -6274,6 +6271,9 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             if (montoRecibido > 0) {
                 doc.add(new com.itextpdf.text.Paragraph("MONTO RECIBIDO: $" + String.format("%.2f", montoRecibido), normalFont));
                 doc.add(new com.itextpdf.text.Paragraph("CAMBIO: $" + String.format("%.2f", cambio), normalFont));
+                doc.add(new com.itextpdf.text.Paragraph("ESTADO: PAGADO", boldFont));
+            } else {
+                doc.add(new com.itextpdf.text.Paragraph("ESTADO: PENDIENTE DE PAGO", boldFont));
             }
 
             doc.add(new com.itextpdf.text.Paragraph(" "));
@@ -6297,6 +6297,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                     + "\n\nVenta #" + ultimaVentaId
                     + "\nCliente: " + cliente
                     + "\nTotal: $" + String.format("%.2f", total)
+                    + "\nEstado: " + estadoPago
             );
 
             // 🔹 Abrir PDF automáticamente
@@ -6489,78 +6490,649 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         // TODO add your handling code here:
+        txtIdProveedor.setText("");
+        txtNombreProveedor.setText("");
+        txtNombreContacto.setText("");
+        txtTelefonoProveedor.setText("");
+        txtTelefonoProveedor2.setText("");
+        txtCorreoProveedor.setText("");
+        txtRFCProveedor.setText("");
+        txtTelefonoProveedor2.setText("");
+        txtColoniaProveedor.setText("");
+        txtCalleProveedor.setText("");
+        txtNumeroInteriorProveedor.setText("");
+        txtNumeroExteriorProveedor.setText("");
+        txtMunicipioProveedor.setText("");
+        txtCiudadProveedor.setText("");
+        txtCodigoPostalProveedor.setText("");
+        txtReferenciaProveedor.setText("");
+
+
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
-    private void btnEliminarBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarBDActionPerformed
+    private void btnGenerarPdfDelPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPdfDelPedidoActionPerformed
         // TODO add your handling code here:
-        int confirmacion = JOptionPane.showConfirmDialog(
-                this,
-                "⚠ ADVERTENCIA CRÍTICA ⚠\n\n"
-                + "Esta acción eliminará TODOS los datos de TODAS las tablas.\n"
-                + "La base de datos quedará completamente vacía.\n\n"
-                + "¿Desea continuar?",
-                "Vaciar base de datos completa",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE
+        // Verificar si hay una fila seleccionada en la tabla
+    int filaSeleccionada = tblPedido.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Debe seleccionar un pedido de la tabla para generar el PDF.",
+            "Selección requerida",
+            JOptionPane.WARNING_MESSAGE
         );
+        return;
+    }
+    
+    try {
+        // Obtener el ID del pedido seleccionado
+        int idPedido = Integer.parseInt(tblPedido.getValueAt(filaSeleccionada, 0).toString());
+        
+        Connection conn = ConexionBD.getConnection();
 
-        if (confirmacion != JOptionPane.YES_OPTION) {
+        // ✅ Obtener datos del pedido seleccionado
+        String sqlPedido = """
+        SELECT p.id_pedido, c.primer_nombre AS cliente, c.telefono AS telefono, 
+               c.colonia, c.calle, c.municipio, c.referencia,
+               p.fecha_pedido, p.estado
+        FROM pedido p 
+        JOIN clientes c ON p.id_cliente = c.id 
+        WHERE p.id_pedido = ?
+        """;
+
+        PreparedStatement psPedido = conn.prepareStatement(sqlPedido);
+        psPedido.setInt(1, idPedido);
+        ResultSet rsPedido = psPedido.executeQuery();
+
+        if (!rsPedido.next()) {
+            JOptionPane.showMessageDialog(this, 
+                "❌ No se encontró el pedido #" + idPedido + " en la base de datos.",
+                "Pedido no encontrado",
+                JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 
-        Connection conn = null;
-        Statement stmt = null;
+        // ✅ Obtener datos del pedido
+        String nombreCliente = rsPedido.getString("cliente");
+        String telefonoCliente = rsPedido.getString("telefono");
+        String coloniaCliente = rsPedido.getString("colonia");
+        String calleCliente = rsPedido.getString("calle");
+        String municipioCliente = rsPedido.getString("municipio");
+        String referenciaCliente = rsPedido.getString("referencia");
+        java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
+        String estadoPedido = rsPedido.getString("estado");
 
+        // ✅ Obtener detalles del pedido
+        String sqlDetalles = """
+        SELECT dp.cantidad, dp.precio_unitario, 
+               pr.codigo, pr.nombre AS producto, pr.color, pr.dimension, pr.material
+        FROM detalle_pedido dp
+        JOIN productos pr ON dp.id_producto = pr.idproducto
+        WHERE dp.id_pedido = ?
+        ORDER BY pr.nombre
+        """;
+
+        PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
+        psDetalles.setInt(1, idPedido);
+        ResultSet rsDetalles = psDetalles.executeQuery();
+
+        // ✅ Verificar si hay detalles
+        if (!rsDetalles.isBeforeFirst()) {
+            JOptionPane.showMessageDialog(this, 
+                "⚠️ El pedido #" + idPedido + " no tiene productos.\n" +
+                "No se puede generar un PDF sin productos.",
+                "Pedido Vacío",
+                JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        // ✅ Crear diálogo para guardar PDF
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar Pedido #" + idPedido + " como PDF");
+        fileChooser.setSelectedFile(new java.io.File("Pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
+
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        java.io.File file = fileChooser.getSelectedFile();
+        String filePath = file.getAbsolutePath();
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+
+        // ✅ Crear el documento PDF
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
+        document.open();
+
+        // ✅ Configurar fuentes
+        com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
+        );
+
+        com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
+        );
+
+        com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10
+        );
+
+        com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
+        );
+
+        com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 8
+        );
+
+        // ✅ Logo o encabezado de empresa
         try {
-            conn = ConexionBD.getConnection();
-            stmt = conn.createStatement();
+            String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
+            PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
+            ResultSet rsEmpresa = psEmpresa.executeQuery();
+            
+            if (rsEmpresa.next()) {
+                String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
+                String direccionEmpresa = rsEmpresa.getString("direccion");
+                String telefonoEmpresa = rsEmpresa.getString("telefono");
+                
+                // Encabezado con información de la empresa
+                com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
+                    nombreEmpresa.toUpperCase() + "\n" +
+                    "Dirección: " + direccionEmpresa + "\n" +
+                    "Teléfono: " + telefonoEmpresa,
+                    normalFont
+                );
+                empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                empresa.setSpacingAfter(15);
+                document.add(empresa);
+            }
+            rsEmpresa.close();
+            psEmpresa.close();
+        } catch (Exception e) {
+            System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+        }
 
-            // Desactivar llaves foráneas
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 0");
+        // ✅ Línea separadora
+        com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
+            "_________________________________________________________________________");
+        separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        document.add(separator);
 
-            // ======= LISTA DE TABLAS =======
-            stmt.executeUpdate("TRUNCATE TABLE categorias");
-            stmt.executeUpdate("TRUNCATE TABLE clientes");
-            stmt.executeUpdate("TRUNCATE TABLE detalle_pedido");
-            stmt.executeUpdate("TRUNCATE TABLE detalle_venta");
-            stmt.executeUpdate("TRUNCATE TABLE informacion_empresa");
-            stmt.executeUpdate("TRUNCATE TABLE pedido");
-            stmt.executeUpdate("TRUNCATE TABLE productos");
-            stmt.executeUpdate("TRUNCATE TABLE proveedores");
-            stmt.executeUpdate("TRUNCATE TABLE venta");
-            stmt.executeUpdate("TRUNCATE TABLE venta_exitosa");
-         // AGREGA AQUÍ TODAS LAS TABLAS DE TU BD
+        // ✅ Título del pedido
+        com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
+                "ORDEN DE PEDIDO #" + idPedido, titleFont
+        );
+        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        title.setSpacingBefore(10);
+        title.setSpacingAfter(20);
+        document.add(title);
 
-            // Reactivar llaves foráneas
-            stmt.execute("SET FOREIGN_KEY_CHECKS = 1");
+        // ✅ Información general del pedido
+        com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        infoTable.setWidthPercentage(100);
+        infoTable.setSpacingBefore(10);
+        infoTable.setSpacingAfter(15);
+        infoTable.setWidths(new float[]{25, 75});
+        
+        // Fecha
+        infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        infoTable.addCell(crearCelda(
+            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), 
+            normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        // Estado
+        infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
+        if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
+            estadoPhrase.setFont(new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
+            ));
+        } else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
+            estadoPhrase.setFont(new com.itextpdf.text.Font(
+                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
+            ));
+        }
+        infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        document.add(infoTable);
 
-            // Limpiar tablas visuales
-            limpiarTodasLasTablas();
+        // ✅ Información del cliente
+        com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
+                "INFORMACIÓN DEL CLIENTE", headerFont
+        );
+        clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        clienteHeader.setSpacingAfter(8);
+        document.add(clienteHeader);
+        
+        com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        clienteTable.setWidthPercentage(100);
+        clienteTable.setSpacingBefore(5);
+        clienteTable.setSpacingAfter(20);
+        clienteTable.setWidths(new float[]{25, 75});
+        
+        // Nombre
+        clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        // Teléfono
+        clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        // Dirección completa
+        clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        String direccionCompleta = calleCliente;
+        if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
+            direccionCompleta += ", " + coloniaCliente;
+        }
+        if (municipioCliente != null && !municipioCliente.isEmpty()) {
+            direccionCompleta += ", " + municipioCliente;
+        }
+        clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        
+        // Referencia (si existe)
+        if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
+            clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+        }
+        
+        document.add(clienteTable);
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "La base de datos fue vaciada completamente con éxito."
-            );
+        // ✅ Tabla de productos
+        com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
+                "DETALLE DE PRODUCTOS", headerFont
+        );
+        productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+        productosHeader.setSpacingAfter(10);
+        document.add(productosHeader);
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Error al vaciar la base de datos: " + e.getMessage()
-            );
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        // Crear tabla con 6 columnas (añadimos columna para características)
+        String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
+        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
+        table.setWidthPercentage(100);
+        table.setSpacingBefore(5);
+        table.setSpacingAfter(20);
+        
+        // Configurar anchos de columnas
+        table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
+
+        // ✅ Encabezados de la tabla con color
+        for (String columna : columnas) {
+            com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
+                new com.itextpdf.text.Phrase(columna, headerFont));
+            cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
+            cell.setPadding(5);
+            cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            table.addCell(cell);
+        }
+
+        // ✅ Agregar productos al PDF
+        double totalPedido = 0;
+        int totalProductos = 0;
+        int contador = 1;
+
+        while (rsDetalles.next()) {
+            String codigo = rsDetalles.getString("codigo");
+            String producto = rsDetalles.getString("producto");
+            String color = rsDetalles.getString("color");
+            String dimension = rsDetalles.getString("dimension");
+            String material = rsDetalles.getString("material");
+            
+            int cantidad = rsDetalles.getInt("cantidad");
+            double precio = rsDetalles.getDouble("precio_unitario");
+            double subtotal = cantidad * precio;
+
+            // Número de producto
+            table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+            
+            // Código
+            table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+            
+            // Producto con detalles
+            StringBuilder productoDetalle = new StringBuilder(producto);
+            if (color != null && !color.trim().isEmpty()) {
+                productoDetalle.append("\n").append("Color: ").append(color);
+            }
+            if (dimension != null && !dimension.trim().isEmpty()) {
+                productoDetalle.append("\n").append("Dimensión: ").append(dimension);
+            }
+            if (material != null && !material.trim().isEmpty()) {
+                productoDetalle.append("\n").append("Material: ").append(material);
+            }
+            
+            table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            
+            // Cantidad
+            table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+            
+            // Precio unitario
+            table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+            
+            // Subtotal
+            table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+            totalPedido += subtotal;
+            totalProductos += cantidad;
+        }
+
+        document.add(table);
+
+        // ✅ Totales
+        com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
+        totalesTable.setWidthPercentage(50);
+        totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        totalesTable.setSpacingBefore(10);
+        totalesTable.setSpacingAfter(20);
+        totalesTable.setWidths(new float[]{60, 40});
+        
+        // Total productos
+        totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+        totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+        
+        // Total del pedido
+        totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:", 
+            new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+            com.itextpdf.text.Element.ALIGN_RIGHT));
+        totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
+            new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+            com.itextpdf.text.Element.ALIGN_RIGHT));
+        
+        document.add(totalesTable);
+
+        // ✅ Notas o instrucciones
+        com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
+            "INSTRUCCIONES Y NOTAS:\n\n" +
+            "1. Este pedido será procesado según la disponibilidad de stock.\n" +
+            "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n" +
+            "3. El pedido puede ser cancelado antes de su preparación.\n" +
+            "4. Los precios están expresados en pesos mexicanos (MXN).\n" +
+            "5. Los tiempos de entrega varían según la ubicación.",
+            normalFont
+        );
+        notas.setSpacingBefore(10);
+        notas.setSpacingAfter(20);
+        document.add(notas);
+
+        // ✅ Firma
+        com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
+            "__________________________\n" +
+            "Firma del Responsable\n" +
+            "TIENDA AZULEJO",
+            normalFont
+        );
+        firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+        firma.setSpacingBefore(30);
+        document.add(firma);
+
+        // ✅ Pie de página
+        com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
+                "Documento generado: " + 
+                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
+                " | Pedido #" + idPedido,
+                smallFont
+        );
+        footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        footer.setSpacingBefore(30);
+        document.add(footer);
+
+        document.close();
+
+        // ✅ Cerrar conexiones
+        rsDetalles.close();
+        psDetalles.close();
+        rsPedido.close();
+        psPedido.close();
+        conn.close();
+
+        // ✅ Mensaje de éxito con opciones
+        Object[] options = {"📄 Abrir PDF", "📂 Abrir carpeta", "✅ Aceptar"};
+        int opcion = JOptionPane.showOptionDialog(this,
+                "✅ PDF generado exitosamente!\n\n" +
+                "📋 Pedido: #" + idPedido + "\n" +
+                "👤 Cliente: " + nombreCliente + "\n" +
+                "💰 Total: $" + String.format("%.2f", totalPedido) + "\n" +
+                "📦 Productos: " + totalProductos + " unidades\n" +
+                "📂 Ubicación: " + file.getName(),
+                "PDF Generado - Pedido #" + idPedido,
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        if (opcion == 0) { // Abrir PDF
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
+            }
+        } else if (opcion == 1) { // Abrir carpeta
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
             }
         }
-    }//GEN-LAST:event_btnEliminarBDActionPerformed
 
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this,
+                "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace();
+    }
+}
+
+// 🔹 Método auxiliar para crear celdas de tabla con formato
+private com.itextpdf.text.pdf.PdfPCell crearCelda(String texto, com.itextpdf.text.Font font, int alineacion) {
+    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Phrase(texto, font));
+    cell.setPadding(5);
+    cell.setHorizontalAlignment(alineacion);
+    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+    return cell;
+}
+
+// 🔹 Método auxiliar sobrecargado para Phrase
+private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phrase, int alineacion) {
+    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(phrase);
+    cell.setPadding(5);
+    cell.setHorizontalAlignment(alineacion);
+    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+    return cell;
+    }//GEN-LAST:event_btnGenerarPdfDelPedidoActionPerformed
+
+    private void BuscarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPedidoActionPerformed
+     // Obtener el ID del pedido a buscar
+    String idPedidoStr = txtIdPedido.getText().trim();
+    
+    // Validar que no esté vacío
+    if (idPedidoStr.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+            "⚠️ Ingrese un ID de pedido para buscar.",
+            "Campo vacío",
+            JOptionPane.WARNING_MESSAGE
+        );
+        txtIdPedido.requestFocus();
+        return;
+    }
+    
+    // Validar que sea un número válido
+    int idPedido;
+    try {
+        idPedido = Integer.parseInt(idPedidoStr);
+        if (idPedido <= 0) {
+            JOptionPane.showMessageDialog(this,
+                "❌ El ID del pedido debe ser un número positivo.",
+                "ID inválido",
+                JOptionPane.ERROR_MESSAGE
+            );
+            txtIdPedido.requestFocus();
+            txtIdPedido.selectAll();
+            return;
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+            "❌ El ID del pedido debe ser un número válido.\n" +
+            "Ejemplo: 123, 45, 100",
+            "ID inválido",
+            JOptionPane.ERROR_MESSAGE
+        );
+        txtIdPedido.requestFocus();
+        txtIdPedido.selectAll();
+        return;
+    }
+    
+    // Buscar el pedido en la base de datos
+    try (Connection conn = ConexionBD.getConnection()) {
+        // Verificar si existe el pedido
+        String sqlExiste = "SELECT COUNT(*) AS count FROM pedido WHERE id_pedido = ?";
+        PreparedStatement psExiste = conn.prepareStatement(sqlExiste);
+        psExiste.setInt(1, idPedido);
+        ResultSet rsExiste = psExiste.executeQuery();
+        
+        rsExiste.next();
+        int existe = rsExiste.getInt("count");
+        rsExiste.close();
+        psExiste.close();
+        
+        if (existe == 0) {
+            JOptionPane.showMessageDialog(this,
+                "❌ No se encontró el pedido #" + idPedido + ".\n" +
+                "Verifique el ID e intente nuevamente.",
+                "Pedido no encontrado",
+                JOptionPane.ERROR_MESSAGE
+            );
+            txtIdPedido.requestFocus();
+            txtIdPedido.selectAll();
+            return;
+        }
+        
+        // 🔍 OPCIÓN 1: Si estás cargando todos los pedidos en la tabla y solo quieres seleccionar
+        boolean encontrado = false;
+        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
+        
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            try {
+                int idEnTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+                if (idEnTabla == idPedido) {
+                    // Seleccionar la fila encontrada
+                    tblPedido.setRowSelectionInterval(i, i);
+                    tblPedido.scrollRectToVisible(tblPedido.getCellRect(i, 0, true));
+                    encontrado = true;
+                    
+                    // Mostrar mensaje de éxito
+                    JOptionPane.showMessageDialog(this,
+                        "✅ Pedido #" + idPedido + " encontrado.\n" +
+                        "Fila seleccionada: " + (i + 1),
+                        "Búsqueda exitosa",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    break;
+                }
+            } catch (Exception e) {
+                // Si hay error al parsear, continuar con la siguiente fila
+                continue;
+            }
+        }
+        
+        if (!encontrado) {
+            // 🔍 OPCIÓN 2: Si el pedido no está en la tabla actual, cargar solo ese pedido
+            int respuesta = JOptionPane.showConfirmDialog(this,
+                "El pedido #" + idPedido + " no está en la vista actual.\n" +
+                "¿Desea cargar solo este pedido?",
+                "Pedido no en vista",
+                JOptionPane.YES_NO_OPTION
+            );
+            
+            if (respuesta == JOptionPane.YES_OPTION) {
+                cargarPedidoEspecifico(idPedido);
+            }
+        }
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al buscar el pedido:\n" + e.getMessage(),
+            "Error de base de datos",
+            JOptionPane.ERROR_MESSAGE
+        );
+        e.printStackTrace();
+    }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BuscarPedidoActionPerformed
+// 🔹 Método para cargar un pedido específico en la tabla
+private void cargarPedidoEspecifico(int idPedido) {
+    try (Connection conn = ConexionBD.getConnection()) {
+        // Consulta para obtener el pedido específico
+        String sqlPedido = """
+            SELECT p.id_pedido, 
+                   CONCAT(c.primer_nombre, ' ', c.apellido_paterno) AS cliente,
+                   p.fecha_pedido, 
+                   p.estado,
+                   COUNT(dp.id_detalle) AS productos,
+                   SUM(dp.cantidad * dp.precio_unitario) AS total
+            FROM pedido p
+            JOIN clientes c ON p.id_cliente = c.id
+            LEFT JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
+            WHERE p.id_pedido = ?
+            GROUP BY p.id_pedido, c.primer_nombre, c.apellido_paterno, p.fecha_pedido, p.estado
+            """;
+        
+        PreparedStatement ps = conn.prepareStatement(sqlPedido);
+        ps.setInt(1, idPedido);
+        ResultSet rs = ps.executeQuery();
+        
+        // Limpiar la tabla actual
+        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
+        modelo.setRowCount(0);
+        
+        // Agregar el pedido encontrado
+        if (rs.next()) {
+            Object[] fila = {
+                rs.getInt("id_pedido"),
+                rs.getString("cliente"),
+                rs.getTimestamp("fecha_pedido"),
+                rs.getString("estado"),
+                rs.getInt("productos"),
+                String.format("$%.2f", rs.getDouble("total"))
+            };
+            modelo.addRow(fila);
+            
+            // Seleccionar la única fila
+            tblPedido.setRowSelectionInterval(0, 0);
+            
+            JOptionPane.showMessageDialog(this,
+                "✅ Pedido #" + idPedido + " cargado.\n" +
+                "Cliente: " + rs.getString("cliente") + "\n" +
+                "Estado: " + rs.getString("estado"),
+                "Pedido cargado",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+        
+        rs.close();
+        ps.close();
+        
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this,
+            "❌ Error al cargar el pedido:\n" + e.getMessage(),
+            "Error de base de datos",
+            JOptionPane.ERROR_MESSAGE
+        );
+        e.printStackTrace();
+    }
+}
+
+// 🔹 También puedes agregar este método para manejar la tecla ENTER en el campo de búsqueda
+private void txtIdPedidoKeyPressed(java.awt.event.KeyEvent evt) {
+    if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+        BuscarPedidoActionPerformed(null);
+    }
+}
     private void cambiarVista(JPanel jPanel) {
         jPanel.setSize(jPanelPrincipal.getWidth(), jPanelPrincipal.getHeight());
         jPanelPrincipal.removeAll();
@@ -6689,6 +7261,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton BuscarClientePedido;
+    private javax.swing.JButton BuscarPedido;
     private javax.swing.JButton BuscarProductoPedido;
     private javax.swing.JButton brnBorrarProducto;
     private javax.swing.JButton btnActualizarCliente;
@@ -6711,17 +7284,17 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarProducto;
     private javax.swing.JButton btnEditarProveedor;
     private javax.swing.JButton btnEditarUsuario;
-    private javax.swing.JButton btnEliminarBD;
     private javax.swing.JButton btnEliminarCliente;
     private javax.swing.JButton btnEliminarPedido;
     private javax.swing.JButton btnEliminarProveedor;
     private javax.swing.JButton btnEliminarUsuario;
     private javax.swing.JButton btnEliminarVenta;
     private javax.swing.JToggleButton btnExportarpdfPedido;
+    private javax.swing.JButton btnGenerarPdfDelPedido;
     private javax.swing.JToggleButton btnGenerarReporte;
     private javax.swing.JToggleButton btnGenerarReporteVentas;
     private javax.swing.JButton btnGenerarVenta;
-    private javax.swing.JToggleButton btnGenerarpdfDelPedido;
+    private javax.swing.JToggleButton btnGenerarpdfDelUltimoPedido;
     private javax.swing.JToggleButton btnGenerarpdfVenta;
     private javax.swing.JButton btnGuardarPedido;
     private javax.swing.JButton btnGuardarVenta;
@@ -6763,6 +7336,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
@@ -6836,6 +7410,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuReportes;
     private javax.swing.JMenu jMenuUsuarios;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
@@ -6913,6 +7488,7 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JTextField txtFechaVenta;
     private javax.swing.JTextField txtHoraVenta;
     private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIdPedido;
     private javax.swing.JTextField txtIdProveedor;
     private javax.swing.JTextField txtMaterialPedido;
     private javax.swing.JTextField txtMaterialProducto;
@@ -6950,7 +7526,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefonoProveedor2;
     private javax.swing.JTextField txtTotal;
     private javax.swing.JTextField txtTotalAPagarVenta;
-    private javax.swing.JTextField txtTotalPedido;
     // End of variables declaration//GEN-END:variables
 
     ////////////////////////////CARGAR DATOS  DE BD EN LA TABLA////////////////////////////////////////
