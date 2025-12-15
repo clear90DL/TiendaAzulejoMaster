@@ -3079,17 +3079,17 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Component id="btnNuevaVenta" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnGenerarVenta" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btnImporte" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnRecibo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btnCancelarVenta" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="15" max="32767" attributes="0"/>
+                          <EmptySpace pref="33" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -3773,19 +3773,14 @@
                           <Component id="jPanel17" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jPanel16" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jPanel10" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="btnGuardarPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnMostrarPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnGenerarPdfDelPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="btnGenerarpdfDelUltimoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                          <Component id="jPanel10" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="btnGuardarPedido" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnMostrarPedido" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnGenerarPdfDelPedido" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnGenerarpdfDelUltimoPedido" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>

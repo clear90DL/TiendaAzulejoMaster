@@ -16,14 +16,23 @@ import com.todocodeacademy.login.logica.Productos;
 import com.todocodeacademy.login.logica.Proveedor;
 import com.todocodeacademy.login.logica.Rol;
 import com.todocodeacademy.login.logica.Usuario;
+import java.awt.BorderLayout;
 import java.awt.Desktop;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -34,12 +43,16 @@ import java.util.HashSet;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -1768,17 +1781,17 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(18, 18, 18)
                 .addComponent(btnNuevaVenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnGenerarVenta)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnImporte)
                 .addGap(18, 18, 18)
                 .addComponent(btnRecibo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancelarVenta)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         jPanelVentas.add(jPanel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 230, 250, 300));
@@ -2480,17 +2493,14 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelPedidoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnGuardarPedido)
-                            .addComponent(btnMostrarPedido)
-                            .addComponent(btnGenerarPdfDelPedido)
-                            .addComponent(btnGenerarpdfDelUltimoPedido))))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelPedidoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnGuardarPedido)
+                        .addComponent(btnMostrarPedido)
+                        .addComponent(btnGenerarPdfDelPedido)
+                        .addComponent(btnGenerarpdfDelUltimoPedido)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(16, Short.MAX_VALUE))
@@ -4688,39 +4698,197 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private void btnCopiaDeSeguridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiaDeSeguridadActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar copia de seguridad");
-        fileChooser.setSelectedFile(new File("backup.sql")); // nombre por defecto
-
-        int seleccion = fileChooser.showSaveDialog(this);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File archivo = fileChooser.getSelectedFile();
-            String rutaBackup = archivo.getAbsolutePath();
-
-            try {
-
-                String usuario = "root";
-                String contrasenia = ""; //  password
-                String nombreBD = "login"; //  nombre de base de datos
-
-                // Comando mysqldump
-                String comando = "mysqldump -u" + usuario
-                        + (contrasenia.isEmpty() ? "" : " -p" + contrasenia)
-                        + " " + nombreBD + " -r \"" + rutaBackup + "\"";
-
-                Process p = Runtime.getRuntime().exec(comando);
-                int proceso = p.waitFor();
-
-                if (proceso == 0) {
-                    JOptionPane.showMessageDialog(this, "✅ Copia de seguridad creada exitosamente:\n" + rutaBackup);
-                } else {
-                    JOptionPane.showMessageDialog(this, "❌ Error al crear copia de seguridad");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage());
-            }
+    fileChooser.setDialogTitle("Guardar copia de seguridad");
+    fileChooser.setSelectedFile(new File("backup_" + 
+        new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".sql"));
+    
+    int seleccion = fileChooser.showSaveDialog(this);
+    if (seleccion == JFileChooser.APPROVE_OPTION) {
+        File archivo = fileChooser.getSelectedFile();
+        String ruta = archivo.getAbsolutePath();
+        
+        if (!ruta.toLowerCase().endsWith(".sql")) {
+            ruta += ".sql";
         }
+        
+        final String rutaBackup = ruta;
+        
+        // Mostrar diálogo de progreso
+        JDialog progressDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
+            "Creando copia de seguridad", true);
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        JLabel label = new JLabel("Creando backup...", SwingConstants.CENTER);
+        progressDialog.setLayout(new BorderLayout());
+        progressDialog.add(label, BorderLayout.NORTH);
+        progressDialog.add(progressBar, BorderLayout.CENTER);
+        progressDialog.setSize(300, 100);
+        progressDialog.setLocationRelativeTo(this);
+        
+        new Thread(() -> {
+            SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+            
+            Connection conn = null;
+            Statement stmt = null;
+            BufferedWriter writer = null;
+            
+            try {
+                // Conexión a la base de datos
+                conn = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/login", "root", "");
+                stmt = conn.createStatement();
+                writer = new BufferedWriter(new FileWriter(rutaBackup));
+                
+                // Añadir cabecera
+                writer.write("-- Backup creado: " + new Date() + "\n");
+                writer.write("-- Base de datos: login\n");
+                writer.write("SET FOREIGN_KEY_CHECKS=0;\n\n");
+                
+                // Obtener solo las tablas de usuario (excluyendo tablas del sistema)
+                List<String> userTables = new ArrayList<>();
+                
+                // Método 1: Usar SHOW TABLES que solo muestra tablas de usuario
+                ResultSet tablesRs = stmt.executeQuery("SHOW TABLES");
+                while (tablesRs.next()) {
+                    String tableName = tablesRs.getString(1);
+                    // Filtrar tablas de sistema (phpMyAdmin, información_schema, etc.)
+                    if (!tableName.startsWith("pma__") && 
+                        !tableName.startsWith("sys_") && 
+                        !tableName.equals("information_schema") && 
+                        !tableName.equals("performance_schema") && 
+                        !tableName.equals("mysql")) {
+                        userTables.add(tableName);
+                    }
+                }
+                
+                // Si no hay tablas, usar método alternativo
+                if (userTables.isEmpty()) {
+                    ResultSet tablesMeta = conn.getMetaData().getTables(null, null, "%", 
+                        new String[]{"TABLE"});
+                    while (tablesMeta.next()) {
+                        String tableName = tablesMeta.getString("TABLE_NAME");
+                        if (!tableName.startsWith("pma__")) {
+                            userTables.add(tableName);
+                        }
+                    }
+                }
+                
+                // Si aún no hay tablas, mostrar mensaje
+                if (userTables.isEmpty()) {
+                    SwingUtilities.invokeLater(() -> {
+                        progressDialog.dispose();
+                        JOptionPane.showMessageDialog(this,
+                            "⚠ No se encontraron tablas en la base de datos 'login'",
+                            "Advertencia",
+                            JOptionPane.WARNING_MESSAGE);
+                    });
+                    return;
+                }
+                
+                // Procesar cada tabla
+                int totalTables = userTables.size();
+                int processedTables = 0;
+                
+                for (String tableName : userTables) {
+                    processedTables++;
+                    SwingUtilities.invokeLater(() -> {
+                        label.setText("Procesando tabla  de " + totalTables);
+                    });
+                    
+                    try {
+                        // Crear DROP TABLE
+                        writer.write("-- --------------------------------------------------------\n");
+                        writer.write("-- Tabla: " + tableName + "\n");
+                        writer.write("-- --------------------------------------------------------\n");
+                        writer.write("DROP TABLE IF EXISTS `" + tableName + "`;\n");
+                        
+                        // Obtener estructura de la tabla
+                        ResultSet createTableRs = stmt.executeQuery(
+                            "SHOW CREATE TABLE `" + tableName + "`");
+                        
+                        if (createTableRs.next()) {
+                            String createStatement = createTableRs.getString(2);
+                            writer.write(createStatement + ";\n\n");
+                        }
+                        
+                        // Obtener datos de la tabla
+                        writer.write("-- Datos de la tabla " + tableName + "\n");
+                        writer.write("LOCK TABLES `" + tableName + "` WRITE;\n");
+                        writer.write("/*!40000 ALTER TABLE `" + tableName + "` DISABLE KEYS */;\n");
+                        
+                        ResultSet dataRs = stmt.executeQuery("SELECT * FROM `" + tableName + "`");
+                        ResultSetMetaData meta = dataRs.getMetaData();
+                        int columnCount = meta.getColumnCount();
+                        
+                        int rowCount = 0;
+                        while (dataRs.next()) {
+                            writer.write("INSERT INTO `" + tableName + "` VALUES (");
+                            for (int i = 1; i <= columnCount; i++) {
+                                String value = dataRs.getString(i);
+                                if (dataRs.wasNull()) {
+                                    writer.write("NULL");
+                                } else {
+                                    // Escapar comillas simples
+                                    value = value.replace("'", "''");
+                                    writer.write("'" + value + "'");
+                                }
+                                if (i < columnCount) writer.write(", ");
+                            }
+                            writer.write(");\n");
+                            rowCount++;
+                        }
+                        
+                        if (rowCount > 0) {
+                            writer.write("-- Total de registros: " + rowCount + "\n");
+                        }
+                        
+                        writer.write("/*!40000 ALTER TABLE `" + tableName + "` ENABLE KEYS */;\n");
+                        writer.write("UNLOCK TABLES;\n\n");
+                        
+                    } catch (SQLException e) {
+                        writer.write("-- ERROR al procesar tabla " + tableName + ": " + 
+                            e.getMessage() + "\n\n");
+                        // Continuar con la siguiente tabla
+                    }
+                }
+                
+                writer.write("SET FOREIGN_KEY_CHECKS=1;\n");
+                writer.write("-- Backup completado exitosamente\n");
+                
+                SwingUtilities.invokeLater(() -> {
+                    progressDialog.dispose();
+                    JOptionPane.showMessageDialog(this,
+                        "✅ Copia de seguridad creada exitosamente:\n" + rutaBackup + 
+                        "\n\nTablas procesadas:  de " + totalTables,
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+                });
+                
+            } catch (Exception e) {
+                SwingUtilities.invokeLater(() -> {
+                    progressDialog.dispose();
+                    JOptionPane.showMessageDialog(this,
+                        "❌ Error al crear backup:\n" + e.getMessage() + 
+                        "\n\nVerifica:\n" +
+                        "1. Que MySQL esté en ejecución\n" +
+                        "2. Credenciales correctas\n" +
+                        "3. Base de datos 'login' exista",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                });
+                e.printStackTrace();
+            } finally {
+                // Cerrar recursos
+                try {
+                    if (writer != null) writer.close();
+                    if (stmt != null) stmt.close();
+                    if (conn != null) conn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     }//GEN-LAST:event_btnCopiaDeSeguridadActionPerformed
 
@@ -5316,217 +5484,279 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             filePath += ".pdf";
         }
 
-        // ✅ Crear el documento PDF
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
-        document.open();
+       // ✅ Crear el documento PDF con formato mejorado
+com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
+document.open();
 
-        // ✅ Configurar fuentes
-        com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 16, com.itextpdf.text.Font.BOLD
-        );
+// ✅ Configurar fuentes (con tamaños mejorados)
+com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
+);
 
-        com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
-        );
+com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
+);
 
-        com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10
-        );
+com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 10
+);
 
-        com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
-        );
+com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
+);
 
-        // ✅ Logo de la empresa (opcional)
-        try {
-            String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
-            PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
-            ResultSet rsEmpresa = psEmpresa.executeQuery();
-            
-            if (rsEmpresa.next()) {
-                String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
-                String direccionEmpresa = rsEmpresa.getString("direccion");
-                String telefonoEmpresa = rsEmpresa.getString("telefono");
-                
-                // Encabezado con información de la empresa
-                com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
-                    nombreEmpresa + "\n" +
-                    "Dirección: " + direccionEmpresa + "\n" +
-                    "Teléfono: " + telefonoEmpresa,
-                    normalFont
-                );
-                empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-                empresa.setSpacingAfter(10);
-                document.add(empresa);
-            }
-            rsEmpresa.close();
-            psEmpresa.close();
-        } catch (Exception e) {
-            // Si falla, continuar sin logo
-            System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
-        }
+com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 8
+);
 
-        // ✅ Título del pedido
-        com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
-                "PEDIDO #" + idPedido, titleFont
-        );
-        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        title.setSpacingAfter(15);
-        document.add(title);
-
-        // ✅ Información del pedido
-        com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        infoTable.setWidthPercentage(100);
-        infoTable.setSpacingBefore(10);
-        infoTable.setSpacingAfter(10);
+// ✅ Logo o encabezado de empresa
+try {
+    String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
+    PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
+    ResultSet rsEmpresa = psEmpresa.executeQuery();
+    
+    if (rsEmpresa.next()) {
+        String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
+        String direccionEmpresa = rsEmpresa.getString("direccion");
+        String telefonoEmpresa = rsEmpresa.getString("telefono");
         
-        // Configurar ancho de columnas
-        infoTable.setWidths(new float[]{30, 70});
-        
-        infoTable.addCell(new com.itextpdf.text.Phrase("Fecha:", boldFont));
-        infoTable.addCell(new com.itextpdf.text.Phrase(
-            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), normalFont));
-        
-        infoTable.addCell(new com.itextpdf.text.Phrase("Estado:", boldFont));
-        infoTable.addCell(new com.itextpdf.text.Phrase(estadoPedido, normalFont));
-        
-        document.add(infoTable);
-
-        // ✅ Información del cliente
-        com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
-                "INFORMACIÓN DEL CLIENTE:", headerFont
-        );
-        clienteHeader.setSpacingAfter(5);
-        document.add(clienteHeader);
-        
-        com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        clienteTable.setWidthPercentage(100);
-        clienteTable.setSpacingBefore(5);
-        clienteTable.setSpacingAfter(15);
-        clienteTable.setWidths(new float[]{30, 70});
-        
-        clienteTable.addCell(new com.itextpdf.text.Phrase("Nombre:", boldFont));
-        clienteTable.addCell(new com.itextpdf.text.Phrase(nombreCliente, normalFont));
-        
-        clienteTable.addCell(new com.itextpdf.text.Phrase("Teléfono:", boldFont));
-        clienteTable.addCell(new com.itextpdf.text.Phrase(telefonoCliente, normalFont));
-        
-        clienteTable.addCell(new com.itextpdf.text.Phrase("Dirección:", boldFont));
-        clienteTable.addCell(new com.itextpdf.text.Phrase(
-            calleCliente + ", " + coloniaCliente + ", " + municipioCliente, normalFont));
-        
-        if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
-            clienteTable.addCell(new com.itextpdf.text.Phrase("Referencia:", boldFont));
-            clienteTable.addCell(new com.itextpdf.text.Phrase(referenciaCliente, normalFont));
-        }
-        
-        document.add(clienteTable);
-
-        // ✅ Tabla de productos
-        com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
-                "DETALLE DE PRODUCTOS:", headerFont
-        );
-        productosHeader.setSpacingAfter(10);
-        document.add(productosHeader);
-
-        String[] columnas = {"Código", "Producto", "Cantidad", "Precio Unit.", "Subtotal"};
-        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
-        table.setWidthPercentage(100);
-        table.setSpacingBefore(5);
-        table.setSpacingAfter(15);
-        
-        // Configurar anchos de columnas
-        table.setWidths(new float[]{15, 40, 10, 15, 20});
-
-        // ✅ Encabezados de la tabla
-        for (String columna : columnas) {
-            com.itextpdf.text.Phrase header = new com.itextpdf.text.Phrase(columna, headerFont);
-            com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(header);
-            cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
-            cell.setPadding(5);
-            table.addCell(cell);
-        }
-
-        // ✅ Agregar productos al PDF
-        double totalPedido = 0;
-        int totalProductos = 0;
-
-        while (rsDetalles.next()) {
-            String codigo = rsDetalles.getString("codigo");
-            String producto = rsDetalles.getString("producto");
-            String color = rsDetalles.getString("color");
-            String dimension = rsDetalles.getString("dimension");
-            
-            // Formato del producto con detalles
-            String productoDetalle = producto;
-            if (color != null && !color.trim().isEmpty()) {
-                productoDetalle += "\nColor: " + color;
-            }
-            if (dimension != null && !dimension.trim().isEmpty()) {
-                productoDetalle += "\nDimensión: " + dimension;
-            }
-            
-            int cantidad = rsDetalles.getInt("cantidad");
-            double precio = rsDetalles.getDouble("precio_unitario");
-            double subtotal = cantidad * precio;
-
-            // Celdas con formato
-            table.addCell(new com.itextpdf.text.Phrase(codigo, normalFont));
-            
-            com.itextpdf.text.pdf.PdfPCell productoCell = new com.itextpdf.text.pdf.PdfPCell(
-                new com.itextpdf.text.Phrase(productoDetalle, normalFont));
-            productoCell.setPadding(5);
-            table.addCell(productoCell);
-            
-            table.addCell(new com.itextpdf.text.Phrase(String.valueOf(cantidad), normalFont));
-            table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", precio), normalFont));
-            table.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", subtotal), normalFont));
-
-            totalPedido += subtotal;
-            totalProductos++;
-        }
-
-        document.add(table);
-
-        // ✅ Totales
-        com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        totalesTable.setWidthPercentage(100);
-        totalesTable.setSpacingBefore(10);
-        totalesTable.setSpacingAfter(20);
-        totalesTable.setWidths(new float[]{70, 30});
-        
-        totalesTable.addCell(new com.itextpdf.text.Phrase("Total de productos:", normalFont));
-        totalesTable.addCell(new com.itextpdf.text.Phrase(String.valueOf(totalProductos), normalFont));
-        
-        totalesTable.addCell(new com.itextpdf.text.Phrase("TOTAL DEL PEDIDO:", boldFont));
-        totalesTable.addCell(new com.itextpdf.text.Phrase("$" + String.format("%.2f", totalPedido), boldFont));
-        
-        document.add(totalesTable);
-
-        // ✅ Notas o instrucciones (opcional)
-        com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
-            "Notas:\n" +
-            "• Este pedido será procesado en un plazo de 24 a 48 horas.\n" +
-            "• Para cualquier modificación, contacte al teléfono de la empresa.\n" +
-            "• El pedido puede ser cancelado antes de su envío.",
+        // Encabezado con información de la empresa
+        com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
+            nombreEmpresa.toUpperCase() + "\n" +
+            "Dirección: " + direccionEmpresa + "\n" +
+            "Teléfono: " + telefonoEmpresa,
             normalFont
         );
-        notas.setSpacingBefore(10);
-        document.add(notas);
+        empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+        empresa.setSpacingAfter(15);
+        document.add(empresa);
+    }
+    rsEmpresa.close();
+    psEmpresa.close();
+} catch (Exception e) {
+    System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+}
 
-        // ✅ Pie de página
-        document.newPage(); // Nueva página para el pie
-        com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
-                "Documento generado el: " + 
-                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date()) + 
-                 normalFont
+// ✅ Línea separadora
+com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
+    "_________________________________________________________________________");
+separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+document.add(separator);
+
+// ✅ Título del pedido
+com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
+        "ORDEN DE PEDIDO #" + idPedido, titleFont
+);
+title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+title.setSpacingBefore(10);
+title.setSpacingAfter(20);
+document.add(title);
+
+// ✅ Información general del pedido
+com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
+infoTable.setWidthPercentage(100);
+infoTable.setSpacingBefore(10);
+infoTable.setSpacingAfter(15);
+infoTable.setWidths(new float[]{25, 75});
+    
+// Fecha
+infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+infoTable.addCell(crearCelda(
+    new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), 
+    normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+// Estado
+infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
+if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
+    estadoPhrase.setFont(new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+        new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
+    ));
+} else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
+    estadoPhrase.setFont(new com.itextpdf.text.Font(
+        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+        new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
+    ));
+}
+infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+document.add(infoTable);
+
+// ✅ Información del cliente
+com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
+        "INFORMACIÓN DEL CLIENTE", headerFont
+);
+clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+clienteHeader.setSpacingAfter(8);
+document.add(clienteHeader);
+    
+com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
+clienteTable.setWidthPercentage(100);
+clienteTable.setSpacingBefore(5);
+clienteTable.setSpacingAfter(20);
+clienteTable.setWidths(new float[]{25, 75});
+    
+// Nombre
+clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+// Teléfono
+clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+// Dirección completa
+clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+String direccionCompleta = calleCliente;
+if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
+    direccionCompleta += ", " + coloniaCliente;
+}
+if (municipioCliente != null && !municipioCliente.isEmpty()) {
+    direccionCompleta += ", " + municipioCliente;
+}
+clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+// Referencia (si existe)
+if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
+    clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+}
+    
+document.add(clienteTable);
+
+// ✅ Tabla de productos
+com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
+        "DETALLE DE PRODUCTOS", headerFont
+);
+productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+productosHeader.setSpacingAfter(10);
+document.add(productosHeader);
+
+// Crear tabla con 6 columnas (añadimos columna para No.)
+String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
+com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
+table.setWidthPercentage(100);
+table.setSpacingBefore(5);
+table.setSpacingAfter(20);
+    
+// Configurar anchos de columnas
+table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
+
+// ✅ Encabezados de la tabla con color
+for (String columna : columnas) {
+    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
+        new com.itextpdf.text.Phrase(columna, headerFont));
+    cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
+    cell.setPadding(5);
+    cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+    table.addCell(cell);
+}
+
+// ✅ Agregar productos al PDF
+double totalPedido = 0;
+int totalProductos = 0;
+int contador = 1;
+
+while (rsDetalles.next()) {
+    String codigo = rsDetalles.getString("codigo");
+    String producto = rsDetalles.getString("producto");
+    String color = rsDetalles.getString("color");
+    String dimension = rsDetalles.getString("dimension");
+    String material = rsDetalles.getString("material");
+    
+    int cantidad = rsDetalles.getInt("cantidad");
+    double precio = rsDetalles.getDouble("precio_unitario");
+    double subtotal = cantidad * precio;
+
+    // Número de producto
+    table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+    
+    // Código
+    table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+    
+    // Producto con detalles
+    StringBuilder productoDetalle = new StringBuilder(producto);
+    if (color != null && !color.trim().isEmpty()) {
+        productoDetalle.append("\n").append("Color: ").append(color);
+    }
+    if (dimension != null && !dimension.trim().isEmpty()) {
+        productoDetalle.append("\n").append("Dimensión: ").append(dimension);
+    }
+    if (material != null && !material.trim().isEmpty()) {
+        productoDetalle.append("\n").append("Material: ").append(material);
+    }
+    
+    table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+    
+    // Cantidad
+    table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+    
+    // Precio unitario
+    table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+    
+    // Subtotal
+    table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+    totalPedido += subtotal;
+    totalProductos += cantidad;
+}
+
+document.add(table);
+
+// ✅ Totales
+com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
+totalesTable.setWidthPercentage(50);
+totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+totalesTable.setSpacingBefore(10);
+totalesTable.setSpacingAfter(20);
+totalesTable.setWidths(new float[]{60, 40});
+    
+// Total productos
+totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+    
+// Total del pedido
+totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:", 
+    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+    com.itextpdf.text.Element.ALIGN_RIGHT));
+totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
+    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+    com.itextpdf.text.Element.ALIGN_RIGHT));
+    
+document.add(totalesTable);
+
+// ✅ Notas o instrucciones
+com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
+    "INSTRUCCIONES Y NOTAS:\n\n" +
+    "1. Este pedido será procesado según la disponibilidad de stock.\n" +
+    "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n" +
+    "3. El pedido puede ser cancelado antes de su preparación.\n" +
+    "4. Los precios están expresados en pesos mexicanos (MXN).\n" +
+    "5. Los tiempos de entrega varían según la ubicación.",
+    normalFont
+);
+notas.setSpacingBefore(10);
+notas.setSpacingAfter(20);
+document.add(notas);
+
+// ✅ Firma
+com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
+            "__________________________\n" +
+            "Firma del Responsable\n" +
+            "TIENDA AZULEJO\n"+
+            "Documento generado: " + 
+             new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
+             " | Pedido #" + idPedido,
+              normalFont
         );
-        footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        footer.setSpacingBefore(50);
-        document.add(footer);
+firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+firma.setSpacingBefore(30);
+document.add(firma);
 
-        document.close();
+
+document.close();
 
         // ✅ Cerrar conexiones
         rsDetalles.close();
@@ -5570,7 +5800,23 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         e.printStackTrace();
     }
     }//GEN-LAST:event_btnGenerarpdfDelUltimoPedidoActionPerformed
+// 🔹 Método auxiliar para crear celdas de tabla con formato
+private com.itextpdf.text.pdf.PdfPCell crearCelda(String texto, com.itextpdf.text.Font font, int alineacion) {
+    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Phrase(texto, font));
+    cell.setPadding(5);
+    cell.setHorizontalAlignment(alineacion);
+    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+    return cell;
+}
 
+// 🔹 Método auxiliar sobrecargado para Phrase
+private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phrase, int alineacion) {
+    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(phrase);
+    cell.setPadding(5);
+    cell.setHorizontalAlignment(alineacion);
+    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+    return cell;
+}
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
         // TODO add your handling code here:
         DefaultTableModel modelo = new DefaultTableModel(
@@ -6865,23 +7111,15 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
             "__________________________\n" +
             "Firma del Responsable\n" +
-            "TIENDA AZULEJO",
-            normalFont
+            "TIENDA AZULEJO\n"+
+            "Documento generado: " + 
+             new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
+             " | Pedido #" + idPedido,
+              normalFont
         );
         firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
         firma.setSpacingBefore(30);
         document.add(firma);
-
-        // ✅ Pie de página
-        com.itextpdf.text.Paragraph footer = new com.itextpdf.text.Paragraph(
-                "Documento generado: " + 
-                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
-                " | Pedido #" + idPedido,
-                smallFont
-        );
-        footer.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        footer.setSpacingBefore(30);
-        document.add(footer);
 
         document.close();
 
@@ -6926,24 +7164,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
         e.printStackTrace();
     }
-}
-
-// 🔹 Método auxiliar para crear celdas de tabla con formato
-private com.itextpdf.text.pdf.PdfPCell crearCelda(String texto, com.itextpdf.text.Font font, int alineacion) {
-    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Phrase(texto, font));
-    cell.setPadding(5);
-    cell.setHorizontalAlignment(alineacion);
-    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
-    return cell;
-}
-
-// 🔹 Método auxiliar sobrecargado para Phrase
-private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phrase, int alineacion) {
-    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(phrase);
-    cell.setPadding(5);
-    cell.setHorizontalAlignment(alineacion);
-    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
-    return cell;
     }//GEN-LAST:event_btnGenerarPdfDelPedidoActionPerformed
 
     private void BuscarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPedidoActionPerformed

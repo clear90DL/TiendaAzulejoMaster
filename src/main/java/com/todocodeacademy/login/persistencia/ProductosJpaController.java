@@ -185,5 +185,20 @@ public class ProductosJpaController implements Serializable {
         } finally {
             em.close();
         }
+        
+         
+    }
+    public Productos traerProducto() {
+        EntityManager em = getEntityManager();
+        try {
+            return em.createQuery(
+                    "SELECT * FROM Productos",
+                    Productos.class)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Producto no encontrado
+        } finally {
+            em.close();
+        }
     }
 }
