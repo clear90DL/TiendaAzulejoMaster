@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -205,8 +206,8 @@ public void crearProveedor(Proveedor proveedor) {
     if (proveedor.getEstado() == null || proveedor.getEstado().isEmpty()) {
         proveedor.setEstado("ACTIVO");
     }
-    if (proveedor.getFechaRegistro() == null || proveedor.getFechaRegistro().isEmpty()) {
-        proveedor.setFechaRegistro(obtenerFechaActual());
+   if (proveedor.getFechaRegistro() == null) {
+        proveedor.setFechaRegistro(new Date());
     }
     
     // IMPORTANTE: Cambia "crearProveedor" por "CrearProveedor" para coincidir con ControladoraPersistencia
@@ -217,7 +218,7 @@ public void crearProveedor(Proveedor proveedor) {
                           String telefono1, String telefono2, String correo, String rfc,
                           String calle, String numeroInterior, String numeroExterior, 
                           String colonia, String municipio, String ciudad, String codigoPostal, 
-                          String referencia, String estado, String fechaRegistro) {
+                          String referencia, String estado, Date fechaRegistro) {
     
     Proveedor prov = new Proveedor();
     

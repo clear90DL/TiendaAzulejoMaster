@@ -2,9 +2,10 @@ package com.todocodeacademy.login.logica;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "PROVEEDORES") // Especifica el nombre exacto de la tabla
+@Table(name = "PROVEEDORES")
 public class Proveedor implements Serializable {
 
     @Id
@@ -12,7 +13,6 @@ public class Proveedor implements Serializable {
     @Column(name = "ID")
     private int id;
 
-    // Datos generales
     @Column(name = "NOMBRE_PROVEEDOR", length = 100, nullable = false)
     private String nombreProveedor;
     
@@ -22,7 +22,6 @@ public class Proveedor implements Serializable {
     @Column(name = "TIPO_PROVEEDOR", length = 50)
     private String tipoProveedor;
 
-    // Datos de contacto
     @Column(name = "TELEFONO1", length = 20)
     private String telefono1;
     
@@ -32,11 +31,9 @@ public class Proveedor implements Serializable {
     @Column(name = "CORREO", length = 100)
     private String correo;
 
-    // Datos fiscales
     @Column(name = "RFC", length = 20)
     private String rfc;
 
-    // Dirección
     @Column(name = "CALLE", length = 100)
     private String calle;
     
@@ -61,23 +58,21 @@ public class Proveedor implements Serializable {
     @Column(name = "REFERENCIA", length = 200)
     private String referencia;
 
-    // Opcional: Administración
     @Column(name = "ESTADO", length = 20)
-    private String estado = "ACTIVO"; // Valor por defecto
+    private String estado = "ACTIVO";
     
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "FECHA_REGISTRO")
-    private String fechaRegistro;
+    private Date fechaRegistro;
 
-    // Constructor vacío requerido por JPA
     public Proveedor() {
     }
 
-    // Constructor completo (opcional si quieres usarlo)
     public Proveedor(int id, String nombreProveedor, String nombreContacto, String tipoProveedor,
                      String telefono1, String telefono2, String correo, String rfc,
                      String calle, String numeroInterior, String numeroExterior, String colonia,
                      String municipio, String ciudad, String codigoPostal, String referencia,
-                     String estado, String fechaRegistro) {
+                     String estado, Date fechaRegistro) {  // ✅ Cambiado a Date
 
         this.id = id;
         this.nombreProveedor = nombreProveedor;
@@ -97,6 +92,11 @@ public class Proveedor implements Serializable {
         this.referencia = referencia;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        fechaRegistro = new Date();
     }
 
     // Getters y Setters
@@ -236,11 +236,13 @@ public class Proveedor implements Serializable {
         this.estado = estado;
     }
 
-    public String getFechaRegistro() {
+    // ✅ CORREGIDO: debe devolver Date, no String
+    public Date getFechaRegistro() {
         return fechaRegistro;
     }
 
-    public void setFechaRegistro(String fechaRegistro) {
+    // ✅ CORREGIDO: debe recibir Date, no String
+    public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
 }

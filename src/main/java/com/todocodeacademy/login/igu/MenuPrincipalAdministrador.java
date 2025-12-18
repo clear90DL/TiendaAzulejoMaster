@@ -24,10 +24,13 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,6 +44,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -49,6 +54,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
@@ -2903,31 +2909,55 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
                 return;
             }
 
+            // Validaciones adicionales recomendadas
+            if (cmbTipoProveedor.getSelectedIndex() == -1
+                    || cmbTipoProveedor.getSelectedItem().toString().trim().isEmpty()) {
+                mostrarMensaje("Debe seleccionar un tipo de proveedor", "Error", "Campo requerido");
+                cmbTipoProveedor.requestFocus();
+                return;
+            }
+
+            // Validar formato de correo si no está vacío
+            String correo = txtCorreoProveedor.getText().trim();
+            if (!correo.isEmpty() && !validarCorreo(correo)) {
+                mostrarMensaje("El formato del correo electrónico no es válido", "Error", "Validación");
+                txtCorreoProveedor.requestFocus();
+                return;
+            }
+
+            // Validar RFC si no está vacío (básico)
+            String rfc = txtRFC.getText().trim();
+            if (!rfc.isEmpty() && (rfc.length() < 12 || rfc.length() > 13)) {
+                mostrarMensaje("El RFC debe tener 12 o 13 caracteres", "Error", "Validación");
+                txtRFC.requestFocus();
+                return;
+            }
+
             // Crear objeto Proveedor
             Proveedor proveedor = new Proveedor();
 
-            // Datos generales
-            proveedor.setNombreProveedor(txtNombreProveedor.getText());
-            proveedor.setNombreContacto(txtNombreContacto.getText());
-            proveedor.setTipoProveedor(cmbTipoProveedor.getSelectedItem().toString());
+            // Datos generales (usar trim para evitar espacios)
+            proveedor.setNombreProveedor(txtNombreProveedor.getText().trim());
+            proveedor.setNombreContacto(txtNombreContacto.getText().trim());
+            proveedor.setTipoProveedor(cmbTipoProveedor.getSelectedItem().toString().trim());
 
             // Contacto
-            proveedor.setTelefono1(txtTelefonoProveedor.getText());
-            proveedor.setTelefono2(txtTelefonoProveedor2.getText());
-            proveedor.setCorreo(txtCorreoProveedor.getText());
+            proveedor.setTelefono1(txtTelefonoProveedor.getText().trim());
+            proveedor.setTelefono2(txtTelefonoProveedor2.getText().trim());
+            proveedor.setCorreo(correo);
 
             // Datos fiscales
-            proveedor.setRfc(txtRFC.getText());
+            proveedor.setRfc(rfc.toUpperCase()); // RFC en mayúsculas
 
             // Dirección
-            proveedor.setCalle(txtCalleProveedor.getText());
-            proveedor.setNumeroExterior(txtNumeroExteriorProveedor.getText());
-            proveedor.setNumeroInterior(txtNumeroInteriorProveedor.getText());
-            proveedor.setColonia(txtColoniaProveedor.getText());
-            proveedor.setMunicipio(txtMunicipioProveedor.getText());
-            proveedor.setCiudad(txtCiudadProveedor.getText());
-            proveedor.setCodigoPostal(txtCodigoPostalProveedor.getText());
-            proveedor.setReferencia(txtReferenciaProveedor.getText());
+            proveedor.setCalle(txtCalleProveedor.getText().trim());
+            proveedor.setNumeroExterior(txtNumeroExteriorProveedor.getText().trim());
+            proveedor.setNumeroInterior(txtNumeroInteriorProveedor.getText().trim());
+            proveedor.setColonia(txtColoniaProveedor.getText().trim());
+            proveedor.setMunicipio(txtMunicipioProveedor.getText().trim());
+            proveedor.setCiudad(txtCiudadProveedor.getText().trim());
+            proveedor.setCodigoPostal(txtCodigoPostalProveedor.getText().trim());
+            proveedor.setReferencia(txtReferenciaProveedor.getText().trim());
 
             // Estado por defecto
             proveedor.setEstado("ACTIVO");
@@ -2949,6 +2979,12 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnAgregarProveedorActionPerformed
+// Método auxiliar para validar correo
+
+    private boolean validarCorreo(String correo) {
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return correo.matches(regex);
+    }
 
     private void limpiarCamposProveedor() {
         try {
@@ -4698,240 +4734,488 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     private void btnCopiaDeSeguridadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCopiaDeSeguridadActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Guardar copia de seguridad");
-    fileChooser.setSelectedFile(new File("backup_" + 
-        new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".sql"));
-    
-    int seleccion = fileChooser.showSaveDialog(this);
-    if (seleccion == JFileChooser.APPROVE_OPTION) {
-        File archivo = fileChooser.getSelectedFile();
-        String ruta = archivo.getAbsolutePath();
-        
-        if (!ruta.toLowerCase().endsWith(".sql")) {
-            ruta += ".sql";
-        }
-        
-        final String rutaBackup = ruta;
-        
-        // Mostrar diálogo de progreso
-        JDialog progressDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
-            "Creando copia de seguridad", true);
-        JProgressBar progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true);
-        JLabel label = new JLabel("Creando backup...", SwingConstants.CENTER);
-        progressDialog.setLayout(new BorderLayout());
-        progressDialog.add(label, BorderLayout.NORTH);
-        progressDialog.add(progressBar, BorderLayout.CENTER);
-        progressDialog.setSize(300, 100);
-        progressDialog.setLocationRelativeTo(this);
-        
-        new Thread(() -> {
-            SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
-            
-            Connection conn = null;
-            Statement stmt = null;
-            BufferedWriter writer = null;
-            
-            try {
-                // Conexión a la base de datos
-                conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/login", "root", "");
-                stmt = conn.createStatement();
-                writer = new BufferedWriter(new FileWriter(rutaBackup));
-                
-                // Añadir cabecera
-                writer.write("-- Backup creado: " + new Date() + "\n");
-                writer.write("-- Base de datos: login\n");
-                writer.write("SET FOREIGN_KEY_CHECKS=0;\n\n");
-                
-                // Obtener solo las tablas de usuario (excluyendo tablas del sistema)
-                List<String> userTables = new ArrayList<>();
-                
-                // Método 1: Usar SHOW TABLES que solo muestra tablas de usuario
-                ResultSet tablesRs = stmt.executeQuery("SHOW TABLES");
-                while (tablesRs.next()) {
-                    String tableName = tablesRs.getString(1);
-                    // Filtrar tablas de sistema (phpMyAdmin, información_schema, etc.)
-                    if (!tableName.startsWith("pma__") && 
-                        !tableName.startsWith("sys_") && 
-                        !tableName.equals("information_schema") && 
-                        !tableName.equals("performance_schema") && 
-                        !tableName.equals("mysql")) {
-                        userTables.add(tableName);
-                    }
-                }
-                
-                // Si no hay tablas, usar método alternativo
-                if (userTables.isEmpty()) {
-                    ResultSet tablesMeta = conn.getMetaData().getTables(null, null, "%", 
-                        new String[]{"TABLE"});
-                    while (tablesMeta.next()) {
-                        String tableName = tablesMeta.getString("TABLE_NAME");
-                        if (!tableName.startsWith("pma__")) {
+        fileChooser.setDialogTitle("Guardar copia de seguridad");
+        fileChooser.setSelectedFile(new File("backup_"
+                + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".sql"));
+
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            File archivo = fileChooser.getSelectedFile();
+            String ruta = archivo.getAbsolutePath();
+
+            if (!ruta.toLowerCase().endsWith(".sql")) {
+                ruta += ".sql";
+            }
+
+            final String rutaBackup = ruta;
+
+            // Mostrar diálogo de progreso
+            JDialog progressDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this),
+                    "Creando copia de seguridad", true);
+            JProgressBar progressBar = new JProgressBar();
+            progressBar.setIndeterminate(true);
+            JLabel label = new JLabel("Creando backup...", SwingConstants.CENTER);
+            progressDialog.setLayout(new BorderLayout());
+            progressDialog.add(label, BorderLayout.NORTH);
+            progressDialog.add(progressBar, BorderLayout.CENTER);
+            progressDialog.setSize(300, 100);
+            progressDialog.setLocationRelativeTo(this);
+
+            new Thread(() -> {
+                SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+
+                Connection conn = null;
+                Statement stmt = null;
+                BufferedWriter writer = null;
+
+                try {
+                    // Conexión a la base de datos
+                    conn = DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/login", "root", "");
+                    stmt = conn.createStatement();
+                    writer = new BufferedWriter(new FileWriter(rutaBackup));
+
+                    // Añadir cabecera
+                    writer.write("-- Backup creado: " + new Date() + "\n");
+                    writer.write("-- Base de datos: login\n");
+                    writer.write("SET FOREIGN_KEY_CHECKS=0;\n\n");
+
+                    // Obtener solo las tablas de usuario (excluyendo tablas del sistema)
+                    List<String> userTables = new ArrayList<>();
+
+                    // Método 1: Usar SHOW TABLES que solo muestra tablas de usuario
+                    ResultSet tablesRs = stmt.executeQuery("SHOW TABLES");
+                    while (tablesRs.next()) {
+                        String tableName = tablesRs.getString(1);
+                        // Filtrar tablas de sistema (phpMyAdmin, información_schema, etc.)
+                        if (!tableName.startsWith("pma__")
+                                && !tableName.startsWith("sys_")
+                                && !tableName.equals("information_schema")
+                                && !tableName.equals("performance_schema")
+                                && !tableName.equals("mysql")) {
                             userTables.add(tableName);
                         }
                     }
-                }
-                
-                // Si aún no hay tablas, mostrar mensaje
-                if (userTables.isEmpty()) {
+
+                    // Si no hay tablas, usar método alternativo
+                    if (userTables.isEmpty()) {
+                        ResultSet tablesMeta = conn.getMetaData().getTables(null, null, "%",
+                                new String[]{"TABLE"});
+                        while (tablesMeta.next()) {
+                            String tableName = tablesMeta.getString("TABLE_NAME");
+                            if (!tableName.startsWith("pma__")) {
+                                userTables.add(tableName);
+                            }
+                        }
+                    }
+
+                    // Si aún no hay tablas, mostrar mensaje
+                    if (userTables.isEmpty()) {
+                        SwingUtilities.invokeLater(() -> {
+                            progressDialog.dispose();
+                            JOptionPane.showMessageDialog(this,
+                                    "⚠ No se encontraron tablas en la base de datos 'login'",
+                                    "Advertencia",
+                                    JOptionPane.WARNING_MESSAGE);
+                        });
+                        return;
+                    }
+
+                    // Procesar cada tabla
+                    int totalTables = userTables.size();
+                    int processedTables = 0;
+
+                    for (String tableName : userTables) {
+                        processedTables++;
+                        SwingUtilities.invokeLater(() -> {
+                            label.setText("Procesando tabla  de " + totalTables);
+                        });
+
+                        try {
+                            // Crear DROP TABLE
+                            writer.write("-- --------------------------------------------------------\n");
+                            writer.write("-- Tabla: " + tableName + "\n");
+                            writer.write("-- --------------------------------------------------------\n");
+                            writer.write("DROP TABLE IF EXISTS `" + tableName + "`;\n");
+
+                            // Obtener estructura de la tabla
+                            ResultSet createTableRs = stmt.executeQuery(
+                                    "SHOW CREATE TABLE `" + tableName + "`");
+
+                            if (createTableRs.next()) {
+                                String createStatement = createTableRs.getString(2);
+                                writer.write(createStatement + ";\n\n");
+                            }
+
+                            // Obtener datos de la tabla
+                            writer.write("-- Datos de la tabla " + tableName + "\n");
+                            writer.write("LOCK TABLES `" + tableName + "` WRITE;\n");
+                            writer.write("/*!40000 ALTER TABLE `" + tableName + "` DISABLE KEYS */;\n");
+
+                            ResultSet dataRs = stmt.executeQuery("SELECT * FROM `" + tableName + "`");
+                            ResultSetMetaData meta = dataRs.getMetaData();
+                            int columnCount = meta.getColumnCount();
+
+                            int rowCount = 0;
+                            while (dataRs.next()) {
+                                writer.write("INSERT INTO `" + tableName + "` VALUES (");
+                                for (int i = 1; i <= columnCount; i++) {
+                                    String value = dataRs.getString(i);
+                                    if (dataRs.wasNull()) {
+                                        writer.write("NULL");
+                                    } else {
+                                        // Escapar comillas simples
+                                        value = value.replace("'", "''");
+                                        writer.write("'" + value + "'");
+                                    }
+                                    if (i < columnCount) {
+                                        writer.write(", ");
+                                    }
+                                }
+                                writer.write(");\n");
+                                rowCount++;
+                            }
+
+                            if (rowCount > 0) {
+                                writer.write("-- Total de registros: " + rowCount + "\n");
+                            }
+
+                            writer.write("/*!40000 ALTER TABLE `" + tableName + "` ENABLE KEYS */;\n");
+                            writer.write("UNLOCK TABLES;\n\n");
+
+                        } catch (SQLException e) {
+                            writer.write("-- ERROR al procesar tabla " + tableName + ": "
+                                    + e.getMessage() + "\n\n");
+                            // Continuar con la siguiente tabla
+                        }
+                    }
+
+                    writer.write("SET FOREIGN_KEY_CHECKS=1;\n");
+                    writer.write("-- Backup completado exitosamente\n");
+
                     SwingUtilities.invokeLater(() -> {
                         progressDialog.dispose();
                         JOptionPane.showMessageDialog(this,
-                            "⚠ No se encontraron tablas en la base de datos 'login'",
-                            "Advertencia",
-                            JOptionPane.WARNING_MESSAGE);
+                                "✅ Copia de seguridad creada exitosamente:\n" + rutaBackup
+                                + "\n\nTablas procesadas:  de " + totalTables,
+                                "Éxito",
+                                JOptionPane.INFORMATION_MESSAGE);
                     });
-                    return;
-                }
-                
-                // Procesar cada tabla
-                int totalTables = userTables.size();
-                int processedTables = 0;
-                
-                for (String tableName : userTables) {
-                    processedTables++;
+
+                } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> {
-                        label.setText("Procesando tabla  de " + totalTables);
+                        progressDialog.dispose();
+                        JOptionPane.showMessageDialog(this,
+                                "❌ Error al crear backup:\n" + e.getMessage()
+                                + "\n\nVerifica:\n"
+                                + "1. Que MySQL esté en ejecución\n"
+                                + "2. Credenciales correctas\n"
+                                + "3. Base de datos 'login' exista",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     });
-                    
+                    e.printStackTrace();
+                } finally {
+                    // Cerrar recursos
                     try {
-                        // Crear DROP TABLE
-                        writer.write("-- --------------------------------------------------------\n");
-                        writer.write("-- Tabla: " + tableName + "\n");
-                        writer.write("-- --------------------------------------------------------\n");
-                        writer.write("DROP TABLE IF EXISTS `" + tableName + "`;\n");
-                        
-                        // Obtener estructura de la tabla
-                        ResultSet createTableRs = stmt.executeQuery(
-                            "SHOW CREATE TABLE `" + tableName + "`");
-                        
-                        if (createTableRs.next()) {
-                            String createStatement = createTableRs.getString(2);
-                            writer.write(createStatement + ";\n\n");
+                        if (writer != null) {
+                            writer.close();
                         }
-                        
-                        // Obtener datos de la tabla
-                        writer.write("-- Datos de la tabla " + tableName + "\n");
-                        writer.write("LOCK TABLES `" + tableName + "` WRITE;\n");
-                        writer.write("/*!40000 ALTER TABLE `" + tableName + "` DISABLE KEYS */;\n");
-                        
-                        ResultSet dataRs = stmt.executeQuery("SELECT * FROM `" + tableName + "`");
-                        ResultSetMetaData meta = dataRs.getMetaData();
-                        int columnCount = meta.getColumnCount();
-                        
-                        int rowCount = 0;
-                        while (dataRs.next()) {
-                            writer.write("INSERT INTO `" + tableName + "` VALUES (");
-                            for (int i = 1; i <= columnCount; i++) {
-                                String value = dataRs.getString(i);
-                                if (dataRs.wasNull()) {
-                                    writer.write("NULL");
-                                } else {
-                                    // Escapar comillas simples
-                                    value = value.replace("'", "''");
-                                    writer.write("'" + value + "'");
-                                }
-                                if (i < columnCount) writer.write(", ");
-                            }
-                            writer.write(");\n");
-                            rowCount++;
+                        if (stmt != null) {
+                            stmt.close();
                         }
-                        
-                        if (rowCount > 0) {
-                            writer.write("-- Total de registros: " + rowCount + "\n");
+                        if (conn != null) {
+                            conn.close();
                         }
-                        
-                        writer.write("/*!40000 ALTER TABLE `" + tableName + "` ENABLE KEYS */;\n");
-                        writer.write("UNLOCK TABLES;\n\n");
-                        
-                    } catch (SQLException e) {
-                        writer.write("-- ERROR al procesar tabla " + tableName + ": " + 
-                            e.getMessage() + "\n\n");
-                        // Continuar con la siguiente tabla
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
-                
-                writer.write("SET FOREIGN_KEY_CHECKS=1;\n");
-                writer.write("-- Backup completado exitosamente\n");
-                
-                SwingUtilities.invokeLater(() -> {
-                    progressDialog.dispose();
-                    JOptionPane.showMessageDialog(this,
-                        "✅ Copia de seguridad creada exitosamente:\n" + rutaBackup + 
-                        "\n\nTablas procesadas:  de " + totalTables,
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
-                });
-                
-            } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> {
-                    progressDialog.dispose();
-                    JOptionPane.showMessageDialog(this,
-                        "❌ Error al crear backup:\n" + e.getMessage() + 
-                        "\n\nVerifica:\n" +
-                        "1. Que MySQL esté en ejecución\n" +
-                        "2. Credenciales correctas\n" +
-                        "3. Base de datos 'login' exista",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
-                });
-                e.printStackTrace();
-            } finally {
-                // Cerrar recursos
-                try {
-                    if (writer != null) writer.close();
-                    if (stmt != null) stmt.close();
-                    if (conn != null) conn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
+            }).start();
+        }
 
     }//GEN-LAST:event_btnCopiaDeSeguridadActionPerformed
 
     private void btnRestaurarBDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestaurarBDActionPerformed
         // TODO add your handling code here:
+        // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Seleccionar archivo de respaldo");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                "Archivos SQL (*.sql)", "sql"));
 
         int seleccion = fileChooser.showOpenDialog(this);
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File archivo = fileChooser.getSelectedFile();
-            String rutaBackup = archivo.getAbsolutePath();
+        if (seleccion != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File archivo = fileChooser.getSelectedFile();
+
+        // Validar que el archivo existe y es legible
+        if (!archivo.exists() || !archivo.canRead()) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ No se puede leer el archivo seleccionado",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Confirmación
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+                "⚠️ ADVERTENCIA: Esta acción SOBRESCRIBIRÁ todos los datos actuales.\n"
+                + "¿Está seguro de restaurar desde: " + archivo.getName() + "?",
+                "Confirmar Restauración",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        if (confirmacion != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Diálogo de progreso
+        JDialog progressDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this),
+                "Restaurando Base de Datos", true);
+
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+
+        JLabel label = new JLabel("Restaurando, por favor espere...", SwingConstants.CENTER);
+
+        progressDialog.setLayout(new BorderLayout());
+        progressDialog.add(label, BorderLayout.CENTER);
+        progressDialog.add(progressBar, BorderLayout.SOUTH);
+        progressDialog.setSize(400, 100);
+        progressDialog.setLocationRelativeTo(this);
+
+        // Ejecutar en hilo separado
+        new Thread(() -> {
+            SwingUtilities.invokeLater(() -> progressDialog.setVisible(true));
+
+            Connection conn = null;
+            Statement stmt = null;
+            BufferedReader reader = null;
+            boolean exitoGeneral = true;
+            StringBuilder errores = new StringBuilder();
 
             try {
+                // MEJORA: Cargar configuración desde archivo properties
+                Properties dbProps = cargarConfiguracionDB();
 
-                String usuario = "root";
-                String contrasenia = ""; //  password
-                String nombreBD = "login"; //  nombre de base de datos
+                // Conectar a MySQL
+                conn = DriverManager.getConnection(
+                        dbProps.getProperty("db.url", "jdbc:mysql://localhost:3306/"),
+                        dbProps.getProperty("db.user", "root"),
+                        dbProps.getProperty("db.password", ""));
 
-                // Comando mysql para restaurar
-                String comando = "mysql -u" + usuario
-                        + (contrasenia.isEmpty() ? "" : " -p" + contrasenia)
-                        + " " + nombreBD + " < \"" + rutaBackup + "\"";
+                // MEJORA: Desactivar autocommit para usar transacciones
+                conn.setAutoCommit(false);
 
-                // Para ejecutar comandos con redirección < necesitamos usar cmd /c (Windows)
-                String[] comandoWindows = {"cmd.exe", "/c", comando};
+                stmt = conn.createStatement();
 
-                Process p = Runtime.getRuntime().exec(comandoWindows);
-                int proceso = p.waitFor();
-
-                if (proceso == 0) {
-                    JOptionPane.showMessageDialog(this, "✅ Base de datos restaurada correctamente");
-                } else {
-                    JOptionPane.showMessageDialog(this, "❌ Error al restaurar la base de datos");
+                // Preparar base de datos
+                try {
+                    stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS login");
+                    stmt.executeUpdate("USE login");
+                } catch (SQLException e) {
+                    errores.append("Error preparando BD: ").append(e.getMessage()).append("\n");
+                    throw e; // Salir si no se puede preparar la BD
                 }
 
+                // MEJORA: Leer con codificación UTF-8
+                reader = new BufferedReader(
+                        new InputStreamReader(new FileInputStream(archivo), StandardCharsets.UTF_8));
+
+                String line;
+                StringBuilder command = new StringBuilder();
+                int lineCount = 0;
+                int commandsExecuted = 0;
+
+                while ((line = reader.readLine()) != null) {
+                    lineCount++;
+
+                    // Saltar comentarios y líneas vacías
+                    String trimmedLine = line.trim();
+                    if (trimmedLine.startsWith("--")
+                            || trimmedLine.startsWith("/*")
+                            || trimmedLine.isEmpty()) {
+                        continue;
+                    }
+
+                    command.append(line).append(" ");
+
+                    // Si termina con punto y coma, ejecutar
+                    if (trimmedLine.endsWith(";")) {
+                        String sql = command.toString().trim();
+
+                        try {
+                            stmt.execute(sql);
+                            commandsExecuted++;
+
+                            // MEJORA: Commit cada 100 comandos para no saturar memoria
+                            if (commandsExecuted % 100 == 0) {
+                                conn.commit();
+                            }
+
+                        } catch (SQLException e) {
+                            // Ignorar solo errores específicos esperados
+                            if (esErrorIgnorable(sql, e)) {
+                                // No hacer nada
+                            } else {
+                                exitoGeneral = false;
+                                errores.append("Línea ").append(lineCount).append(": ")
+                                        .append(e.getMessage()).append("\n");
+
+                                // Si es error crítico, hacer rollback
+                                if (esErrorCritico(e)) {
+                                    throw e;
+                                }
+                            }
+                        }
+
+                        // Reiniciar para próximo comando
+                        command = new StringBuilder();
+                    }
+                }
+
+                // Ejecutar comando final si queda
+                if (command.length() > 0) {
+                    try {
+                        stmt.execute(command.toString().trim());
+                    } catch (SQLException e) {
+                        exitoGeneral = false;
+                        errores.append("Comando final: ").append(e.getMessage()).append("\n");
+                    }
+                }
+
+                // MEJORA: Commit final
+                conn.commit();
+
             } catch (Exception e) {
+                exitoGeneral = false;
+                errores.append("Error general: ").append(e.getMessage()).append("\n");
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "❌ Error: " + e.getMessage());
+
+                // MEJORA: Rollback en caso de error
+                if (conn != null) {
+                    try {
+                        conn.rollback();
+                        errores.append("\n⚠️ Se realizó rollback de los cambios\n");
+                    } catch (SQLException ex) {
+                        errores.append("Error en rollback: ").append(ex.getMessage()).append("\n");
+                    }
+                }
+
+            } finally {
+                // Cerrar recursos en orden inverso
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                    if (conn != null) {
+                        conn.setAutoCommit(true); // Restaurar autocommit
+                        conn.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Mostrar resultado
+                final boolean exito = exitoGeneral;
+                final String mensajeErrores = errores.toString();
+
+                SwingUtilities.invokeLater(() -> {
+                    progressDialog.dispose();
+
+                    if (exito && mensajeErrores.isEmpty()) {
+                        JOptionPane.showMessageDialog(this,
+                                "✅ Base de datos restaurada correctamente\n"
+                                + "Archivo: " + archivo.getName(),
+                                "Éxito",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } else if (exito) {
+                        JOptionPane.showMessageDialog(this,
+                                "⚠️ Restauración completada con algunas advertencias\n\n"
+                                + mensajeErrores,
+                                "Advertencias",
+                                JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "❌ Error al restaurar la base de datos\n\n"
+                                + "Errores encontrados:\n" + mensajeErrores,
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                });
+            }
+        }).start();
+    }//GEN-LAST:event_btnRestaurarBDActionPerformed
+    /**
+     * Carga configuración de BD desde archivo properties
+     */
+    private Properties cargarConfiguracionDB() {
+        Properties props = new Properties();
+        File configFile = new File("config/database.properties");
+
+        if (configFile.exists()) {
+            try (FileInputStream fis = new FileInputStream(configFile)) {
+                props.load(fis);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-    }//GEN-LAST:event_btnRestaurarBDActionPerformed
 
+        // Valores por defecto si no existe el archivo
+        if (!props.containsKey("db.url")) {
+            props.setProperty("db.url", "jdbc:mysql://localhost:3306/");
+            props.setProperty("db.user", "root");
+            props.setProperty("db.password", "");
+        }
+
+        return props;
+    }
+
+    /**
+     * Determina si un error SQL es ignorable
+     */
+    private boolean esErrorIgnorable(String sql, SQLException e) {
+        String sqlUpper = sql.toUpperCase();
+        String errorMsg = e.getMessage().toLowerCase();
+
+        // Ignorar errores de DROP TABLE IF EXISTS
+        if (sqlUpper.contains("DROP TABLE IF EXISTS")
+                && errorMsg.contains("doesn't exist")) {
+            return true;
+        }
+
+        // Ignorar errores de CREATE DATABASE IF NOT EXISTS
+        if (sqlUpper.contains("CREATE DATABASE IF NOT EXISTS")
+                && errorMsg.contains("exists")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determina si un error es crítico y debe abortar la restauración
+     */
+    private boolean esErrorCritico(SQLException e) {
+        int errorCode = e.getErrorCode();
+
+        // Códigos de error críticos de MySQL
+        return errorCode == 1007
+                || // Database exists (si no es IF NOT EXISTS)
+                errorCode == 1044
+                || // Access denied for user
+                errorCode == 1045
+                || // Access denied
+                errorCode == 2002
+                || // Can't connect to server
+                errorCode == 2003;   // Can't connect to server on socket
+    }
     private void btnAgregarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPedidoActionPerformed
         try {
             String codigo = txtCodigoProductoPedido.getText().trim();
@@ -5190,7 +5474,6 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
             // 🔹 LIMPIAR INTERFAZ DESPUÉS DE GUARDAR
             modelo.setRowCount(0);
             txtClientePedido.setText("");
-           
 
             JOptionPane.showMessageDialog(this,
                     "✅ Pedido guardado correctamente.\n"
@@ -5411,11 +5694,11 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnMostrarPedidoActionPerformed
 
     private void btnGenerarpdfDelUltimoPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarpdfDelUltimoPedidoActionPerformed
-       try {
-        Connection conn = ConexionBD.getConnection();
+        try {
+            Connection conn = ConexionBD.getConnection();
 
-        // ✅ Obtener el último pedido guardado (CONSULTA CORREGIDA)
-        String sqlUltimoPedido = """
+            // ✅ Obtener el último pedido guardado (CONSULTA CORREGIDA)
+            String sqlUltimoPedido = """
         SELECT p.id_pedido, c.primer_nombre AS cliente, c.telefono AS telefono, 
                c.colonia, c.calle, c.municipio, c.referencia,
                p.fecha_pedido, p.estado
@@ -5425,27 +5708,27 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         LIMIT 1
         """;
 
-        PreparedStatement psPedido = conn.prepareStatement(sqlUltimoPedido);
-        ResultSet rsPedido = psPedido.executeQuery();
+            PreparedStatement psPedido = conn.prepareStatement(sqlUltimoPedido);
+            ResultSet rsPedido = psPedido.executeQuery();
 
-        if (!rsPedido.next()) {
-            JOptionPane.showMessageDialog(this, "No hay pedidos guardados en la base de datos.");
-            return;
-        }
+            if (!rsPedido.next()) {
+                JOptionPane.showMessageDialog(this, "No hay pedidos guardados en la base de datos.");
+                return;
+            }
 
-        // ✅ Obtener datos del pedido
-        int idPedido = rsPedido.getInt("id_pedido");
-        String nombreCliente = rsPedido.getString("cliente");
-        String telefonoCliente = rsPedido.getString("telefono");
-        String coloniaCliente = rsPedido.getString("colonia");
-        String calleCliente = rsPedido.getString("calle");
-        String municipioCliente = rsPedido.getString("municipio");
-        String referenciaCliente = rsPedido.getString("referencia");
-        java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
-        String estadoPedido = rsPedido.getString("estado");
+            // ✅ Obtener datos del pedido
+            int idPedido = rsPedido.getInt("id_pedido");
+            String nombreCliente = rsPedido.getString("cliente");
+            String telefonoCliente = rsPedido.getString("telefono");
+            String coloniaCliente = rsPedido.getString("colonia");
+            String calleCliente = rsPedido.getString("calle");
+            String municipioCliente = rsPedido.getString("municipio");
+            String referenciaCliente = rsPedido.getString("referencia");
+            java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
+            String estadoPedido = rsPedido.getString("estado");
 
-        // ✅ Obtener detalles del pedido
-        String sqlDetalles = """
+            // ✅ Obtener detalles del pedido
+            String sqlDetalles = """
         SELECT dp.cantidad, dp.precio_unitario, 
                pr.codigo, pr.nombre AS producto, pr.color, pr.dimension, pr.material
         FROM detalle_pedido dp
@@ -5453,370 +5736,370 @@ public class MenuPrincipalAdministrador extends javax.swing.JFrame {
         WHERE dp.id_pedido = ?
         """;
 
-        PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
-        psDetalles.setInt(1, idPedido);
-        ResultSet rsDetalles = psDetalles.executeQuery();
+            PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
+            psDetalles.setInt(1, idPedido);
+            ResultSet rsDetalles = psDetalles.executeQuery();
 
-        // ✅ Verificar si hay detalles
-        if (!rsDetalles.isBeforeFirst()) {
-            JOptionPane.showMessageDialog(this, 
-                "⚠️ El pedido #" + idPedido + " no tiene productos.\n" +
-                "No se puede generar un PDF sin productos.",
-                "Pedido Vacío",
-                JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
+            // ✅ Verificar si hay detalles
+            if (!rsDetalles.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(this,
+                        "⚠️ El pedido #" + idPedido + " no tiene productos.\n"
+                        + "No se puede generar un PDF sin productos.",
+                        "Pedido Vacío",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return;
+            }
 
-        // ✅ Crear diálogo para guardar PDF
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar último pedido como PDF");
-        fileChooser.setSelectedFile(new java.io.File("pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
+            // ✅ Crear diálogo para guardar PDF
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Guardar último pedido como PDF");
+            fileChooser.setSelectedFile(new java.io.File("pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
 
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
 
-        java.io.File file = fileChooser.getSelectedFile();
-        String filePath = file.getAbsolutePath();
-        if (!filePath.toLowerCase().endsWith(".pdf")) {
-            filePath += ".pdf";
-        }
+            java.io.File file = fileChooser.getSelectedFile();
+            String filePath = file.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".pdf")) {
+                filePath += ".pdf";
+            }
 
-       // ✅ Crear el documento PDF con formato mejorado
-com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
-document.open();
+            // ✅ Crear el documento PDF con formato mejorado
+            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+            com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
+            document.open();
 
 // ✅ Configurar fuentes (con tamaños mejorados)
-com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
-);
+            com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
+            );
 
-com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
-);
+            com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
+            );
 
-com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 10
-);
+            com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10
+            );
 
-com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
-);
+            com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
+            );
 
-com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 8
-);
+            com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 8
+            );
 
 // ✅ Logo o encabezado de empresa
-try {
-    String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
-    PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
-    ResultSet rsEmpresa = psEmpresa.executeQuery();
-    
-    if (rsEmpresa.next()) {
-        String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
-        String direccionEmpresa = rsEmpresa.getString("direccion");
-        String telefonoEmpresa = rsEmpresa.getString("telefono");
-        
-        // Encabezado con información de la empresa
-        com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
-            nombreEmpresa.toUpperCase() + "\n" +
-            "Dirección: " + direccionEmpresa + "\n" +
-            "Teléfono: " + telefonoEmpresa,
-            normalFont
-        );
-        empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        empresa.setSpacingAfter(15);
-        document.add(empresa);
-    }
-    rsEmpresa.close();
-    psEmpresa.close();
-} catch (Exception e) {
-    System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
-}
+            try {
+                String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
+                PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
+                ResultSet rsEmpresa = psEmpresa.executeQuery();
+
+                if (rsEmpresa.next()) {
+                    String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
+                    String direccionEmpresa = rsEmpresa.getString("direccion");
+                    String telefonoEmpresa = rsEmpresa.getString("telefono");
+
+                    // Encabezado con información de la empresa
+                    com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
+                            nombreEmpresa.toUpperCase() + "\n"
+                            + "Dirección: " + direccionEmpresa + "\n"
+                            + "Teléfono: " + telefonoEmpresa,
+                            normalFont
+                    );
+                    empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                    empresa.setSpacingAfter(15);
+                    document.add(empresa);
+                }
+                rsEmpresa.close();
+                psEmpresa.close();
+            } catch (Exception e) {
+                System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+            }
 
 // ✅ Línea separadora
-com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
-    "_________________________________________________________________________");
-separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-document.add(separator);
+            com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
+                    "_________________________________________________________________________");
+            separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            document.add(separator);
 
 // ✅ Título del pedido
-com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
-        "ORDEN DE PEDIDO #" + idPedido, titleFont
-);
-title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-title.setSpacingBefore(10);
-title.setSpacingAfter(20);
-document.add(title);
+            com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
+                    "ORDEN DE PEDIDO #" + idPedido, titleFont
+            );
+            title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            title.setSpacingBefore(10);
+            title.setSpacingAfter(20);
+            document.add(title);
 
 // ✅ Información general del pedido
-com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
-infoTable.setWidthPercentage(100);
-infoTable.setSpacingBefore(10);
-infoTable.setSpacingAfter(15);
-infoTable.setWidths(new float[]{25, 75});
-    
+            com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            infoTable.setWidthPercentage(100);
+            infoTable.setSpacingBefore(10);
+            infoTable.setSpacingAfter(15);
+            infoTable.setWidths(new float[]{25, 75});
+
 // Fecha
-infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-infoTable.addCell(crearCelda(
-    new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), 
-    normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
+            infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            infoTable.addCell(crearCelda(
+                    new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido),
+                    normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
 // Estado
-infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
-com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
-if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
-    estadoPhrase.setFont(new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
-        new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
-    ));
-} else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
-    estadoPhrase.setFont(new com.itextpdf.text.Font(
-        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
-        new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
-    ));
-}
-infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
-    
-document.add(infoTable);
+            infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
+            if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
+                estadoPhrase.setFont(new com.itextpdf.text.Font(
+                        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                        new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
+                ));
+            } else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
+                estadoPhrase.setFont(new com.itextpdf.text.Font(
+                        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                        new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
+                ));
+            }
+            infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            document.add(infoTable);
 
 // ✅ Información del cliente
-com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
-        "INFORMACIÓN DEL CLIENTE", headerFont
-);
-clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-clienteHeader.setSpacingAfter(8);
-document.add(clienteHeader);
-    
-com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
-clienteTable.setWidthPercentage(100);
-clienteTable.setSpacingBefore(5);
-clienteTable.setSpacingAfter(20);
-clienteTable.setWidths(new float[]{25, 75});
-    
+            com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
+                    "INFORMACIÓN DEL CLIENTE", headerFont
+            );
+            clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            clienteHeader.setSpacingAfter(8);
+            document.add(clienteHeader);
+
+            com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            clienteTable.setWidthPercentage(100);
+            clienteTable.setSpacingBefore(5);
+            clienteTable.setSpacingAfter(20);
+            clienteTable.setWidths(new float[]{25, 75});
+
 // Nombre
-clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
+            clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
 // Teléfono
-clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
+            clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
 // Dirección completa
-clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-String direccionCompleta = calleCliente;
-if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
-    direccionCompleta += ", " + coloniaCliente;
-}
-if (municipioCliente != null && !municipioCliente.isEmpty()) {
-    direccionCompleta += ", " + municipioCliente;
-}
-clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
+            clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            String direccionCompleta = calleCliente;
+            if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
+                direccionCompleta += ", " + coloniaCliente;
+            }
+            if (municipioCliente != null && !municipioCliente.isEmpty()) {
+                direccionCompleta += ", " + municipioCliente;
+            }
+            clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
 // Referencia (si existe)
-if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
-    clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-}
-    
-document.add(clienteTable);
+            if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
+                clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+                clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            }
+
+            document.add(clienteTable);
 
 // ✅ Tabla de productos
-com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
-        "DETALLE DE PRODUCTOS", headerFont
-);
-productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-productosHeader.setSpacingAfter(10);
-document.add(productosHeader);
+            com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
+                    "DETALLE DE PRODUCTOS", headerFont
+            );
+            productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            productosHeader.setSpacingAfter(10);
+            document.add(productosHeader);
 
 // Crear tabla con 6 columnas (añadimos columna para No.)
-String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
-com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
-table.setWidthPercentage(100);
-table.setSpacingBefore(5);
-table.setSpacingAfter(20);
-    
+            String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
+            com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(5);
+            table.setSpacingAfter(20);
+
 // Configurar anchos de columnas
-table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
+            table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
 
 // ✅ Encabezados de la tabla con color
-for (String columna : columnas) {
-    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
-        new com.itextpdf.text.Phrase(columna, headerFont));
-    cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
-    cell.setPadding(5);
-    cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-    table.addCell(cell);
-}
+            for (String columna : columnas) {
+                com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
+                        new com.itextpdf.text.Phrase(columna, headerFont));
+                cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
+                cell.setPadding(5);
+                cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                table.addCell(cell);
+            }
 
 // ✅ Agregar productos al PDF
-double totalPedido = 0;
-int totalProductos = 0;
-int contador = 1;
+            double totalPedido = 0;
+            int totalProductos = 0;
+            int contador = 1;
 
-while (rsDetalles.next()) {
-    String codigo = rsDetalles.getString("codigo");
-    String producto = rsDetalles.getString("producto");
-    String color = rsDetalles.getString("color");
-    String dimension = rsDetalles.getString("dimension");
-    String material = rsDetalles.getString("material");
-    
-    int cantidad = rsDetalles.getInt("cantidad");
-    double precio = rsDetalles.getDouble("precio_unitario");
-    double subtotal = cantidad * precio;
+            while (rsDetalles.next()) {
+                String codigo = rsDetalles.getString("codigo");
+                String producto = rsDetalles.getString("producto");
+                String color = rsDetalles.getString("color");
+                String dimension = rsDetalles.getString("dimension");
+                String material = rsDetalles.getString("material");
 
-    // Número de producto
-    table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-    
-    // Código
-    table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-    
-    // Producto con detalles
-    StringBuilder productoDetalle = new StringBuilder(producto);
-    if (color != null && !color.trim().isEmpty()) {
-        productoDetalle.append("\n").append("Color: ").append(color);
-    }
-    if (dimension != null && !dimension.trim().isEmpty()) {
-        productoDetalle.append("\n").append("Dimensión: ").append(dimension);
-    }
-    if (material != null && !material.trim().isEmpty()) {
-        productoDetalle.append("\n").append("Material: ").append(material);
-    }
-    
-    table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-    
-    // Cantidad
-    table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-    
-    // Precio unitario
-    table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-    
-    // Subtotal
-    table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+                int cantidad = rsDetalles.getInt("cantidad");
+                double precio = rsDetalles.getDouble("precio_unitario");
+                double subtotal = cantidad * precio;
 
-    totalPedido += subtotal;
-    totalProductos += cantidad;
-}
+                // Número de producto
+                table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
 
-document.add(table);
+                // Código
+                table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+
+                // Producto con detalles
+                StringBuilder productoDetalle = new StringBuilder(producto);
+                if (color != null && !color.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Color: ").append(color);
+                }
+                if (dimension != null && !dimension.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Dimensión: ").append(dimension);
+                }
+                if (material != null && !material.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Material: ").append(material);
+                }
+
+                table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+                // Cantidad
+                table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+
+                // Precio unitario
+                table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+                // Subtotal
+                table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+                totalPedido += subtotal;
+                totalProductos += cantidad;
+            }
+
+            document.add(table);
 
 // ✅ Totales
-com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
-totalesTable.setWidthPercentage(50);
-totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-totalesTable.setSpacingBefore(10);
-totalesTable.setSpacingAfter(20);
-totalesTable.setWidths(new float[]{60, 40});
-    
+            com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            totalesTable.setWidthPercentage(50);
+            totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            totalesTable.setSpacingBefore(10);
+            totalesTable.setSpacingAfter(20);
+            totalesTable.setWidths(new float[]{60, 40});
+
 // Total productos
-totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-    
+            totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+            totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
 // Total del pedido
-totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:", 
-    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
-    com.itextpdf.text.Element.ALIGN_RIGHT));
-totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
-    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
-    com.itextpdf.text.Element.ALIGN_RIGHT));
-    
-document.add(totalesTable);
+            totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:",
+                    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+                    com.itextpdf.text.Element.ALIGN_RIGHT));
+            totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
+                    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+                    com.itextpdf.text.Element.ALIGN_RIGHT));
+
+            document.add(totalesTable);
 
 // ✅ Notas o instrucciones
-com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
-    "INSTRUCCIONES Y NOTAS:\n\n" +
-    "1. Este pedido será procesado según la disponibilidad de stock.\n" +
-    "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n" +
-    "3. El pedido puede ser cancelado antes de su preparación.\n" +
-    "4. Los precios están expresados en pesos mexicanos (MXN).\n" +
-    "5. Los tiempos de entrega varían según la ubicación.",
-    normalFont
-);
-notas.setSpacingBefore(10);
-notas.setSpacingAfter(20);
-document.add(notas);
+            com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
+                    "INSTRUCCIONES Y NOTAS:\n\n"
+                    + "1. Este pedido será procesado según la disponibilidad de stock.\n"
+                    + "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n"
+                    + "3. El pedido puede ser cancelado antes de su preparación.\n"
+                    + "4. Los precios están expresados en pesos mexicanos (MXN).\n"
+                    + "5. Los tiempos de entrega varían según la ubicación.",
+                    normalFont
+            );
+            notas.setSpacingBefore(10);
+            notas.setSpacingAfter(20);
+            document.add(notas);
 
 // ✅ Firma
-com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
-            "__________________________\n" +
-            "Firma del Responsable\n" +
-            "TIENDA AZULEJO\n"+
-            "Documento generado: " + 
-             new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
-             " | Pedido #" + idPedido,
-              normalFont
-        );
-firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-firma.setSpacingBefore(30);
-document.add(firma);
+            com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
+                    "__________________________\n"
+                    + "Firma del Responsable\n"
+                    + "TIENDA AZULEJO\n"
+                    + "Documento generado: "
+                    + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date())
+                    + " | Pedido #" + idPedido,
+                    normalFont
+            );
+            firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            firma.setSpacingBefore(30);
+            document.add(firma);
 
+            document.close();
 
-document.close();
+            // ✅ Cerrar conexiones
+            rsDetalles.close();
+            psDetalles.close();
+            rsPedido.close();
+            psPedido.close();
+            conn.close();
 
-        // ✅ Cerrar conexiones
-        rsDetalles.close();
-        psDetalles.close();
-        rsPedido.close();
-        psPedido.close();
-        conn.close();
+            // ✅ Mensaje de éxito con opciones
+            Object[] options = {"Abrir PDF", "Abrir carpeta", "OK"};
+            int n = JOptionPane.showOptionDialog(this,
+                    "✅ PDF del pedido generado exitosamente!\n\n"
+                    + "Pedido #: " + idPedido + "\n"
+                    + "Cliente: " + nombreCliente + "\n"
+                    + "Total: $" + String.format("%.2f", totalPedido) + "\n"
+                    + "Productos: " + totalProductos + "\n"
+                    + "Ubicación: " + filePath,
+                    "PDF Generado",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
 
-        // ✅ Mensaje de éxito con opciones
-        Object[] options = {"Abrir PDF", "Abrir carpeta", "OK"};
-        int n = JOptionPane.showOptionDialog(this,
-                "✅ PDF del pedido generado exitosamente!\n\n" +
-                "Pedido #: " + idPedido + "\n" +
-                "Cliente: " + nombreCliente + "\n" +
-                "Total: $" + String.format("%.2f", totalPedido) + "\n" +
-                "Productos: " + totalProductos + "\n" +
-                "Ubicación: " + filePath,
-                "PDF Generado",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                options,
-                options[0]
-        );
-
-        if (n == 0) { // Abrir PDF
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
+            if (n == 0) { // Abrir PDF
+                if (java.awt.Desktop.isDesktopSupported()) {
+                    java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
+                }
+            } else if (n == 1) { // Abrir carpeta
+                if (java.awt.Desktop.isDesktopSupported()) {
+                    java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
+                }
             }
-        } else if (n == 1) { // Abrir carpeta
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
-            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-                "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_btnGenerarpdfDelUltimoPedidoActionPerformed
 // 🔹 Método auxiliar para crear celdas de tabla con formato
-private com.itextpdf.text.pdf.PdfPCell crearCelda(String texto, com.itextpdf.text.Font font, int alineacion) {
-    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Phrase(texto, font));
-    cell.setPadding(5);
-    cell.setHorizontalAlignment(alineacion);
-    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
-    return cell;
-}
+
+    private com.itextpdf.text.pdf.PdfPCell crearCelda(String texto, com.itextpdf.text.Font font, int alineacion) {
+        com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new com.itextpdf.text.Phrase(texto, font));
+        cell.setPadding(5);
+        cell.setHorizontalAlignment(alineacion);
+        cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+        return cell;
+    }
 
 // 🔹 Método auxiliar sobrecargado para Phrase
-private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phrase, int alineacion) {
-    com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(phrase);
-    cell.setPadding(5);
-    cell.setHorizontalAlignment(alineacion);
-    cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
-    return cell;
-}
+    private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phrase, int alineacion) {
+        com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(phrase);
+        cell.setPadding(5);
+        cell.setHorizontalAlignment(alineacion);
+        cell.setVerticalAlignment(com.itextpdf.text.Element.ALIGN_MIDDLE);
+        return cell;
+    }
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
         // TODO add your handling code here:
         DefaultTableModel modelo = new DefaultTableModel(
@@ -6759,25 +7042,25 @@ private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phras
     private void btnGenerarPdfDelPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPdfDelPedidoActionPerformed
         // TODO add your handling code here:
         // Verificar si hay una fila seleccionada en la tabla
-    int filaSeleccionada = tblPedido.getSelectedRow();
-    
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(this,
-            "⚠️ Debe seleccionar un pedido de la tabla para generar el PDF.",
-            "Selección requerida",
-            JOptionPane.WARNING_MESSAGE
-        );
-        return;
-    }
-    
-    try {
-        // Obtener el ID del pedido seleccionado
-        int idPedido = Integer.parseInt(tblPedido.getValueAt(filaSeleccionada, 0).toString());
-        
-        Connection conn = ConexionBD.getConnection();
+        int filaSeleccionada = tblPedido.getSelectedRow();
 
-        // ✅ Obtener datos del pedido seleccionado
-        String sqlPedido = """
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "⚠️ Debe seleccionar un pedido de la tabla para generar el PDF.",
+                    "Selección requerida",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        try {
+            // Obtener el ID del pedido seleccionado
+            int idPedido = Integer.parseInt(tblPedido.getValueAt(filaSeleccionada, 0).toString());
+
+            Connection conn = ConexionBD.getConnection();
+
+            // ✅ Obtener datos del pedido seleccionado
+            String sqlPedido = """
         SELECT p.id_pedido, c.primer_nombre AS cliente, c.telefono AS telefono, 
                c.colonia, c.calle, c.municipio, c.referencia,
                p.fecha_pedido, p.estado
@@ -6786,31 +7069,31 @@ private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phras
         WHERE p.id_pedido = ?
         """;
 
-        PreparedStatement psPedido = conn.prepareStatement(sqlPedido);
-        psPedido.setInt(1, idPedido);
-        ResultSet rsPedido = psPedido.executeQuery();
+            PreparedStatement psPedido = conn.prepareStatement(sqlPedido);
+            psPedido.setInt(1, idPedido);
+            ResultSet rsPedido = psPedido.executeQuery();
 
-        if (!rsPedido.next()) {
-            JOptionPane.showMessageDialog(this, 
-                "❌ No se encontró el pedido #" + idPedido + " en la base de datos.",
-                "Pedido no encontrado",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
+            if (!rsPedido.next()) {
+                JOptionPane.showMessageDialog(this,
+                        "❌ No se encontró el pedido #" + idPedido + " en la base de datos.",
+                        "Pedido no encontrado",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
 
-        // ✅ Obtener datos del pedido
-        String nombreCliente = rsPedido.getString("cliente");
-        String telefonoCliente = rsPedido.getString("telefono");
-        String coloniaCliente = rsPedido.getString("colonia");
-        String calleCliente = rsPedido.getString("calle");
-        String municipioCliente = rsPedido.getString("municipio");
-        String referenciaCliente = rsPedido.getString("referencia");
-        java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
-        String estadoPedido = rsPedido.getString("estado");
+            // ✅ Obtener datos del pedido
+            String nombreCliente = rsPedido.getString("cliente");
+            String telefonoCliente = rsPedido.getString("telefono");
+            String coloniaCliente = rsPedido.getString("colonia");
+            String calleCliente = rsPedido.getString("calle");
+            String municipioCliente = rsPedido.getString("municipio");
+            String referenciaCliente = rsPedido.getString("referencia");
+            java.sql.Timestamp fechaPedido = rsPedido.getTimestamp("fecha_pedido");
+            String estadoPedido = rsPedido.getString("estado");
 
-        // ✅ Obtener detalles del pedido
-        String sqlDetalles = """
+            // ✅ Obtener detalles del pedido
+            String sqlDetalles = """
         SELECT dp.cantidad, dp.precio_unitario, 
                pr.codigo, pr.nombre AS producto, pr.color, pr.dimension, pr.material
         FROM detalle_pedido dp
@@ -6819,476 +7102,477 @@ private com.itextpdf.text.pdf.PdfPCell crearCelda(com.itextpdf.text.Phrase phras
         ORDER BY pr.nombre
         """;
 
-        PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
-        psDetalles.setInt(1, idPedido);
-        ResultSet rsDetalles = psDetalles.executeQuery();
+            PreparedStatement psDetalles = conn.prepareStatement(sqlDetalles);
+            psDetalles.setInt(1, idPedido);
+            ResultSet rsDetalles = psDetalles.executeQuery();
 
-        // ✅ Verificar si hay detalles
-        if (!rsDetalles.isBeforeFirst()) {
-            JOptionPane.showMessageDialog(this, 
-                "⚠️ El pedido #" + idPedido + " no tiene productos.\n" +
-                "No se puede generar un PDF sin productos.",
-                "Pedido Vacío",
-                JOptionPane.WARNING_MESSAGE
-            );
-            return;
-        }
-
-        // ✅ Crear diálogo para guardar PDF
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar Pedido #" + idPedido + " como PDF");
-        fileChooser.setSelectedFile(new java.io.File("Pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
-
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
-
-        java.io.File file = fileChooser.getSelectedFile();
-        String filePath = file.getAbsolutePath();
-        if (!filePath.toLowerCase().endsWith(".pdf")) {
-            filePath += ".pdf";
-        }
-
-        // ✅ Crear el documento PDF
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
-        document.open();
-
-        // ✅ Configurar fuentes
-        com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
-        );
-
-        com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
-        );
-
-        com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10
-        );
-
-        com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
-        );
-
-        com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 8
-        );
-
-        // ✅ Logo o encabezado de empresa
-        try {
-            String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
-            PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
-            ResultSet rsEmpresa = psEmpresa.executeQuery();
-            
-            if (rsEmpresa.next()) {
-                String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
-                String direccionEmpresa = rsEmpresa.getString("direccion");
-                String telefonoEmpresa = rsEmpresa.getString("telefono");
-                
-                // Encabezado con información de la empresa
-                com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
-                    nombreEmpresa.toUpperCase() + "\n" +
-                    "Dirección: " + direccionEmpresa + "\n" +
-                    "Teléfono: " + telefonoEmpresa,
-                    normalFont
+            // ✅ Verificar si hay detalles
+            if (!rsDetalles.isBeforeFirst()) {
+                JOptionPane.showMessageDialog(this,
+                        "⚠️ El pedido #" + idPedido + " no tiene productos.\n"
+                        + "No se puede generar un PDF sin productos.",
+                        "Pedido Vacío",
+                        JOptionPane.WARNING_MESSAGE
                 );
-                empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-                empresa.setSpacingAfter(15);
-                document.add(empresa);
+                return;
             }
-            rsEmpresa.close();
-            psEmpresa.close();
+
+            // ✅ Crear diálogo para guardar PDF
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Guardar Pedido #" + idPedido + " como PDF");
+            fileChooser.setSelectedFile(new java.io.File("Pedido_" + idPedido + "_" + nombreCliente + ".pdf"));
+
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+
+            java.io.File file = fileChooser.getSelectedFile();
+            String filePath = file.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".pdf")) {
+                filePath += ".pdf";
+            }
+
+            // ✅ Crear el documento PDF
+            com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+            com.itextpdf.text.pdf.PdfWriter.getInstance(document, new java.io.FileOutputStream(filePath));
+            document.open();
+
+            // ✅ Configurar fuentes
+            com.itextpdf.text.Font titleFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 18, com.itextpdf.text.Font.BOLD
+            );
+
+            com.itextpdf.text.Font headerFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 12, com.itextpdf.text.Font.BOLD
+            );
+
+            com.itextpdf.text.Font normalFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10
+            );
+
+            com.itextpdf.text.Font boldFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD
+            );
+
+            com.itextpdf.text.Font smallFont = new com.itextpdf.text.Font(
+                    com.itextpdf.text.Font.FontFamily.HELVETICA, 8
+            );
+
+            // ✅ Logo o encabezado de empresa
+            try {
+                String sqlEmpresa = "SELECT nombre_empresa, direccion, telefono FROM informacion_empresa LIMIT 1";
+                PreparedStatement psEmpresa = conn.prepareStatement(sqlEmpresa);
+                ResultSet rsEmpresa = psEmpresa.executeQuery();
+
+                if (rsEmpresa.next()) {
+                    String nombreEmpresa = rsEmpresa.getString("nombre_empresa");
+                    String direccionEmpresa = rsEmpresa.getString("direccion");
+                    String telefonoEmpresa = rsEmpresa.getString("telefono");
+
+                    // Encabezado con información de la empresa
+                    com.itextpdf.text.Paragraph empresa = new com.itextpdf.text.Paragraph(
+                            nombreEmpresa.toUpperCase() + "\n"
+                            + "Dirección: " + direccionEmpresa + "\n"
+                            + "Teléfono: " + telefonoEmpresa,
+                            normalFont
+                    );
+                    empresa.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                    empresa.setSpacingAfter(15);
+                    document.add(empresa);
+                }
+                rsEmpresa.close();
+                psEmpresa.close();
+            } catch (Exception e) {
+                System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+            }
+
+            // ✅ Línea separadora
+            com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
+                    "_________________________________________________________________________");
+            separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            document.add(separator);
+
+            // ✅ Título del pedido
+            com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
+                    "ORDEN DE PEDIDO #" + idPedido, titleFont
+            );
+            title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+            title.setSpacingBefore(10);
+            title.setSpacingAfter(20);
+            document.add(title);
+
+            // ✅ Información general del pedido
+            com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            infoTable.setWidthPercentage(100);
+            infoTable.setSpacingBefore(10);
+            infoTable.setSpacingAfter(15);
+            infoTable.setWidths(new float[]{25, 75});
+
+            // Fecha
+            infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            infoTable.addCell(crearCelda(
+                    new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido),
+                    normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            // Estado
+            infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
+            if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
+                estadoPhrase.setFont(new com.itextpdf.text.Font(
+                        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                        new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
+                ));
+            } else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
+                estadoPhrase.setFont(new com.itextpdf.text.Font(
+                        com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
+                        new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
+                ));
+            }
+            infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            document.add(infoTable);
+
+            // ✅ Información del cliente
+            com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
+                    "INFORMACIÓN DEL CLIENTE", headerFont
+            );
+            clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            clienteHeader.setSpacingAfter(8);
+            document.add(clienteHeader);
+
+            com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            clienteTable.setWidthPercentage(100);
+            clienteTable.setSpacingBefore(5);
+            clienteTable.setSpacingAfter(20);
+            clienteTable.setWidths(new float[]{25, 75});
+
+            // Nombre
+            clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            // Teléfono
+            clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            // Dirección completa
+            clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            String direccionCompleta = calleCliente;
+            if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
+                direccionCompleta += ", " + coloniaCliente;
+            }
+            if (municipioCliente != null && !municipioCliente.isEmpty()) {
+                direccionCompleta += ", " + municipioCliente;
+            }
+            clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+            // Referencia (si existe)
+            if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
+                clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
+                clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+            }
+
+            document.add(clienteTable);
+
+            // ✅ Tabla de productos
+            com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
+                    "DETALLE DE PRODUCTOS", headerFont
+            );
+            productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
+            productosHeader.setSpacingAfter(10);
+            document.add(productosHeader);
+
+            // Crear tabla con 6 columnas (añadimos columna para características)
+            String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
+            com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(5);
+            table.setSpacingAfter(20);
+
+            // Configurar anchos de columnas
+            table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
+
+            // ✅ Encabezados de la tabla con color
+            for (String columna : columnas) {
+                com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
+                        new com.itextpdf.text.Phrase(columna, headerFont));
+                cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
+                cell.setPadding(5);
+                cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
+                table.addCell(cell);
+            }
+
+            // ✅ Agregar productos al PDF
+            double totalPedido = 0;
+            int totalProductos = 0;
+            int contador = 1;
+
+            while (rsDetalles.next()) {
+                String codigo = rsDetalles.getString("codigo");
+                String producto = rsDetalles.getString("producto");
+                String color = rsDetalles.getString("color");
+                String dimension = rsDetalles.getString("dimension");
+                String material = rsDetalles.getString("material");
+
+                int cantidad = rsDetalles.getInt("cantidad");
+                double precio = rsDetalles.getDouble("precio_unitario");
+                double subtotal = cantidad * precio;
+
+                // Número de producto
+                table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+
+                // Código
+                table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+
+                // Producto con detalles
+                StringBuilder productoDetalle = new StringBuilder(producto);
+                if (color != null && !color.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Color: ").append(color);
+                }
+                if (dimension != null && !dimension.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Dimensión: ").append(dimension);
+                }
+                if (material != null && !material.trim().isEmpty()) {
+                    productoDetalle.append("\n").append("Material: ").append(material);
+                }
+
+                table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
+
+                // Cantidad
+                table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
+
+                // Precio unitario
+                table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+                // Subtotal
+                table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+                totalPedido += subtotal;
+                totalProductos += cantidad;
+            }
+
+            document.add(table);
+
+            // ✅ Totales
+            com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
+            totalesTable.setWidthPercentage(50);
+            totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            totalesTable.setSpacingBefore(10);
+            totalesTable.setSpacingAfter(20);
+            totalesTable.setWidths(new float[]{60, 40});
+
+            // Total productos
+            totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+            totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
+
+            // Total del pedido
+            totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:",
+                    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+                    com.itextpdf.text.Element.ALIGN_RIGHT));
+            totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
+                    new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
+                    com.itextpdf.text.Element.ALIGN_RIGHT));
+
+            document.add(totalesTable);
+
+            // ✅ Notas o instrucciones
+            com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
+                    "INSTRUCCIONES Y NOTAS:\n\n"
+                    + "1. Este pedido será procesado según la disponibilidad de stock.\n"
+                    + "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n"
+                    + "3. El pedido puede ser cancelado antes de su preparación.\n"
+                    + "4. Los precios están expresados en pesos mexicanos (MXN).\n"
+                    + "5. Los tiempos de entrega varían según la ubicación.",
+                    normalFont
+            );
+            notas.setSpacingBefore(10);
+            notas.setSpacingAfter(20);
+            document.add(notas);
+
+            // ✅ Firma
+            com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
+                    "__________________________\n"
+                    + "Firma del Responsable\n"
+                    + "TIENDA AZULEJO\n"
+                    + "Documento generado: "
+                    + new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date())
+                    + " | Pedido #" + idPedido,
+                    normalFont
+            );
+            firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
+            firma.setSpacingBefore(30);
+            document.add(firma);
+
+            document.close();
+
+            // ✅ Cerrar conexiones
+            rsDetalles.close();
+            psDetalles.close();
+            rsPedido.close();
+            psPedido.close();
+            conn.close();
+
+            // ✅ Mensaje de éxito con opciones
+            Object[] options = {"📄 Abrir PDF", "📂 Abrir carpeta", "✅ Aceptar"};
+            int opcion = JOptionPane.showOptionDialog(this,
+                    "✅ PDF generado exitosamente!\n\n"
+                    + "📋 Pedido: #" + idPedido + "\n"
+                    + "👤 Cliente: " + nombreCliente + "\n"
+                    + "💰 Total: $" + String.format("%.2f", totalPedido) + "\n"
+                    + "📦 Productos: " + totalProductos + " unidades\n"
+                    + "📂 Ubicación: " + file.getName(),
+                    "PDF Generado - Pedido #" + idPedido,
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+            );
+
+            if (opcion == 0) { // Abrir PDF
+                if (java.awt.Desktop.isDesktopSupported()) {
+                    java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
+                }
+            } else if (opcion == 1) { // Abrir carpeta
+                if (java.awt.Desktop.isDesktopSupported()) {
+                    java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
+                }
+            }
+
         } catch (Exception e) {
-            System.out.println("No se pudo cargar información de la empresa: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-
-        // ✅ Línea separadora
-        com.itextpdf.text.Paragraph separator = new com.itextpdf.text.Paragraph(
-            "_________________________________________________________________________");
-        separator.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        document.add(separator);
-
-        // ✅ Título del pedido
-        com.itextpdf.text.Paragraph title = new com.itextpdf.text.Paragraph(
-                "ORDEN DE PEDIDO #" + idPedido, titleFont
-        );
-        title.setAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-        title.setSpacingBefore(10);
-        title.setSpacingAfter(20);
-        document.add(title);
-
-        // ✅ Información general del pedido
-        com.itextpdf.text.pdf.PdfPTable infoTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        infoTable.setWidthPercentage(100);
-        infoTable.setSpacingBefore(10);
-        infoTable.setSpacingAfter(15);
-        infoTable.setWidths(new float[]{25, 75});
-        
-        // Fecha
-        infoTable.addCell(crearCelda("Fecha:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        infoTable.addCell(crearCelda(
-            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(fechaPedido), 
-            normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        // Estado
-        infoTable.addCell(crearCelda("Estado:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        com.itextpdf.text.Phrase estadoPhrase = new com.itextpdf.text.Phrase(estadoPedido, normalFont);
-        if ("ENTREGADO".equalsIgnoreCase(estadoPedido)) {
-            estadoPhrase.setFont(new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
-                new com.itextpdf.text.BaseColor(0, 100, 0) // Verde
-            ));
-        } else if ("CANCELADO".equalsIgnoreCase(estadoPedido)) {
-            estadoPhrase.setFont(new com.itextpdf.text.Font(
-                com.itextpdf.text.Font.FontFamily.HELVETICA, 10, com.itextpdf.text.Font.BOLD,
-                new com.itextpdf.text.BaseColor(200, 0, 0) // Rojo
-            ));
-        }
-        infoTable.addCell(crearCelda(estadoPhrase, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        document.add(infoTable);
-
-        // ✅ Información del cliente
-        com.itextpdf.text.Paragraph clienteHeader = new com.itextpdf.text.Paragraph(
-                "INFORMACIÓN DEL CLIENTE", headerFont
-        );
-        clienteHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-        clienteHeader.setSpacingAfter(8);
-        document.add(clienteHeader);
-        
-        com.itextpdf.text.pdf.PdfPTable clienteTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        clienteTable.setWidthPercentage(100);
-        clienteTable.setSpacingBefore(5);
-        clienteTable.setSpacingAfter(20);
-        clienteTable.setWidths(new float[]{25, 75});
-        
-        // Nombre
-        clienteTable.addCell(crearCelda("Cliente:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        clienteTable.addCell(crearCelda(nombreCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        // Teléfono
-        clienteTable.addCell(crearCelda("Teléfono:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        clienteTable.addCell(crearCelda(telefonoCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        // Dirección completa
-        clienteTable.addCell(crearCelda("Dirección:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        String direccionCompleta = calleCliente;
-        if (coloniaCliente != null && !coloniaCliente.isEmpty()) {
-            direccionCompleta += ", " + coloniaCliente;
-        }
-        if (municipioCliente != null && !municipioCliente.isEmpty()) {
-            direccionCompleta += ", " + municipioCliente;
-        }
-        clienteTable.addCell(crearCelda(direccionCompleta, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        
-        // Referencia (si existe)
-        if (referenciaCliente != null && !referenciaCliente.trim().isEmpty()) {
-            clienteTable.addCell(crearCelda("Referencia:", boldFont, com.itextpdf.text.Element.ALIGN_LEFT));
-            clienteTable.addCell(crearCelda(referenciaCliente, normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-        }
-        
-        document.add(clienteTable);
-
-        // ✅ Tabla de productos
-        com.itextpdf.text.Paragraph productosHeader = new com.itextpdf.text.Paragraph(
-                "DETALLE DE PRODUCTOS", headerFont
-        );
-        productosHeader.setAlignment(com.itextpdf.text.Element.ALIGN_LEFT);
-        productosHeader.setSpacingAfter(10);
-        document.add(productosHeader);
-
-        // Crear tabla con 6 columnas (añadimos columna para características)
-        String[] columnas = {"No.", "Código", "Producto", "Cant.", "Precio Unit.", "Subtotal"};
-        com.itextpdf.text.pdf.PdfPTable table = new com.itextpdf.text.pdf.PdfPTable(columnas.length);
-        table.setWidthPercentage(100);
-        table.setSpacingBefore(5);
-        table.setSpacingAfter(20);
-        
-        // Configurar anchos de columnas
-        table.setWidths(new float[]{5, 10, 45, 8, 12, 20});
-
-        // ✅ Encabezados de la tabla con color
-        for (String columna : columnas) {
-            com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(
-                new com.itextpdf.text.Phrase(columna, headerFont));
-            cell.setBackgroundColor(new com.itextpdf.text.BaseColor(220, 220, 220));
-            cell.setPadding(5);
-            cell.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_CENTER);
-            table.addCell(cell);
-        }
-
-        // ✅ Agregar productos al PDF
-        double totalPedido = 0;
-        int totalProductos = 0;
-        int contador = 1;
-
-        while (rsDetalles.next()) {
-            String codigo = rsDetalles.getString("codigo");
-            String producto = rsDetalles.getString("producto");
-            String color = rsDetalles.getString("color");
-            String dimension = rsDetalles.getString("dimension");
-            String material = rsDetalles.getString("material");
-            
-            int cantidad = rsDetalles.getInt("cantidad");
-            double precio = rsDetalles.getDouble("precio_unitario");
-            double subtotal = cantidad * precio;
-
-            // Número de producto
-            table.addCell(crearCelda(String.valueOf(contador++), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-            
-            // Código
-            table.addCell(crearCelda(codigo, normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-            
-            // Producto con detalles
-            StringBuilder productoDetalle = new StringBuilder(producto);
-            if (color != null && !color.trim().isEmpty()) {
-                productoDetalle.append("\n").append("Color: ").append(color);
-            }
-            if (dimension != null && !dimension.trim().isEmpty()) {
-                productoDetalle.append("\n").append("Dimensión: ").append(dimension);
-            }
-            if (material != null && !material.trim().isEmpty()) {
-                productoDetalle.append("\n").append("Material: ").append(material);
-            }
-            
-            table.addCell(crearCelda(productoDetalle.toString(), normalFont, com.itextpdf.text.Element.ALIGN_LEFT));
-            
-            // Cantidad
-            table.addCell(crearCelda(String.valueOf(cantidad), normalFont, com.itextpdf.text.Element.ALIGN_CENTER));
-            
-            // Precio unitario
-            table.addCell(crearCelda("$" + String.format("%.2f", precio), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-            
-            // Subtotal
-            table.addCell(crearCelda("$" + String.format("%.2f", subtotal), boldFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-
-            totalPedido += subtotal;
-            totalProductos += cantidad;
-        }
-
-        document.add(table);
-
-        // ✅ Totales
-        com.itextpdf.text.pdf.PdfPTable totalesTable = new com.itextpdf.text.pdf.PdfPTable(2);
-        totalesTable.setWidthPercentage(50);
-        totalesTable.setHorizontalAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        totalesTable.setSpacingBefore(10);
-        totalesTable.setSpacingAfter(20);
-        totalesTable.setWidths(new float[]{60, 40});
-        
-        // Total productos
-        totalesTable.addCell(crearCelda("Total productos:", normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-        totalesTable.addCell(crearCelda(String.valueOf(totalProductos), normalFont, com.itextpdf.text.Element.ALIGN_RIGHT));
-        
-        // Total del pedido
-        totalesTable.addCell(crearCelda("TOTAL DEL PEDIDO:", 
-            new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
-            com.itextpdf.text.Element.ALIGN_RIGHT));
-        totalesTable.addCell(crearCelda("$" + String.format("%.2f", totalPedido),
-            new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.HELVETICA, 11, com.itextpdf.text.Font.BOLD),
-            com.itextpdf.text.Element.ALIGN_RIGHT));
-        
-        document.add(totalesTable);
-
-        // ✅ Notas o instrucciones
-        com.itextpdf.text.Paragraph notas = new com.itextpdf.text.Paragraph(
-            "INSTRUCCIONES Y NOTAS:\n\n" +
-            "1. Este pedido será procesado según la disponibilidad de stock.\n" +
-            "2. Para consultas o modificaciones, contactar al teléfono de la empresa.\n" +
-            "3. El pedido puede ser cancelado antes de su preparación.\n" +
-            "4. Los precios están expresados en pesos mexicanos (MXN).\n" +
-            "5. Los tiempos de entrega varían según la ubicación.",
-            normalFont
-        );
-        notas.setSpacingBefore(10);
-        notas.setSpacingAfter(20);
-        document.add(notas);
-
-        // ✅ Firma
-        com.itextpdf.text.Paragraph firma = new com.itextpdf.text.Paragraph(
-            "__________________________\n" +
-            "Firma del Responsable\n" +
-            "TIENDA AZULEJO\n"+
-            "Documento generado: " + 
-             new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()) + 
-             " | Pedido #" + idPedido,
-              normalFont
-        );
-        firma.setAlignment(com.itextpdf.text.Element.ALIGN_RIGHT);
-        firma.setSpacingBefore(30);
-        document.add(firma);
-
-        document.close();
-
-        // ✅ Cerrar conexiones
-        rsDetalles.close();
-        psDetalles.close();
-        rsPedido.close();
-        psPedido.close();
-        conn.close();
-
-        // ✅ Mensaje de éxito con opciones
-        Object[] options = {"📄 Abrir PDF", "📂 Abrir carpeta", "✅ Aceptar"};
-        int opcion = JOptionPane.showOptionDialog(this,
-                "✅ PDF generado exitosamente!\n\n" +
-                "📋 Pedido: #" + idPedido + "\n" +
-                "👤 Cliente: " + nombreCliente + "\n" +
-                "💰 Total: $" + String.format("%.2f", totalPedido) + "\n" +
-                "📦 Productos: " + totalProductos + " unidades\n" +
-                "📂 Ubicación: " + file.getName(),
-                "PDF Generado - Pedido #" + idPedido,
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.INFORMATION_MESSAGE,
-                null,
-                options,
-                options[0]
-        );
-
-        if (opcion == 0) { // Abrir PDF
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(new java.io.File(filePath));
-            }
-        } else if (opcion == 1) { // Abrir carpeta
-            if (java.awt.Desktop.isDesktopSupported()) {
-                java.awt.Desktop.getDesktop().open(new java.io.File(filePath).getParentFile());
-            }
-        }
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-                "❌ Error al generar PDF del pedido:\n" + e.getMessage(),
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_btnGenerarPdfDelPedidoActionPerformed
 
     private void BuscarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarPedidoActionPerformed
-     // Obtener el ID del pedido a buscar
-    String idPedidoStr = txtIdPedido.getText().trim();
-    
-    // Validar que no esté vacío
-    if (idPedidoStr.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-            "⚠️ Ingrese un ID de pedido para buscar.",
-            "Campo vacío",
-            JOptionPane.WARNING_MESSAGE
-        );
-        txtIdPedido.requestFocus();
-        return;
-    }
-    
-    // Validar que sea un número válido
-    int idPedido;
-    try {
-        idPedido = Integer.parseInt(idPedidoStr);
-        if (idPedido <= 0) {
+        // Obtener el ID del pedido a buscar
+        String idPedidoStr = txtIdPedido.getText().trim();
+
+        // Validar que no esté vacío
+        if (idPedidoStr.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                "❌ El ID del pedido debe ser un número positivo.",
-                "ID inválido",
-                JOptionPane.ERROR_MESSAGE
+                    "⚠️ Ingrese un ID de pedido para buscar.",
+                    "Campo vacío",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            txtIdPedido.requestFocus();
+            return;
+        }
+
+        // Validar que sea un número válido
+        int idPedido;
+        try {
+            idPedido = Integer.parseInt(idPedidoStr);
+            if (idPedido <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "❌ El ID del pedido debe ser un número positivo.",
+                        "ID inválido",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                txtIdPedido.requestFocus();
+                txtIdPedido.selectAll();
+                return;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ El ID del pedido debe ser un número válido.\n"
+                    + "Ejemplo: 123, 45, 100",
+                    "ID inválido",
+                    JOptionPane.ERROR_MESSAGE
             );
             txtIdPedido.requestFocus();
             txtIdPedido.selectAll();
             return;
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-            "❌ El ID del pedido debe ser un número válido.\n" +
-            "Ejemplo: 123, 45, 100",
-            "ID inválido",
-            JOptionPane.ERROR_MESSAGE
-        );
-        txtIdPedido.requestFocus();
-        txtIdPedido.selectAll();
-        return;
-    }
-    
-    // Buscar el pedido en la base de datos
-    try (Connection conn = ConexionBD.getConnection()) {
-        // Verificar si existe el pedido
-        String sqlExiste = "SELECT COUNT(*) AS count FROM pedido WHERE id_pedido = ?";
-        PreparedStatement psExiste = conn.prepareStatement(sqlExiste);
-        psExiste.setInt(1, idPedido);
-        ResultSet rsExiste = psExiste.executeQuery();
-        
-        rsExiste.next();
-        int existe = rsExiste.getInt("count");
-        rsExiste.close();
-        psExiste.close();
-        
-        if (existe == 0) {
-            JOptionPane.showMessageDialog(this,
-                "❌ No se encontró el pedido #" + idPedido + ".\n" +
-                "Verifique el ID e intente nuevamente.",
-                "Pedido no encontrado",
-                JOptionPane.ERROR_MESSAGE
-            );
-            txtIdPedido.requestFocus();
-            txtIdPedido.selectAll();
-            return;
-        }
-        
-        // 🔍 OPCIÓN 1: Si estás cargando todos los pedidos en la tabla y solo quieres seleccionar
-        boolean encontrado = false;
-        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
-        
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            try {
-                int idEnTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
-                if (idEnTabla == idPedido) {
-                    // Seleccionar la fila encontrada
-                    tblPedido.setRowSelectionInterval(i, i);
-                    tblPedido.scrollRectToVisible(tblPedido.getCellRect(i, 0, true));
-                    encontrado = true;
-                    
-                    // Mostrar mensaje de éxito
-                    JOptionPane.showMessageDialog(this,
-                        "✅ Pedido #" + idPedido + " encontrado.\n" +
-                        "Fila seleccionada: " + (i + 1),
-                        "Búsqueda exitosa",
-                        JOptionPane.INFORMATION_MESSAGE
-                    );
-                    break;
+
+        // Buscar el pedido en la base de datos
+        try (Connection conn = ConexionBD.getConnection()) {
+            // Verificar si existe el pedido
+            String sqlExiste = "SELECT COUNT(*) AS count FROM pedido WHERE id_pedido = ?";
+            PreparedStatement psExiste = conn.prepareStatement(sqlExiste);
+            psExiste.setInt(1, idPedido);
+            ResultSet rsExiste = psExiste.executeQuery();
+
+            rsExiste.next();
+            int existe = rsExiste.getInt("count");
+            rsExiste.close();
+            psExiste.close();
+
+            if (existe == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "❌ No se encontró el pedido #" + idPedido + ".\n"
+                        + "Verifique el ID e intente nuevamente.",
+                        "Pedido no encontrado",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                txtIdPedido.requestFocus();
+                txtIdPedido.selectAll();
+                return;
+            }
+
+            // 🔍 OPCIÓN 1: Si estás cargando todos los pedidos en la tabla y solo quieres seleccionar
+            boolean encontrado = false;
+            DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
+
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                try {
+                    int idEnTabla = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+                    if (idEnTabla == idPedido) {
+                        // Seleccionar la fila encontrada
+                        tblPedido.setRowSelectionInterval(i, i);
+                        tblPedido.scrollRectToVisible(tblPedido.getCellRect(i, 0, true));
+                        encontrado = true;
+
+                        // Mostrar mensaje de éxito
+                        JOptionPane.showMessageDialog(this,
+                                "✅ Pedido #" + idPedido + " encontrado.\n"
+                                + "Fila seleccionada: " + (i + 1),
+                                "Búsqueda exitosa",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                        break;
+                    }
+                } catch (Exception e) {
+                    // Si hay error al parsear, continuar con la siguiente fila
+                    continue;
                 }
-            } catch (Exception e) {
-                // Si hay error al parsear, continuar con la siguiente fila
-                continue;
             }
-        }
-        
-        if (!encontrado) {
-            // 🔍 OPCIÓN 2: Si el pedido no está en la tabla actual, cargar solo ese pedido
-            int respuesta = JOptionPane.showConfirmDialog(this,
-                "El pedido #" + idPedido + " no está en la vista actual.\n" +
-                "¿Desea cargar solo este pedido?",
-                "Pedido no en vista",
-                JOptionPane.YES_NO_OPTION
+
+            if (!encontrado) {
+                // 🔍 OPCIÓN 2: Si el pedido no está en la tabla actual, cargar solo ese pedido
+                int respuesta = JOptionPane.showConfirmDialog(this,
+                        "El pedido #" + idPedido + " no está en la vista actual.\n"
+                        + "¿Desea cargar solo este pedido?",
+                        "Pedido no en vista",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (respuesta == JOptionPane.YES_OPTION) {
+                    cargarPedidoEspecifico(idPedido);
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this,
+                    "❌ Error al buscar el pedido:\n" + e.getMessage(),
+                    "Error de base de datos",
+                    JOptionPane.ERROR_MESSAGE
             );
-            
-            if (respuesta == JOptionPane.YES_OPTION) {
-                cargarPedidoEspecifico(idPedido);
-            }
+            e.printStackTrace();
         }
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this,
-            "❌ Error al buscar el pedido:\n" + e.getMessage(),
-            "Error de base de datos",
-            JOptionPane.ERROR_MESSAGE
-        );
-        e.printStackTrace();
-    }
         // TODO add your handling code here:
     }//GEN-LAST:event_BuscarPedidoActionPerformed
 // 🔹 Método para cargar un pedido específico en la tabla
-private void cargarPedidoEspecifico(int idPedido) {
-    try (Connection conn = ConexionBD.getConnection()) {
-        // Consulta para obtener el pedido específico
-        String sqlPedido = """
+
+    private void cargarPedidoEspecifico(int idPedido) {
+        try (Connection conn = ConexionBD.getConnection()) {
+            // Consulta para obtener el pedido específico
+            String sqlPedido = """
             SELECT p.id_pedido, 
                    CONCAT(c.primer_nombre, ' ', c.apellido_paterno) AS cliente,
                    p.fecha_pedido, 
@@ -7301,58 +7585,59 @@ private void cargarPedidoEspecifico(int idPedido) {
             WHERE p.id_pedido = ?
             GROUP BY p.id_pedido, c.primer_nombre, c.apellido_paterno, p.fecha_pedido, p.estado
             """;
-        
-        PreparedStatement ps = conn.prepareStatement(sqlPedido);
-        ps.setInt(1, idPedido);
-        ResultSet rs = ps.executeQuery();
-        
-        // Limpiar la tabla actual
-        DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
-        modelo.setRowCount(0);
-        
-        // Agregar el pedido encontrado
-        if (rs.next()) {
-            Object[] fila = {
-                rs.getInt("id_pedido"),
-                rs.getString("cliente"),
-                rs.getTimestamp("fecha_pedido"),
-                rs.getString("estado"),
-                rs.getInt("productos"),
-                String.format("$%.2f", rs.getDouble("total"))
-            };
-            modelo.addRow(fila);
-            
-            // Seleccionar la única fila
-            tblPedido.setRowSelectionInterval(0, 0);
-            
+
+            PreparedStatement ps = conn.prepareStatement(sqlPedido);
+            ps.setInt(1, idPedido);
+            ResultSet rs = ps.executeQuery();
+
+            // Limpiar la tabla actual
+            DefaultTableModel modelo = (DefaultTableModel) tblPedido.getModel();
+            modelo.setRowCount(0);
+
+            // Agregar el pedido encontrado
+            if (rs.next()) {
+                Object[] fila = {
+                    rs.getInt("id_pedido"),
+                    rs.getString("cliente"),
+                    rs.getTimestamp("fecha_pedido"),
+                    rs.getString("estado"),
+                    rs.getInt("productos"),
+                    String.format("$%.2f", rs.getDouble("total"))
+                };
+                modelo.addRow(fila);
+
+                // Seleccionar la única fila
+                tblPedido.setRowSelectionInterval(0, 0);
+
+                JOptionPane.showMessageDialog(this,
+                        "✅ Pedido #" + idPedido + " cargado.\n"
+                        + "Cliente: " + rs.getString("cliente") + "\n"
+                        + "Estado: " + rs.getString("estado"),
+                        "Pedido cargado",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+
+            rs.close();
+            ps.close();
+
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
-                "✅ Pedido #" + idPedido + " cargado.\n" +
-                "Cliente: " + rs.getString("cliente") + "\n" +
-                "Estado: " + rs.getString("estado"),
-                "Pedido cargado",
-                JOptionPane.INFORMATION_MESSAGE
+                    "❌ Error al cargar el pedido:\n" + e.getMessage(),
+                    "Error de base de datos",
+                    JOptionPane.ERROR_MESSAGE
             );
+            e.printStackTrace();
         }
-        
-        rs.close();
-        ps.close();
-        
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this,
-            "❌ Error al cargar el pedido:\n" + e.getMessage(),
-            "Error de base de datos",
-            JOptionPane.ERROR_MESSAGE
-        );
-        e.printStackTrace();
     }
-}
 
 // 🔹 También puedes agregar este método para manejar la tecla ENTER en el campo de búsqueda
-private void txtIdPedidoKeyPressed(java.awt.event.KeyEvent evt) {
-    if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
-        BuscarPedidoActionPerformed(null);
+    private void txtIdPedidoKeyPressed(java.awt.event.KeyEvent evt) {
+        if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+            BuscarPedidoActionPerformed(null);
+        }
     }
-}
+
     private void cambiarVista(JPanel jPanel) {
         jPanel.setSize(jPanelPrincipal.getWidth(), jPanelPrincipal.getHeight());
         jPanelPrincipal.removeAll();
